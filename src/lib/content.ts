@@ -14,16 +14,17 @@ export const navLinks = [
   { label: "Inicio", href: "#" },
   { label: "Quiénes Somos", href: "#quienes" },
   { label: "Membresías", href: "#membresias" },
+  { label: "Cursos y Talleres", href: "#cursos" },
   { label: "Actividades", href: "#actividades" },
   { label: "Blog", href: "#" },
   { label: "Contacto", href: "#contacto" },
 ];
 
 export const heroContent = {
-  title: "TU HISTORIA CONTINÚA",
-  subtitle: "con protagonismo, transformación y trascendencia",
+  title: "BIENVENIDAS Y BIENVENIDOS A LA COMUNIDAD VIVIR CRECIENDO",
+  subtitle: "Comunidad online +60 que crece, comparte y se acompaña",
   description:
-    "Vivir Creciendo es una comunidad online en español para personas +60 que crece, comparte y se acompaña. Conversamos, aprendemos y compartimos experiencias.",
+    "Conversamos, aprendemos y compartimos experiencias. Un espacio cálido donde tu voz importa y tu historia merece ser contada.",
   ctaPrimary: "CONOCE NUESTRAS MEMBRESÍAS",
   ctaSecondary: "Participa en una actividad gratis",
 };
@@ -112,6 +113,44 @@ export const memberships: Membership[] = [
 export const membershipsDisclaimer =
   "Todas las membresías incluyen suscripción mensual recurrente. Te notificamos por correo y WhatsApp 7 días antes de cada cobro y puedes cancelar cuando quieras.";
 
+export interface Course {
+  title: string;
+  description: string;
+  dates: string;
+  time: string;
+  instructor?: string;
+  format: string;
+  price?: string;
+}
+
+export const courses: Course[] = [
+  {
+    title: "Deseo, conexión y ternura: resignificando la sexualidad después de los 60",
+    description:
+      "Un taller para explorar y resignificar la sexualidad en esta etapa de la vida, con apertura y respeto.",
+    dates: "Miércoles 16, 23 y 30 de julio",
+    time: "10:00 AM (CDMX)",
+    format: "100% online vía Zoom",
+  },
+  {
+    title: "Tranquilidad Financiera para mayores de 60",
+    description:
+      "3 sesiones grupales para ordenar tus finanzas y vivir con más tranquilidad.",
+    dates: "11, 18 y 25 de junio",
+    time: "Horario por confirmar",
+    format: "Online",
+  },
+  {
+    title: "Activa tu Cerebro con Brain Gym\u00AE",
+    description:
+      "Ejercicios prácticos para mantener la mente activa y mejorar la coordinación, con la psicóloga Ivonne Hodara.",
+    dates: "Desde el miércoles 12 de marzo",
+    time: "Horarios ajustados por país",
+    instructor: "Psicóloga Ivonne Hodara",
+    format: "Online vía Zoom",
+  },
+];
+
 export const howItWorksSteps = [
   {
     number: 1,
@@ -143,25 +182,56 @@ export const teamMembers = [
       "Te voy a decir algo: yo viví 50 años engañada. A mis 55 viví una experiencia transformadora para mi cuerpo y mente.",
     image: null, // PLACEHOLDER: agregar foto
   },
+  {
+    name: "Ivonne Hodara",
+    role: "Psicóloga — Brain Gym\u00AE",
+    quote: null,
+    image: null, // PLACEHOLDER: agregar foto
+  },
   // PLACEHOLDER: más facilitadores
 ];
 
-export const freeActivities = [
+export interface Activity {
+  title: string;
+  date: string;
+  time: string;
+  description: string;
+  category: string;
+}
+
+export const upcomingActivities: Activity[] = [
   {
-    title: "Cine Reflexión",
-    date: "Próximamente", // PLACEHOLDER: fecha próxima
-    description: "Mira una película y conversa con la comunidad.",
+    title: "Bienestar Integral después de los 60",
+    date: "Miércoles 29 de abril",
+    time: "4:00 PM México / 7:00 PM Argentina",
+    description: "Nutrición y bienestar después de los 60. Únete al grupo de WhatsApp para recibir el link.",
+    category: "Nutrición y Bienestar",
   },
   {
-    title: "Caminando Juntos",
-    date: "Próximamente",
-    description: "Participa en una rueda de conversación abierta.",
+    title: "Caminando Juntos — Formando Comunidad",
+    date: "Miércoles 22 de abril",
+    time: "4:00 PM México / 7:00 PM Argentina / 6:00 PM Chile",
+    description: "Un espacio para conversar, escuchar y crear comunidad.",
+    category: "Caminando Juntos",
   },
   {
-    title: "Master Class del mes",
-    date: "Próximamente",
-    description: "Clase especial con un invitado experto.",
+    title: "El rol de las Grasas en el Envejecimiento Saludable",
+    date: "Miércoles 5 de noviembre",
+    time: "2:00 PM (CDMX)",
+    description: "Taller gratuito online vía Zoom. Cupos limitados.",
+    category: "Taller gratuito",
   },
+];
+
+export const pastActivities: Activity[] = [
+  {
+    title: "Master Class: Brain Gym\u00AE",
+    date: "Marzo 2026",
+    time: "",
+    description: "Ejercicios prácticos para activar el cerebro con la psicóloga Ivonne Hodara.",
+    category: "Taller",
+  },
+  // PLACEHOLDER: agregar más actividades pasadas
 ];
 
 export const testimonials = [
@@ -231,6 +301,14 @@ export const faqs = [
       "Sí, periódicamente invitamos a expertos y personalidades especiales. Los miembros reciben descuento exclusivo cuando hay invitados especiales. Los no-miembros pueden acceder pagando aparte.",
   },
 ];
+
+export const newsletterContent = {
+  title: "MANTENTE AL DÍA",
+  description:
+    "Recibe información periódica de nuestras actividades y contenidos.",
+  consent:
+    "Acepto recibir correos quincenales o mensuales e ingresar al grupo de WhatsApp.",
+};
 
 export const finalCta = {
   title: "¿LISTO PARA VIVIR CRECIENDO?",

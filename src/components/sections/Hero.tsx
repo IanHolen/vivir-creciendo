@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { heroContent } from "@/lib/content";
 
 export default function Hero() {
@@ -29,11 +30,15 @@ export default function Hero() {
             </a>
           </div>
         </div>
-        {/* Placeholder illustration */}
-        <div className="flex-shrink-0 w-72 h-72 md:w-96 md:h-96 bg-vc-blue/10 rounded-3xl flex items-center justify-center border-2 border-dashed border-vc-blue/20">
-          <span className="text-vc-blue/40 text-lg font-medium text-center px-4">
-            Ilustración / Foto de la comunidad
-          </span>
+        <div className="flex-shrink-0 w-72 h-72 md:w-96 md:h-96 relative rounded-3xl overflow-hidden shadow-xl">
+          <Image
+            src="/images/hero-community.jpg"
+            alt="Comunidad de adultos mayores compartiendo y aprendiendo juntos"
+            fill
+            className="object-cover"
+            priority
+            sizes="(max-width: 768px) 288px, 384px"
+          />
         </div>
       </div>
     </section>

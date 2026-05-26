@@ -40,16 +40,7 @@ export default function Blog() {
           ))}
         </div>
 
-        <div className="mt-10 text-center">
-          <a
-            href="https://vivircreciendo.com/blog/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center min-h-[56px] px-8 py-4 border-2 border-vc-blue text-vc-blue hover:bg-vc-blue hover:text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
-          >
-            VER TODOS LOS ARTÍCULOS
-          </a>
-        </div>
+        {/* Blog page coming soon — button removed until we have our own blog */}
       </div>
     </section>
   );

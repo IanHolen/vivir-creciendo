@@ -24,7 +24,7 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="bg-vc-cream py-24 md:py-32 px-4 sm:px-6 lg:px-8">
+    <section className="bg-white py-24 md:py-32 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto text-center">
         <h2 className="font-[var(--font-display)] text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
           {newsletterContent.title}

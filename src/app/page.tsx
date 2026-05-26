@@ -1,9 +1,10 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/sections/Hero";
-import Pillars from "@/components/sections/Pillars";
+import EmotionalQuestions from "@/components/sections/EmotionalQuestions";
+import Memberships from "@/components/sections/Memberships";
 import FreeActivities from "@/components/sections/FreeActivities";
 import Courses from "@/components/sections/Courses";
-import Memberships from "@/components/sections/Memberships";
+import Philosophy from "@/components/sections/Philosophy";
 import Team from "@/components/sections/Team";
 import Testimonials from "@/components/sections/Testimonials";
 import Blog from "@/components/sections/Blog";
@@ -19,10 +20,11 @@ export default function Home() {
       <Navbar />
       <main id="main-content">
         <Hero />
-        <Pillars />
+        <EmotionalQuestions />
+        <Memberships />
         <FreeActivities />
         <Courses />
-        <Memberships />
+        <Philosophy />
         <Team />
         <Testimonials />
         <Blog />

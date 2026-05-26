@@ -7,6 +7,7 @@ import Team from "@/components/sections/Team";
 import FreeActivities from "@/components/sections/FreeActivities";
 import Testimonials from "@/components/sections/Testimonials";
 import FAQ from "@/components/sections/FAQ";
+import Blog from "@/components/sections/Blog";
 import Newsletter from "@/components/sections/Newsletter";
 import FinalCTA from "@/components/sections/FinalCTA";
 import Footer from "@/components/Footer";
@@ -25,6 +26,7 @@ export default function Home() {
         <Team />
         <Testimonials />
         <FAQ />
+        <Blog />
         <Newsletter />
         <FinalCTA />
       </main>

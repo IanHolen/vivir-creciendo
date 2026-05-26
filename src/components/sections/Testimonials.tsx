@@ -11,9 +11,7 @@ export default function Testimonials() {
           {testimonials.map((t, i) => (
             <div
               key={t.name}
-              className={`bg-vc-cream rounded-2xl p-8 shadow-lg ${
-                i === 0 ? "rotate-1" : i === 2 ? "-rotate-1" : ""
-              }`}
+              className="bg-vc-cream rounded-2xl p-8 shadow-lg"
             >
               <blockquote className="text-vc-blue-dark text-lg leading-relaxed italic">
                 &ldquo;{t.quote}&rdquo;

@@ -272,6 +272,24 @@ export const faqs = [
   },
 ];
 
+export const blogPosts = [
+  {
+    title: "Escritos en Comunidad: Nuestros compañeros escriben",
+    excerpt: "Historias y reflexiones escritas por los miembros de nuestra comunidad.",
+    url: "https://vivircreciendo.com/blog/",
+  },
+  {
+    title: "Volver al cuerpo: Aprende a escuchar sus señales",
+    excerpt: "Cómo reconectar con tu cuerpo y entender lo que te dice.",
+    url: "https://vivircreciendo.com/blog/",
+  },
+  {
+    title: "Ubuntu: Yo soy porque nosotros somos",
+    excerpt: "La filosofía africana que inspira nuestra forma de hacer comunidad.",
+    url: "https://vivircreciendo.com/blog/",
+  },
+];
+
 export const newsletterContent = {
   title: "MANTENTE AL DÍA",
   description:

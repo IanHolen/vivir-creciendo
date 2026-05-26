@@ -61,7 +61,7 @@ export const membershipInfo = {
     "Cancela cuando quieras, sin permanencia mínima",
   ],
   price: "PLACEHOLDER: precio mensual",
-  cta: "QUIERO SER PARTE",
+  cta: "SUSCRIBIRME AHORA",
   disclaimer:
     "Suscripción mensual recurrente. Te notificamos 7 días antes de cada cobro y puedes cancelar cuando quieras.",
 };

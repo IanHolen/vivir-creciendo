@@ -1,13 +1,13 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/sections/Hero";
 import Pillars from "@/components/sections/Pillars";
-import Memberships from "@/components/sections/Memberships";
-import Courses from "@/components/sections/Courses";
-import Team from "@/components/sections/Team";
 import FreeActivities from "@/components/sections/FreeActivities";
+import Courses from "@/components/sections/Courses";
+import Memberships from "@/components/sections/Memberships";
+import Team from "@/components/sections/Team";
 import Testimonials from "@/components/sections/Testimonials";
-import FAQ from "@/components/sections/FAQ";
 import Blog from "@/components/sections/Blog";
+import FAQ from "@/components/sections/FAQ";
 import Newsletter from "@/components/sections/Newsletter";
 import FinalCTA from "@/components/sections/FinalCTA";
 import Footer from "@/components/Footer";
@@ -20,13 +20,13 @@ export default function Home() {
       <main id="main-content">
         <Hero />
         <Pillars />
-        <Memberships />
-        <Courses />
         <FreeActivities />
+        <Courses />
+        <Memberships />
         <Team />
         <Testimonials />
-        <FAQ />
         <Blog />
+        <FAQ />
         <Newsletter />
         <FinalCTA />
       </main>

@@ -51,19 +51,20 @@ export const pillars = [
 ];
 
 export const membershipInfo = {
-  title: "HAZTE MIEMBRO",
-  subtitle: "Únete a la comunidad y accede a beneficios exclusivos",
+  title: "ÚNETE A LA COMUNIDAD",
+  subtitle: "Una membresía, acceso a todo",
   description:
-    "Con tu membresía mensual accedes a descuentos en actividades, contenido exclusivo y una comunidad que te acompaña.",
+    "Con tu membresía mensual accedes a todos los programas, contenido exclusivo y una comunidad que te acompaña.",
   benefits: [
-    "Descuentos en cursos y talleres",
-    "Acceso a actividades exclusivas para miembros",
-    "Grupo de WhatsApp de la comunidad",
-    "Contenido y material complementario",
-    "Prioridad en eventos con invitados especiales",
+    "Acceso a todos los programas: Cine y Reflexión, Caminando Juntos, Salud y Bienestar",
+    "Encuentros grupales mensuales por Zoom",
+    "Grupo exclusivo de WhatsApp de la comunidad",
+    "Grabaciones de clases y Master Class",
+    "Descuento en invitados especiales y cursos",
+    "Cancela cuando quieras, sin permanencia mínima",
   ],
   price: "PLACEHOLDER: precio mensual",
-  cta: "QUIERO SER MIEMBRO",
+  cta: "QUIERO SER PARTE",
   disclaimer:
     "Suscripción mensual recurrente. Te notificamos 7 días antes de cada cobro y puedes cancelar cuando quieras.",
 };
@@ -98,6 +99,7 @@ export const programs: Program[] = [
     freeForAll: true,
   },
 ];
+
 
 export interface Course {
   title: string;

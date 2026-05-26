@@ -11,12 +11,9 @@ export const siteConfig = {
 };
 
 export const navLinks = [
-  { label: "Inicio", href: "#" },
-  { label: "Quiénes Somos", href: "#quienes" },
-  { label: "Membresías", href: "#membresias" },
+  { label: "Membresía", href: "#membresias" },
   { label: "Cursos y Talleres", href: "#cursos" },
   { label: "Actividades", href: "#actividades" },
-  { label: "Blog", href: "#" },
   { label: "Contacto", href: "#contacto" },
 ];
 

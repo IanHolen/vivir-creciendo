@@ -2,7 +2,7 @@ import { heroContent } from "@/lib/content";
 
 export default function Hero() {
   return (
-    <section className="bg-vc-cream noise-overlay py-20 md:py-28 px-4 sm:px-6 lg:px-8">
+    <section className="bg-vc-cream noise-overlay py-24 md:py-32 px-4 sm:px-6 lg:px-8">
       <div className="relative z-10 max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
         <div className="flex-1 text-center lg:text-left">
           <h1 className="font-[var(--font-display)] text-5xl md:text-6xl lg:text-7xl font-black text-vc-blue-dark uppercase tracking-tight">

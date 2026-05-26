@@ -2,7 +2,7 @@ import { testimonials } from "@/lib/content";
 
 export default function Testimonials() {
   return (
-    <section className="bg-vc-blue noise-overlay py-20 md:py-28 px-4 sm:px-6 lg:px-8">
+    <section className="bg-vc-blue noise-overlay py-24 md:py-32 px-4 sm:px-6 lg:px-8">
       <div className="relative z-10 max-w-7xl mx-auto">
         <h2 className="font-[var(--font-display)] text-3xl md:text-4xl lg:text-5xl font-black text-white text-center uppercase tracking-tight">
           LO QUE DICEN NUESTROS MIEMBROS

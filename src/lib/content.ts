@@ -266,11 +266,6 @@ export const faqs = [
       "No te preocupes. Te guiamos paso a paso. Solo necesitas un celular o computadora con internet. Te enviamos instrucciones claras por WhatsApp y correo, y siempre hay alguien disponible para ayudarte.",
   },
   {
-    question: "¿Qué pasa si me pierdo un encuentro?",
-    answer:
-      "Entendemos que la vida tiene imprevistos. Dependiendo del plan, algunas sesiones quedan grabadas para que las veas cuando puedas. Además, siempre puedes ponerte al día en el grupo de WhatsApp.",
-  },
-  {
     question: "¿Cómo puedo cancelar mi membresía?",
     answer:
       "Puedes cancelar en cualquier momento escribiéndonos por WhatsApp o correo electrónico. No hay permanencia mínima ni penalizaciones. Tu suscripción se mantiene activa hasta el final del período pagado.",
@@ -279,16 +274,6 @@ export const faqs = [
     question: "¿Cuáles son los métodos de pago disponibles?",
     answer:
       "Aceptamos tarjetas de crédito y débito internacionales. Próximamente habilitaremos pagos por Mercado Pago para mayor comodidad en Latinoamérica.",
-  },
-  {
-    question: "¿Hay devoluciones?",
-    answer:
-      "Si no estás satisfecho con tu primer mes, contáctanos dentro de los primeros 7 días y te devolvemos el 100% de tu pago. Sin preguntas.",
-  },
-  {
-    question: "¿Puedo cambiar de plan?",
-    answer:
-      "Sí, puedes cambiar de plan en cualquier momento. El cambio se aplica en tu próximo ciclo de facturación. Escríbenos por WhatsApp y te ayudamos.",
   },
   {
     question: "¿Las clases quedan grabadas?",

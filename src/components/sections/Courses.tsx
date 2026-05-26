@@ -49,10 +49,10 @@ export default function Courses() {
                 )}
               </div>
               <a
-                href="#contacto"
+                href={`/talleres/${course.slug}`}
                 className="mt-6 w-full inline-flex items-center justify-center min-h-[56px] px-6 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
               >
-                QUIERO INSCRIBIRME
+                CONOCER MÁS
               </a>
             </div>
           ))}

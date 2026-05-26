@@ -210,41 +210,64 @@ export const philosophy = {
 };
 
 export interface Course {
+  slug: string;
   title: string;
   description: string;
+  longDescription: string;
   dates: string;
   time: string;
-  instructor?: string;
+  instructor: string;
+  instructorBio: string;
   format: string;
-  price?: string;
+  price: string;
 }
 
 export const courses: Course[] = [
   {
+    slug: "sexualidad-60",
     title:
       "Deseo, conexión y ternura: resignificando la sexualidad después de los 60",
     description:
       "Un taller para explorar y resignificar la sexualidad en esta etapa de la vida, con apertura y respeto.",
+    longDescription:
+      "Un espacio seguro y respetuoso para hablar de lo que muchas veces se calla: el deseo, la intimidad y los vínculos después de los 60. En 3 sesiones exploraremos cómo resignificar la sexualidad en esta etapa, con apertura, sin tabúes y con mucho cariño. No importa si estás en pareja o no — este taller es para ti.",
     dates: "Miércoles 16, 23 y 30 de julio",
     time: "10:00 AM (CDMX)",
+    instructor: "Abigail Sosa Mendoza",
+    instructorBio:
+      "Psicóloga clínica, especialista en sexualidad y vínculos 60+.",
     format: "100% online vía Zoom",
+    price: "PLACEHOLDER USD (3 sesiones)",
   },
   {
+    slug: "finanzas-60",
     title: "Tranquilidad Financiera para mayores de 60",
     description:
       "3 sesiones grupales para ordenar tus finanzas y vivir con más tranquilidad.",
+    longDescription:
+      "¿Te preocupa el dinero pero no sabes por dónde empezar? En 3 sesiones prácticas, Diego Socolovsky te acompaña a ordenar tus finanzas sin tecnicismos. Aprenderás a hacer un diagnóstico simple de tu situación, a armar un plan realista y a tomar decisiones con más tranquilidad. No necesitas saber de economía — solo ganas de vivir con menos estrés financiero.",
     dates: "11, 18 y 25 de junio",
     time: "Horario por confirmar",
-    format: "Online",
+    instructor: "Diego Socolovsky",
+    instructorBio:
+      "Economista y Coach Financiero. Especialista en finanzas personales para adultos mayores.",
+    format: "Online vía Zoom",
+    price: "PLACEHOLDER USD (3 sesiones)",
   },
   {
+    slug: "brain-gym",
     title: "Activa tu Cerebro con Brain Gym\u00AE",
     description:
       "Ejercicios prácticos para mantener la mente activa y mejorar la coordinación, con la psicóloga Ivonne Hodara.",
+    longDescription:
+      "Brain Gym® es un programa de ejercicios simples y divertidos diseñados para activar el cerebro y mejorar la coordinación entre cuerpo y mente. Con la guía de la psicóloga Ivonne Hodara, aprenderás técnicas que puedes practicar en casa para mantener la mente ágil, mejorar la memoria y la concentración. No se necesita experiencia previa ni equipo especial.",
     dates: "Desde el miércoles 12 de marzo",
     time: "Horarios ajustados por país",
     instructor: "Psicóloga Ivonne Hodara",
+    instructorBio:
+      "Psicóloga, Instructora certificada de Brain Gym®. Especialista en estimulación cognitiva para adultos mayores.",
     format: "Online vía Zoom",
+    price: "PLACEHOLDER USD",
   },
 ];
 

@@ -54,21 +54,26 @@ export const pillars = [
 ];
 
 export interface Membership {
+  slug: string;
   icon: "Film" | "MessageCircle" | "Sparkles";
   title: string;
   tagline: string;
   description: string;
+  longDescription: string;
   includes: string[];
   facilitator: string;
+  facilitatorBio: string;
   closingQuote: string;
   price: string;
   accent: string;
   accentBg: string;
   badge?: string;
+  faqs: { question: string; answer: string }[];
 }
 
 export const memberships: Membership[] = [
   {
+    slug: "cine",
     icon: "Film",
     title: "CINE REFLEXIÓN",
     accent: "text-vc-blue",
@@ -76,6 +81,8 @@ export const memberships: Membership[] = [
     tagline: "Una película al mes. Una conversación que te transforma.",
     description:
       "Cada mes seleccionamos una película que toca temas profundamente humanos. La ves a tu ritmo, y luego nos reunimos por Zoom para conversar.",
+    longDescription:
+      "Cine Reflexión es mucho más que ver una película. Cada mes seleccionamos cuidadosamente una película que toca temas profundamente humanos — el paso del tiempo, los vínculos, la reinvención. La ves a tu ritmo desde casa, y luego nos reunimos por Zoom para una conversación guiada donde compartimos lo que sentimos, pensamos y recordamos. No necesitas saber de cine: lo que importa es tu mirada.",
     includes: [
       "Película mensual seleccionada",
       "Encuentro mensual por Zoom guiado",
@@ -83,10 +90,30 @@ export const memberships: Membership[] = [
       "Acceso a grabaciones por tiempo limitado",
     ],
     facilitator: "Nurit Mileris",
+    facilitatorBio:
+      "Psicoterapeuta con más de 30 años de experiencia. Cofundadora de Vivir Creciendo.",
     closingQuote: "Comunidad, humor y emoción.",
     price: "PLACEHOLDER USD/mes",
+    faqs: [
+      {
+        question: "¿Qué tipo de películas seleccionan?",
+        answer:
+          "Películas de distintos géneros y países que tocan temas universales: vínculos, memoria, reinvención, humor. No son películas difíciles ni de autor exclusivamente.",
+      },
+      {
+        question: "¿Necesito tener algún servicio de streaming?",
+        answer:
+          "No. Te compartimos un enlace para ver la película del mes. Solo necesitas internet.",
+      },
+      {
+        question: "¿Puedo ver la película con alguien más?",
+        answer:
+          "¡Por supuesto! Muchos miembros la ven con su pareja o amigos. Lo importante es llegar al encuentro con tu propia reflexión.",
+      },
+    ],
   },
   {
+    slug: "caminando",
     icon: "MessageCircle",
     title: "CAMINANDO JUNTOS",
     badge: "Más elegida",
@@ -96,6 +123,8 @@ export const memberships: Membership[] = [
       "Una Rueda de Trabajo Comunitario. Un espacio donde cada voz importa.",
     description:
       "Basada en la metodología del Dr. Adalberto Barreto. Cada mes nos reunimos a poner palabras a lo que estamos viviendo.",
+    longDescription:
+      "Caminando Juntos es nuestra Rueda de Trabajo Comunitario, inspirada en la Terapia Comunitaria Integrativa del Dr. Adalberto Barreto. En cada encuentro mensual por Zoom, compartimos lo que estamos viviendo en un espacio seguro, guiado y sin juicios. No es terapia individual: es la fuerza del grupo la que sostiene. Cada participante aporta su experiencia y se lleva la riqueza de las demás.",
     includes: [
       "Encuentros grupales mensuales por Zoom",
       "Espacio terapéutico-educativo guiado por Nurit Mileris",
@@ -103,10 +132,30 @@ export const memberships: Membership[] = [
       "Material complementario",
     ],
     facilitator: "Nurit Mileris",
+    facilitatorBio:
+      "Psicoterapeuta con más de 30 años de experiencia. Cofundadora de Vivir Creciendo. Formada en Terapia Comunitaria Integrativa.",
     closingQuote: "Ninguna de nuestras historias se escribe en soledad.",
     price: "PLACEHOLDER USD/mes",
+    faqs: [
+      {
+        question: "¿Qué es una Rueda de Trabajo Comunitario?",
+        answer:
+          "Es una metodología grupal creada por el Dr. Adalberto Barreto en Brasil. Se basa en compartir experiencias en un espacio seguro, donde la sabiduría del grupo es el recurso principal.",
+      },
+      {
+        question: "¿Tengo que hablar en cada encuentro?",
+        answer:
+          "No. Puedes participar escuchando. La invitación es a compartir cuando te sientas cómodo/a. No hay presión.",
+      },
+      {
+        question: "¿Esto reemplaza la terapia?",
+        answer:
+          "No. Caminando Juntos es un espacio comunitario, no terapia individual. Es complementario y muchos miembros lo combinan con su proceso personal.",
+      },
+    ],
   },
   {
+    slug: "bienestar",
     icon: "Sparkles",
     title: "SALUD Y BIENESTAR",
     accent: "text-vc-blue-dark",
@@ -115,6 +164,8 @@ export const memberships: Membership[] = [
       "Recupera energía, claridad y alegría. Sin dietas. Sin culpa.",
     description:
       "Cada mes Alejandra Furman-Paz comparte una clase práctica sobre cómo cuidar tu cuerpo, mente y emociones.",
+    longDescription:
+      "Salud y Bienestar es un programa mensual con Alejandra Furman-Paz, Coach de Bienestar y Nutrición Integrativa. Cada clase aborda un tema práctico: desde cómo mejorar tu energía y sueño, hasta cómo alimentarte con placer y sin culpa. No es un programa de dietas ni recetas milagro — es aprender a escuchar tu cuerpo y hacer cambios sostenibles que funcionen para ti.",
     includes: [
       "Clase mensual en vivo con Alejandra",
       "Sesión de preguntas y respuestas",
@@ -122,9 +173,28 @@ export const memberships: Membership[] = [
       "Grupo de WhatsApp exclusivo",
     ],
     facilitator: "Alejandra Furman-Paz",
+    facilitatorBio:
+      "Coach de Bienestar y Nutrición Integrativa. Cofundadora de Vivir Creciendo. Transformó su propia vida a los 55 años.",
     closingQuote:
       "Yo viví 50 años engañada. A mis 55 viví una experiencia transformadora.",
     price: "PLACEHOLDER USD/mes",
+    faqs: [
+      {
+        question: "¿Necesito seguir una dieta?",
+        answer:
+          "No. Este programa no es de dietas. Es sobre aprender a escuchar tu cuerpo, entender qué necesita y hacer cambios graduales que puedas sostener.",
+      },
+      {
+        question: "¿Las clases quedan grabadas?",
+        answer:
+          "Sí. Las clases de Salud y Bienestar quedan grabadas por tiempo limitado para que puedas verlas a tu ritmo.",
+      },
+      {
+        question: "¿Puedo hacer preguntas durante la clase?",
+        answer:
+          "¡Sí! Cada clase incluye un espacio de preguntas y respuestas donde Alejandra responde personalmente.",
+      },
+    ],
   },
 ];
 

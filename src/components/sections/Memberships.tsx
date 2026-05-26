@@ -79,10 +79,10 @@ export default function Memberships() {
                     {plan.price}
                   </p>
                   <a
-                    href="#contacto"
+                    href={`/membresias/${plan.slug}`}
                     className="w-full inline-flex items-center justify-center min-h-[48px] px-6 py-3 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-base rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
                   >
-                    SUSCRIBIRME
+                    CONOCER MÁS
                   </a>
                 </div>
               </div>

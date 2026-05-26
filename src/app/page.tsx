@@ -3,7 +3,6 @@ import Hero from "@/components/sections/Hero";
 import Pillars from "@/components/sections/Pillars";
 import Memberships from "@/components/sections/Memberships";
 import Courses from "@/components/sections/Courses";
-
 import Team from "@/components/sections/Team";
 import FreeActivities from "@/components/sections/FreeActivities";
 import Testimonials from "@/components/sections/Testimonials";
@@ -22,8 +21,8 @@ export default function Home() {
         <Pillars />
         <Memberships />
         <Courses />
-        <Team />
         <FreeActivities />
+        <Team />
         <Testimonials />
         <FAQ />
         <Newsletter />

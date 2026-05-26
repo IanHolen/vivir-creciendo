@@ -50,68 +50,54 @@ export const pillars = [
   },
 ];
 
-export interface Membership {
+export const membershipInfo = {
+  title: "HAZTE MIEMBRO",
+  subtitle: "Únete a la comunidad y accede a beneficios exclusivos",
+  description:
+    "Con tu membresía mensual accedes a descuentos en actividades, contenido exclusivo y una comunidad que te acompaña.",
+  benefits: [
+    "Descuentos en cursos y talleres",
+    "Acceso a actividades exclusivas para miembros",
+    "Grupo de WhatsApp de la comunidad",
+    "Contenido y material complementario",
+    "Prioridad en eventos con invitados especiales",
+  ],
+  price: "PLACEHOLDER: precio mensual",
+  cta: "QUIERO SER MIEMBRO",
+  disclaimer:
+    "Suscripción mensual recurrente. Te notificamos 7 días antes de cada cobro y puedes cancelar cuando quieras.",
+};
+
+export interface Program {
   icon: "Film" | "MessageCircle" | "Sparkles";
   title: string;
-  accent: string;
-  accentBg: string;
   description: string;
-  includes: string[];
-  price: string;
-  badge?: string;
+  freeForAll: boolean;
 }
 
-export const memberships: Membership[] = [
+export const programs: Program[] = [
   {
     icon: "Film",
     title: "Cine y Reflexión",
-    accent: "text-vc-blue",
-    accentBg: "bg-vc-blue",
     description:
-      "Recibe cada mes una película seleccionada y únete al foro de conversación donde compartimos lo que sentimos, pensamos y recordamos.",
-    includes: [
-      "Película mensual seleccionada",
-      "Encuentro mensual por Zoom",
-      "Foro de discusión en comunidad",
-      "Acceso al grupo de WhatsApp del plan",
-    ],
-    price: "PLACEHOLDER: precio mensual",
+      "Cada mes una película seleccionada y un foro de conversación donde compartimos lo que sentimos, pensamos y recordamos.",
+    freeForAll: true,
   },
   {
     icon: "MessageCircle",
     title: "Caminando Juntos",
-    accent: "text-vc-orange",
-    accentBg: "bg-vc-orange",
-    badge: "Más elegida",
     description:
-      "Una Rueda de Trabajo Comunitario basada en la metodología del Dr. Adalberto Barreto. Un espacio para conversar, escuchar y crear comunidad.",
-    includes: [
-      "Encuentros grupales mensuales por Zoom",
-      "Espacio terapéutico-educativo guiado",
-      "Acceso al grupo de WhatsApp del plan",
-      "Conexión con la comunidad",
-    ],
-    price: "PLACEHOLDER: precio mensual",
+      "Rueda de Trabajo Comunitario basada en la metodología del Dr. Adalberto Barreto. Un espacio para conversar, escuchar y crear comunidad.",
+    freeForAll: true,
   },
   {
     icon: "Sparkles",
     title: "Salud y Bienestar",
-    accent: "text-vc-blue-dark",
-    accentBg: "bg-vc-blue-dark",
     description:
-      "Clases mensuales con Alejandra Furman-Paz, Coach de Bienestar y Nutrición Integrativa. Aprende hábitos que funcionan para ti, sin dietas extremas.",
-    includes: [
-      "Clase mensual con Alejandra",
-      "Sesión de preguntas y respuestas",
-      "Material complementario",
-      "Acceso al grupo de WhatsApp del plan",
-    ],
-    price: "PLACEHOLDER: precio mensual",
+      "Clases con Alejandra Furman-Paz, Coach de Bienestar y Nutrición Integrativa. Hábitos que funcionan para ti, sin dietas extremas.",
+    freeForAll: true,
   },
 ];
-
-export const membershipsDisclaimer =
-  "Todas las membresías incluyen suscripción mensual recurrente. Te notificamos por correo y WhatsApp 7 días antes de cada cobro y puedes cancelar cuando quieras.";
 
 export interface Course {
   title: string;
@@ -263,12 +249,12 @@ export const faqs = [
   {
     question: "¿Necesito saber usar tecnología para participar?",
     answer:
-      "No te preocupes. Te guiamos paso a paso. Solo necesitas un celular o computadora con internet. Te enviamos instrucciones claras por WhatsApp y correo, y siempre hay alguien disponible para ayudarte.",
+      "No te preocupes. Te guiamos paso a paso. Solo necesitas un celular o computadora con internet. Te enviamos instrucciones claras por WhatsApp y correo.",
   },
   {
     question: "¿Cómo puedo cancelar mi membresía?",
     answer:
-      "Puedes cancelar en cualquier momento escribiéndonos por WhatsApp o correo electrónico. No hay permanencia mínima ni penalizaciones. Tu suscripción se mantiene activa hasta el final del período pagado.",
+      "Puedes cancelar en cualquier momento escribiéndonos por WhatsApp o correo electrónico. No hay permanencia mínima ni penalizaciones.",
   },
   {
     question: "¿Cuáles son los métodos de pago disponibles?",
@@ -278,12 +264,12 @@ export const faqs = [
   {
     question: "¿Las clases quedan grabadas?",
     answer:
-      "Depende del plan. Las Master Class y clases de Salud y Bienestar quedan grabadas. Las ruedas de Caminando Juntos son en vivo para mantener la intimidad del espacio.",
+      "Las Master Class y clases de Salud y Bienestar quedan grabadas. Las ruedas de Caminando Juntos son en vivo para mantener la intimidad del espacio.",
   },
   {
-    question: "¿Tienen invitados especiales? ¿Cómo accedo a ellos?",
+    question: "¿Tienen invitados especiales?",
     answer:
-      "Sí, periódicamente invitamos a expertos y personalidades especiales. Los miembros reciben descuento exclusivo cuando hay invitados especiales. Los no-miembros pueden acceder pagando aparte.",
+      "Sí, periódicamente invitamos a expertos. Los miembros reciben descuento exclusivo. Los no-miembros pueden acceder pagando aparte.",
   },
 ];
 

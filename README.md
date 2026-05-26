@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vivir Creciendo — Landing Page
 
-## Getting Started
+Comunidad online en español para personas +60.
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router)
+- **React 19** + **TypeScript**
+- **Tailwind CSS v4**
+- **shadcn/ui** (base-ui)
+- **lucide-react** (iconos)
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Editar contenido
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Todo el contenido (textos, membresías, FAQs, testimonios) está centralizado en:
 
-## Learn More
+```
+src/lib/content.ts
+```
 
-To learn more about Next.js, take a look at the following resources:
+Edita ese archivo para cambiar textos sin tocar componentes.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Fuentes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Actualmente usa fallbacks de Google Fonts:
+- **Titles:** Archivo Black
+- **Subtitles:** Mada (italic)
+- **Body:** Work Sans
 
-## Deploy on Vercel
+Si se obtiene licencia de **Mr Eaves XL San Nar**, actualizar las variables de fuente en `src/app/layout.tsx`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Placeholders pendientes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [ ] Precios de las 3 membresías
+- [ ] Testimonios reales
+- [ ] Fotos del equipo / facilitadores
+- [ ] Número de WhatsApp
+- [ ] Fechas de actividades gratuitas
+- [ ] Más facilitadores del equipo
+- [ ] Ilustración / foto del Hero
+
+## Arquitectura
+
+```
+src/
+  app/
+    page.tsx          # Landing (11 secciones)
+    layout.tsx        # Fuentes, metadata, skip-link
+    globals.css       # Design system, colores VC
+  components/
+    Navbar.tsx
+    Footer.tsx
+    Logo.tsx
+    WhatsAppFloat.tsx
+    TextSizeToggle.tsx
+    sections/
+      Hero.tsx
+      Pillars.tsx
+      Memberships.tsx
+      HowItWorks.tsx
+      Team.tsx
+      FreeActivities.tsx
+      Testimonials.tsx
+      FAQ.tsx
+      FinalCTA.tsx
+    ui/               # shadcn components
+  lib/
+    content.ts        # TODA la copy centralizada
+public/
+  textures/noise.svg  # Overlay de textura
+```
+
+## Deploy
+
+```bash
+npm run build    # Production build
+npm run start    # Serve production
+```
+
+Target: Vercel.

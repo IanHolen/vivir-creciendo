@@ -6,7 +6,13 @@ export const metadata = {
   title: "Iniciar sesión — Vivir Creciendo",
 };
 
-export default function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
+
   return (
     <main className="min-h-screen bg-vc-cream noise-overlay flex items-center justify-center px-4 py-16">
       <div className="relative z-10 w-full max-w-md">
@@ -26,6 +32,15 @@ export default function LoginPage() {
           <p className="mt-3 text-center text-lg text-vc-blue-dark/70 leading-relaxed">
             Bienvenido de vuelta a tu comunidad.
           </p>
+
+          {error && (
+            <p
+              role="alert"
+              className="mt-6 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-base text-red-700 text-center"
+            >
+              {error}
+            </p>
+          )}
 
           <form action={login} className="mt-8 space-y-6">
             <div>

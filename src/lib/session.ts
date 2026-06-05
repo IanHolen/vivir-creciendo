@@ -1,19 +1,12 @@
-import { cookies } from "next/headers";
+import { createClient } from "@/lib/supabase/server";
 
 /**
  * Estado de sesión para la landing (vista logueada vs deslogueada).
  *
- * CONTRATO con back (tarea d7c06460):
- *   - Logueado = existe la cookie `vc_session`.
+ * CONTRATO con back (f661857c): auth real = Supabase Auth.
+ *   - Logueado = supabase.auth.getUser() devuelve un usuario.
  *   - Override de preview/QA: ?vista=logueado | ?vista=deslogueado.
- *
- * PLACEHOLDER: cuando back conecte la auth real (p. ej. Supabase Auth),
- * reemplazar el cuerpo de getIsLoggedIn() por la validación del token de
- * sesión, manteniendo la misma firma para no tocar las secciones.
  */
-export const SESSION_COOKIE = "vc_session";
-/** Nombre para mostrar ("Hola, X"). Stub: lo setea el login; back lo tomará del usuario real. */
-export const NAME_COOKIE = "vc_name";
 
 export async function getIsLoggedIn(searchParams?: {
   vista?: string;
@@ -22,19 +15,32 @@ export async function getIsLoggedIn(searchParams?: {
   if (vista === "logueado") return true;
   if (vista === "deslogueado") return false;
 
-  const store = await cookies();
-  return store.has(SESSION_COOKIE);
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user != null;
 }
 
 /**
- * Estado de sesión + nombre para mostrar. Misma firma estable: cuando back
- * conecte Supabase Auth, devolverá el usuario real sin tocar los consumidores.
+ * Estado de sesión + nombre para mostrar ("Hola, X"). Misma firma estable.
  */
 export async function getSessionUser(searchParams?: {
   vista?: string;
 }): Promise<{ isLoggedIn: boolean; name: string | null }> {
-  const isLoggedIn = await getIsLoggedIn(searchParams);
+  const vista = searchParams?.vista;
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const isLoggedIn =
+    vista === "logueado" ? true : vista === "deslogueado" ? false : user != null;
   if (!isLoggedIn) return { isLoggedIn: false, name: null };
-  const store = await cookies();
-  return { isLoggedIn, name: store.get(NAME_COOKIE)?.value ?? null };
+
+  const name =
+    (user?.user_metadata?.name as string | undefined) ??
+    user?.email?.split("@")[0] ??
+    null;
+  return { isLoggedIn, name };
 }

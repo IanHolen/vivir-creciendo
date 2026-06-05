@@ -8,6 +8,7 @@ import FinalCTA from "@/components/sections/FinalCTA";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import { getSessionUser } from "@/lib/session";
+import { getActivities } from "@/lib/activities";
 
 export default async function Home({
   searchParams,
@@ -15,7 +16,10 @@ export default async function Home({
   searchParams: Promise<{ vista?: string }>;
 }) {
   const sp = await searchParams;
-  const { isLoggedIn, name } = await getSessionUser(sp);
+  const [{ isLoggedIn, name }, activities] = await Promise.all([
+    getSessionUser(sp),
+    getActivities(),
+  ]);
 
   return (
     <>
@@ -29,7 +33,7 @@ export default async function Home({
         {/* 2 — Nosotros (Ale + Nurit) */}
         <Nosotros />
         {/* 3 — Actividades (chill, no comercial) */}
-        <FreeActivities isLoggedIn={isLoggedIn} />
+        <FreeActivities activities={activities} isLoggedIn={isLoggedIn} />
         {/* 4 — Membresías */}
         <Memberships isLoggedIn={isLoggedIn} />
         {/* Cierre — contacto / newsletter */}

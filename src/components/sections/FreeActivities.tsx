@@ -1,9 +1,11 @@
 import { Sparkles, Lock, LogIn } from "lucide-react";
-import { fullActivities } from "@/lib/content";
+import type { Activity } from "@/lib/activities";
 
 export default function FreeActivities({
+  activities,
   isLoggedIn = false,
 }: {
+  activities: Activity[];
   isLoggedIn?: boolean;
 }) {
   return (
@@ -18,43 +20,46 @@ export default function FreeActivities({
           </h2>
           <p className="mt-4 text-xl text-vc-blue-dark/70 leading-relaxed">
             {isLoggedIn
-              ? "Estas son las cinco actividades de nuestra comunidad. Encuentra tu lugar en cada encuentro."
-              : "Más que actividades online, construimos comunidad. Estas son nuestras cinco actividades — inicia sesión para ver todo el detalle."}
+              ? "Estas son las actividades de nuestra comunidad. Encuentra tu lugar en cada encuentro."
+              : "Más que actividades online, construimos comunidad. Mira un adelanto — inicia sesión para ver todo el detalle."}
           </p>
         </div>
 
-        {/* Las 5 actividades del programa. Gateadas por sesión:
-            deslogueado = title + adelanto corto; logueado = descripción completa. */}
-        <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {fullActivities.map((activity) => (
-            <div
-              key={activity.title}
-              className="bg-vc-cream/40 rounded-2xl p-8 flex flex-col border border-vc-cream"
-            >
-              <div className="flex items-center gap-2 text-vc-orange text-sm font-medium">
-                <Sparkles className="w-4 h-4" aria-hidden="true" />
-                <span>{activity.cadence}</span>
-              </div>
-              <h3 className="mt-3 font-semibold text-2xl text-vc-blue-dark leading-snug">
-                {activity.title}
-              </h3>
-              <p className="mt-1 text-vc-blue text-base">
-                Con {activity.facilitator}
-              </p>
-              <p className="mt-3 text-lg text-vc-blue-dark/80 leading-relaxed flex-grow">
-                {isLoggedIn ? activity.description : activity.preview}
-              </p>
-              {!isLoggedIn && (
-                <p className="mt-4 flex items-center gap-2 text-base text-vc-blue-dark/60">
-                  <Lock className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-                  Detalle completo al iniciar sesión
+        {activities.length === 0 ? (
+          <p className="mt-12 text-center text-lg text-vc-blue-dark/60">
+            Pronto publicaremos nuestras próximas actividades.
+          </p>
+        ) : (
+          <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {activities.map((activity) => (
+              <div
+                key={activity.id}
+                className="bg-vc-cream/40 rounded-2xl p-8 flex flex-col border border-vc-cream"
+              >
+                {activity.week != null && (
+                  <div className="flex items-center gap-2 text-vc-orange text-sm font-medium">
+                    <Sparkles className="w-4 h-4" aria-hidden="true" />
+                    <span>Semana {activity.week}</span>
+                  </div>
+                )}
+                <h3 className="mt-3 font-semibold text-2xl text-vc-blue-dark leading-snug">
+                  {activity.title}
+                </h3>
+                <p className="mt-3 text-lg text-vc-blue-dark/80 leading-relaxed flex-grow">
+                  {activity.full_description ?? activity.short_preview}
                 </p>
-              )}
-            </div>
-          ))}
-        </div>
+                {!activity.full_description && (
+                  <p className="mt-4 flex items-center gap-2 text-base text-vc-blue-dark/60">
+                    <Lock className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                    Detalle completo al iniciar sesión
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
 
-        {!isLoggedIn && (
+        {!isLoggedIn && activities.length > 0 && (
           <div className="mt-12 text-center">
             <p className="text-lg text-vc-blue-dark/70">
               Inicia sesión para ver el detalle completo de cada actividad.

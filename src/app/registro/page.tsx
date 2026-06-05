@@ -13,33 +13,9 @@ export const metadata = {
 export default async function RegistroPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; enviado?: string }>;
+  searchParams: Promise<{ error?: string }>;
 }) {
-  const { error, enviado } = await searchParams;
-
-  if (enviado) {
-    return (
-      <AuthShell
-        title="Revisa tu correo"
-        notice="Te enviamos un correo para confirmar tu cuenta. Ábrelo y haz clic en el enlace para terminar tu registro."
-        footer={
-          <p>
-            ¿Ya confirmaste?{" "}
-            <Link
-              href="/login"
-              className="font-semibold text-vc-orange hover:underline"
-            >
-              Inicia sesión
-            </Link>
-          </p>
-        }
-      >
-        <p className="mt-6 text-center text-base text-vc-blue-dark/70">
-          Si no lo ves, revisa la carpeta de correo no deseado (spam).
-        </p>
-      </AuthShell>
-    );
-  }
+  const { error } = await searchParams;
 
   return (
     <AuthShell
@@ -98,9 +74,9 @@ export default async function RegistroPage({
             name="password"
             type="password"
             required
-            minLength={6}
+            minLength={8}
             autoComplete="new-password"
-            placeholder="Al menos 6 caracteres"
+            placeholder="Al menos 8 caracteres"
             className={authInputClass}
           />
         </div>

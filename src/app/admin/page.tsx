@@ -6,6 +6,7 @@ import {
   updateActivity,
   deleteActivity,
   setAdmin,
+  adminResetPassword,
 } from "@/lib/admin-actions";
 
 export const metadata = {
@@ -94,9 +95,9 @@ function Fields({ a }: { a?: AdminActivity }) {
 export default async function AdminPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; ok?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, ok } = await searchParams;
   const supabase = await createClient();
 
   const {
@@ -167,6 +168,14 @@ export default async function AdminPage({
             className="mt-6 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-base text-red-700"
           >
             No se pudo guardar: {error}
+          </p>
+        )}
+        {ok && (
+          <p
+            role="status"
+            className="mt-6 rounded-xl bg-green-50 border border-green-200 px-4 py-3 text-base text-green-800"
+          >
+            {ok}
           </p>
         )}
 
@@ -287,6 +296,48 @@ export default async function AdminPage({
               </button>
             </form>
           </div>
+        </div>
+
+        {/* Restablecer contraseña de un usuario (recuperación asistida) */}
+        <div className="mt-12">
+          <h2 className="font-[var(--font-display)] text-2xl font-black text-vc-blue-dark uppercase tracking-tight">
+            Restablecer contraseña
+          </h2>
+          <p className="mt-2 text-base text-vc-blue-dark/70">
+            Si alguien no puede entrar, fíjale una contraseña nueva y pásasela.
+          </p>
+          <form
+            action={adminResetPassword}
+            className="mt-4 bg-white rounded-2xl shadow-sm p-6 md:p-8 border border-vc-cream grid grid-cols-1 sm:grid-cols-2 gap-4 sm:items-end"
+          >
+            <label className={labelClass}>
+              Correo del usuario
+              <input
+                name="target_email"
+                type="email"
+                required
+                placeholder="correo@ejemplo.com"
+                className={inputClass}
+              />
+            </label>
+            <label className={labelClass}>
+              Contraseña nueva
+              <input
+                name="new_password"
+                type="text"
+                required
+                minLength={8}
+                placeholder="Al menos 8 caracteres"
+                className={inputClass}
+              />
+            </label>
+            <button
+              type="submit"
+              className="sm:col-span-2 inline-flex items-center justify-center min-h-[52px] px-6 py-3 bg-vc-blue hover:bg-vc-blue-dark text-white font-semibold text-lg rounded-xl"
+            >
+              Restablecer contraseña
+            </button>
+          </form>
         </div>
       </div>
     </main>

@@ -1,49 +1,23 @@
 import Link from "next/link";
-import AuthShell, {
-  authInputClass,
-  authLabelClass,
-  authButtonClass,
-} from "@/components/AuthShell";
-import { requestPasswordReset } from "@/lib/auth-actions";
+import AuthShell from "@/components/AuthShell";
+import { siteConfig } from "@/lib/content";
 
 export const metadata = {
   title: "Recuperar contraseña — Vivir Creciendo",
 };
 
-export default async function RecuperarPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ enviado?: string }>;
-}) {
-  const { enviado } = await searchParams;
-
-  if (enviado) {
-    return (
-      <AuthShell
-        title="Revisa tu correo"
-        notice="Si existe una cuenta con ese correo, te enviamos un enlace para crear una contraseña nueva."
-        footer={
-          <p>
-            <Link
-              href="/login"
-              className="font-semibold text-vc-orange hover:underline"
-            >
-              Volver a iniciar sesión
-            </Link>
-          </p>
-        }
-      >
-        <p className="mt-6 text-center text-base text-vc-blue-dark/70">
-          Si no lo ves, revisa la carpeta de correo no deseado (spam).
-        </p>
-      </AuthShell>
-    );
-  }
-
+/**
+ * Recuperar contraseña — interino (contrato back 64a815fb).
+ * El auto-servicio por correo (resetPasswordForEmail) requiere SMTP propio,
+ * que todavía no está configurado. Mientras tanto, recuperación asistida:
+ * la persona escribe al equipo y un admin le fija una contraseña nueva
+ * (Edge Function admin-set-password, disponible en el panel admin).
+ */
+export default function RecuperarPage() {
   return (
     <AuthShell
       title="Recuperar contraseña"
-      subtitle="Te enviaremos un enlace para crear una contraseña nueva."
+      subtitle="Te ayudamos a recuperar tu acceso."
       footer={
         <p>
           <Link
@@ -55,26 +29,21 @@ export default async function RecuperarPage({
         </p>
       }
     >
-      <form action={requestPasswordReset} className="mt-8 space-y-6">
-        <div>
-          <label htmlFor="email" className={authLabelClass}>
-            Correo electrónico
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            autoComplete="email"
-            placeholder="tucorreo@ejemplo.com"
-            className={authInputClass}
-          />
-        </div>
-
-        <button type="submit" className={authButtonClass}>
-          Enviar enlace
-        </button>
-      </form>
+      <div className="mt-6 space-y-4 text-lg text-vc-blue-dark/80 leading-relaxed">
+        <p>
+          Por ahora, para crear una contraseña nueva, escríbenos y te ayudamos
+          enseguida:
+        </p>
+        <a
+          href={`mailto:${siteConfig.email}?subject=Recuperar%20mi%20contrase%C3%B1a`}
+          className="block w-full text-center min-h-[56px] px-6 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
+        >
+          Escribir a {siteConfig.email}
+        </a>
+        <p className="text-base text-vc-blue-dark/60">
+          Muy pronto vas a poder cambiarla tú mismo desde aquí.
+        </p>
+      </div>
     </AuthShell>
   );
 }

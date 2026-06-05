@@ -66,6 +66,54 @@ function redirectError(msg: string): never {
   redirect("/admin?error=" + encodeURIComponent(msg));
 }
 
+/**
+ * Restablecer la contraseña de un usuario (recuperación asistida — contrato
+ * back 64a815fb, Edge Function admin-set-password, requiere admin). Mientras
+ * no haya SMTP para self-service, un admin fija la contraseña nueva.
+ */
+export async function adminResetPassword(formData: FormData) {
+  const target_email = String(formData.get("target_email") ?? "").trim();
+  const new_password = String(formData.get("new_password") ?? "");
+  if (new_password.length < 8) {
+    return redirectError("La contraseña debe tener al menos 8 caracteres.");
+  }
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.functions.invoke("admin-set-password", {
+    body: { target_email, new_password },
+  });
+
+  if (error || !(data as { ok?: boolean } | null)?.ok) {
+    let code = (data as { error?: string } | null)?.error;
+    const ctx = (error as { context?: { json?: () => Promise<unknown> } })?.context;
+    if (!code && ctx?.json) {
+      try {
+        code = ((await ctx.json()) as { error?: string })?.error;
+      } catch {
+        // ignore
+      }
+    }
+    return redirectError(adminPwErrorMessage(code, target_email));
+  }
+
+  redirect("/admin?ok=" + encodeURIComponent(`Contraseña actualizada para ${target_email}.`));
+}
+
+function adminPwErrorMessage(code: string | undefined, email: string): string {
+  switch (code) {
+    case "user_not_found":
+      return `No existe un usuario con el correo ${email}.`;
+    case "not_admin":
+      return "No tienes permisos de administrador.";
+    case "not_authenticated":
+      return "Tu sesión expiró. Inicia sesión de nuevo.";
+    case "bad_input":
+      return "Revisa el correo y que la contraseña tenga al menos 8 caracteres.";
+    default:
+      return "No se pudo actualizar la contraseña.";
+  }
+}
+
 /** Mapea los códigos de error de set_admin (back) a mensajes claros 60+. */
 function adminErrorMessage(code: string | undefined, email: string): string {
   switch (code) {

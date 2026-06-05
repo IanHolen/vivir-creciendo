@@ -32,40 +32,67 @@ export async function logout() {
   redirect("/");
 }
 
-/** Registro de nueva cuenta. */
+/**
+ * Registro de nueva cuenta (contrato back 64a815fb): Edge Function 'signup'
+ * crea el usuario YA CONFIRMADO (auto-confirm, sin email — no hay SMTP propio).
+ * Luego lo logueamos directo y va a la landing.
+ */
 export async function signup(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
 
-  if (password.length < 6) {
+  if (password.length < 8) {
     redirect(
       "/registro?error=" +
-        encodeURIComponent("La contraseña debe tener al menos 6 caracteres.")
+        encodeURIComponent("La contraseña debe tener al menos 8 caracteres.")
     );
   }
 
   const supabase = await createClient();
-  const origin = (await headers()).get("origin") ?? "";
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { name },
-      emailRedirectTo: `${origin}/auth/callback?next=/`,
-    },
+  const { data, error } = await supabase.functions.invoke("signup", {
+    body: { email, password },
   });
 
-  if (error) {
-    redirect("/registro?error=" + encodeURIComponent(friendlySignupError(error.message)));
+  if (error || !data?.ok) {
+    redirect(
+      "/registro?error=" +
+        encodeURIComponent(friendlySignupError(await edgeErrorCode(error, data)))
+    );
   }
 
-  // Email confirmation ON → no hay sesión todavía: avisar que revise el correo.
-  if (!data.session) {
-    redirect("/registro?enviado=1");
+  // Auto-confirmado → login inmediato para abrir sesión.
+  const { error: loginError } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+  if (loginError) {
+    // La cuenta se creó; mandamos a login con aviso.
+    redirect("/login?error=" + encodeURIComponent("Cuenta creada. Inicia sesión."));
   }
-  // Auto-confirm ON → ya quedó logueado.
+
+  if (name) {
+    await supabase.auth.updateUser({ data: { name } });
+  }
   redirect("/");
+}
+
+/** Extrae el código de error del cuerpo de una Edge Function (non-2xx) o del data. */
+async function edgeErrorCode(
+  error: unknown,
+  data: { error?: string } | null
+): Promise<string> {
+  if (data?.error) return data.error;
+  const ctx = (error as { context?: { json?: () => Promise<unknown> } })?.context;
+  if (ctx?.json) {
+    try {
+      const body = (await ctx.json()) as { error?: string };
+      if (body?.error) return body.error;
+    } catch {
+      // ignore
+    }
+  }
+  return (error as { message?: string })?.message ?? "";
 }
 
 /** Paso 1 de recuperar: enviar el correo con el enlace. */
@@ -105,15 +132,17 @@ export async function updatePassword(formData: FormData) {
   redirect("/?password=actualizada");
 }
 
-function friendlySignupError(msg: string): string {
-  const m = msg.toLowerCase();
-  if (m.includes("already registered") || m.includes("already been registered"))
+function friendlySignupError(code: string): string {
+  const m = code.toLowerCase();
+  if (m.includes("user_already_exists") || m.includes("already"))
     return "Ya existe una cuenta con ese correo. Inicia sesión.";
+  if (m.includes("weak_password") || m.includes("password"))
+    return "La contraseña debe tener al menos 8 caracteres.";
+  if (m.includes("invalid_email") || (m.includes("invalid") && m.includes("email")))
+    return "El correo no es válido. Revísalo e intenta de nuevo.";
+  if (m.includes("email_and_password_required"))
+    return "Faltan datos. Completa correo y contraseña.";
   if (m.includes("rate limit") || m.includes("too many"))
     return "Demasiados intentos. Prueba de nuevo en unos minutos.";
-  if (m.includes("password"))
-    return "La contraseña debe tener al menos 6 caracteres.";
-  if (m.includes("invalid") && m.includes("email"))
-    return "El correo no es válido. Revísalo e intenta de nuevo.";
   return "No se pudo crear la cuenta. Revisa los datos e intenta de nuevo.";
 }

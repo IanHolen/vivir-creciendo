@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Menu, X, LogIn } from "lucide-react";
 import Logo from "./Logo";
-import TextSizeToggle from "./TextSizeToggle";
 import { navLinks } from "@/lib/content";
 import { logout } from "@/lib/auth-actions";
 
@@ -61,13 +60,20 @@ export default function Navbar({
               {link.label}
             </a>
           ))}
-          <TextSizeToggle />
           {loginControl}
         </div>
 
         {/* Mobile controls */}
         <div className="flex lg:hidden items-center gap-2">
-          <TextSizeToggle />
+          {!isLoggedIn && (
+            <a
+              href="/login"
+              className="inline-flex items-center gap-1.5 min-h-[44px] px-4 py-2 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-sm rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
+            >
+              <LogIn className="w-4 h-4" aria-hidden="true" />
+              Iniciar sesión
+            </a>
+          )}
           <button
             onClick={() => setOpen(!open)}
             className="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-lg text-vc-blue-dark hover:bg-vc-cream transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"

@@ -108,7 +108,7 @@ export const memberships: Membership[] = [
       "Grupo de WhatsApp exclusivo",
       "Acceso a grabaciones por tiempo limitado",
     ],
-    facilitator: "Nurit Mileris",
+    facilitator: "Nurit Mileris-Zylbersztejn",
     facilitatorBio:
       "Psicoterapeuta con más de 30 años de experiencia. Cofundadora de Vivir Creciendo.",
     closingQuote: "Comunidad, humor y emoción.",
@@ -146,11 +146,11 @@ export const memberships: Membership[] = [
       "Caminando Juntos es nuestra Rueda de Trabajo Comunitario, inspirada en la Terapia Comunitaria Integrativa del Dr. Adalberto Barreto. En cada encuentro mensual por Zoom, compartimos lo que estamos viviendo en un espacio seguro, guiado y sin juicios. No es terapia individual: es la fuerza del grupo la que sostiene. Cada participante aporta su experiencia y se lleva la riqueza de las demás.",
     includes: [
       "Encuentros grupales mensuales por Zoom",
-      "Espacio terapéutico-educativo guiado por Nurit Mileris",
+      "Espacio terapéutico-educativo guiado por Nurit Mileris-Zylbersztejn",
       "Grupo de WhatsApp exclusivo",
       "Material complementario",
     ],
-    facilitator: "Nurit Mileris",
+    facilitator: "Nurit Mileris-Zylbersztejn",
     facilitatorBio:
       "Psicoterapeuta con más de 30 años de experiencia. Cofundadora de Vivir Creciendo. Formada en Terapia Comunitaria Integrativa.",
     closingQuote: "Ninguna de nuestras historias se escribe en soledad.",
@@ -289,7 +289,7 @@ export interface FullActivity {
 export const fullActivities: FullActivity[] = [
   {
     title: "Cine Reflexión",
-    facilitator: "Nurit Mileris",
+    facilitator: "Nurit Mileris-Zylbersztejn",
     preview:
       "Vemos juntos una película que conmueve y la conversamos por Zoom.",
     description:
@@ -298,7 +298,7 @@ export const fullActivities: FullActivity[] = [
   },
   {
     title: "Caminemos Juntos",
-    facilitator: "Nurit Mileris",
+    facilitator: "Nurit Mileris-Zylbersztejn",
     preview:
       "Una rueda comunitaria: un espacio seguro para compartir y sostenernos.",
     description:
@@ -337,7 +337,7 @@ export const fullActivities: FullActivity[] = [
 export const philosophy = {
   quote:
     "Vivir Creciendo no es un grupo. No es una actividad. Es una comunidad que sostiene, que transforma, que legitima.",
-  author: "Nurit Mileris, cofundadora",
+  author: "Nurit Mileris-Zylbersztejn, cofundadora",
   principles: [
     "Comunidad — Ubuntu: yo soy porque nosotros somos",
     "Reautoría — Reescribir nuestra historia, no aceptar la dominante",
@@ -425,7 +425,7 @@ export const teamMembers: TeamMember[] = [
     cofounder: true,
   },
   {
-    name: "Nurit Mileris",
+    name: "Nurit Mileris-Zylbersztejn",
     role: "Psicoterapeuta con más de 30 años de experiencia. Cofundadora.",
     quote:
       "Vivir Creciendo es una comunidad que sostiene, que transforma, que legitima.",

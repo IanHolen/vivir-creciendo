@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/sections/Hero";
-import QuienesSomos from "@/components/sections/QuienesSomos";
 import Nosotros from "@/components/sections/Nosotros";
 import FreeActivities from "@/components/sections/FreeActivities";
 import Memberships from "@/components/sections/Memberships";
@@ -25,9 +24,8 @@ export default async function Home({
         {/* Landing v2 — single-page scroll con anclas.
             Mismo layout, render condicional por sesión:
             deslogueado = teaser de venta; logueado = contenido completo. */}
+        {/* 1 — Hero + Quiénes somos (integrado, ancla #quienes-somos) */}
         <Hero />
-        {/* 1 — Quiénes somos */}
-        <QuienesSomos />
         {/* 2 — Nosotros (Ale + Nurit) */}
         <Nosotros />
         {/* 3 — Actividades (chill, no comercial) */}

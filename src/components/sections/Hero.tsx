@@ -1,9 +1,12 @@
 import Image from "next/image";
-import { heroContent } from "@/lib/content";
+import { heroContent, quienesSomos } from "@/lib/content";
 
 export default function Hero() {
   return (
-    <section className="bg-vc-cream noise-overlay py-24 md:py-32 px-4 sm:px-6 lg:px-8">
+    <section
+      id="quienes-somos"
+      className="scroll-mt-20 md:scroll-mt-24 bg-vc-cream noise-overlay py-24 md:py-32 px-4 sm:px-6 lg:px-8"
+    >
       <div className="relative z-10 max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
         <div className="flex-1 text-center lg:text-left">
           <h1 className="font-[var(--font-display)] text-5xl md:text-6xl lg:text-7xl font-black text-vc-blue-dark uppercase tracking-tight">
@@ -40,6 +43,35 @@ export default function Hero() {
             sizes="(max-width: 768px) 288px, 384px"
           />
         </div>
+      </div>
+
+      {/* Quiénes somos — integrado en el hero (antes era una sección separada). */}
+      <div className="relative z-10 max-w-3xl mx-auto mt-16 md:mt-24">
+        <div className="space-y-5">
+          {quienesSomos.paragraphs.map((p, i) => (
+            <p
+              key={i}
+              className={`text-lg md:text-xl leading-relaxed text-vc-blue-dark/80 ${
+                i === quienesSomos.paragraphs.length - 1
+                  ? "font-semibold text-vc-blue-dark text-center"
+                  : ""
+              }`}
+            >
+              {p}
+            </p>
+          ))}
+        </div>
+
+        <ul className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+          {quienesSomos.highlights.map((phrase) => (
+            <li
+              key={phrase}
+              className="bg-white/70 rounded-2xl p-6 text-center text-lg font-medium italic text-vc-blue-dark leading-snug border border-white/80"
+            >
+              &ldquo;{phrase}&rdquo;
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

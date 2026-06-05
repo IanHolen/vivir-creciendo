@@ -35,13 +35,12 @@ export default function Hero() {
         </div>
 
         {/* Quiénes somos — intro + texto largo, ARRIBA de los botones (pedido de Ian). */}
-        <p className="mt-10 text-lg md:text-xl text-vc-blue-dark/80 leading-relaxed text-center max-w-4xl mx-auto">
-          {heroContent.description}
-        </p>
-
-        {/* Texto largo: UNA sola columna, párrafos normales (Ian no quiere
-            layout tipo libro/periódico). Ancho cómodo amplio, no angosto. */}
-        <div className="mt-8 max-w-4xl mx-auto space-y-5">
+        {/* Quiénes somos: una sola columna, texto alineado a la izquierda y
+            ritmo de párrafo normal (no disperso) — legible para 60+. */}
+        <div className="mt-8 max-w-4xl mx-auto space-y-4 text-left">
+          <p className="text-lg md:text-xl text-vc-blue-dark/80 leading-relaxed">
+            {heroContent.description}
+          </p>
           {bodyParagraphs.map((p, i) => (
             <p
               key={i}
@@ -50,11 +49,10 @@ export default function Hero() {
               {p}
             </p>
           ))}
+          <p className="text-lg md:text-xl leading-relaxed font-semibold text-vc-blue-dark">
+            {closingParagraph}
+          </p>
         </div>
-
-        <p className="mt-6 text-lg md:text-xl leading-relaxed font-semibold text-vc-blue-dark text-center max-w-4xl mx-auto">
-          {closingParagraph}
-        </p>
 
         <ul className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           {quienesSomos.highlights.map((phrase) => (

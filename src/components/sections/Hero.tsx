@@ -2,14 +2,18 @@ import Image from "next/image";
 import { heroContent, quienesSomos } from "@/lib/content";
 
 export default function Hero() {
+  const paragraphs = quienesSomos.paragraphs;
+  const bodyParagraphs = paragraphs.slice(0, -1);
+  const closingParagraph = paragraphs[paragraphs.length - 1];
+
   return (
     <section
       id="quienes-somos"
       className="scroll-mt-20 md:scroll-mt-24 bg-vc-cream noise-overlay py-24 md:py-32 px-4 sm:px-6 lg:px-8"
     >
-      <div className="relative z-10 max-w-3xl mx-auto">
+      <div className="relative z-10 max-w-6xl mx-auto">
         {/* Título + subtítulo */}
-        <div className="text-center">
+        <div className="text-center max-w-4xl mx-auto">
           <h1 className="font-[var(--font-display)] text-4xl md:text-5xl lg:text-6xl font-black text-vc-blue-dark uppercase tracking-tight">
             {heroContent.title}
           </h1>
@@ -31,24 +35,26 @@ export default function Hero() {
         </div>
 
         {/* Quiénes somos — intro + texto largo, ARRIBA de los botones (pedido de Ian). */}
-        <p className="mt-10 text-lg md:text-xl text-vc-blue-dark/80 leading-relaxed text-center">
+        <p className="mt-10 text-lg md:text-xl text-vc-blue-dark/80 leading-relaxed text-center max-w-3xl mx-auto">
           {heroContent.description}
         </p>
 
-        <div className="mt-6 space-y-5">
-          {quienesSomos.paragraphs.map((p, i) => (
+        {/* Texto largo: 2 columnas en desktop para aprovechar el ancho sin
+            que las líneas queden largas (audiencia 60+). 1 columna en móvil/tablet. */}
+        <div className="mt-8 columns-1 lg:columns-2 lg:[column-gap:3.5rem]">
+          {bodyParagraphs.map((p, i) => (
             <p
               key={i}
-              className={`text-lg md:text-xl leading-relaxed text-vc-blue-dark/80 ${
-                i === quienesSomos.paragraphs.length - 1
-                  ? "font-semibold text-vc-blue-dark text-center"
-                  : ""
-              }`}
+              className="mb-5 break-inside-avoid text-lg md:text-xl leading-relaxed text-vc-blue-dark/80"
             >
               {p}
             </p>
           ))}
         </div>
+
+        <p className="mt-4 text-lg md:text-xl leading-relaxed font-semibold text-vc-blue-dark text-center max-w-3xl mx-auto">
+          {closingParagraph}
+        </p>
 
         <ul className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           {quienesSomos.highlights.map((phrase) => (

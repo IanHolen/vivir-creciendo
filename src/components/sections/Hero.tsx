@@ -35,24 +35,24 @@ export default function Hero() {
         </div>
 
         {/* Quiénes somos — intro + texto largo, ARRIBA de los botones (pedido de Ian). */}
-        <p className="mt-10 text-lg md:text-xl text-vc-blue-dark/80 leading-relaxed text-center max-w-3xl mx-auto">
+        <p className="mt-10 text-lg md:text-xl text-vc-blue-dark/80 leading-relaxed text-center max-w-4xl mx-auto">
           {heroContent.description}
         </p>
 
-        {/* Texto largo: 2 columnas en desktop para aprovechar el ancho sin
-            que las líneas queden largas (audiencia 60+). 1 columna en móvil/tablet. */}
-        <div className="mt-8 columns-1 lg:columns-2 lg:[column-gap:3.5rem]">
+        {/* Texto largo: UNA sola columna, párrafos normales (Ian no quiere
+            layout tipo libro/periódico). Ancho cómodo amplio, no angosto. */}
+        <div className="mt-8 max-w-4xl mx-auto space-y-5">
           {bodyParagraphs.map((p, i) => (
             <p
               key={i}
-              className="mb-5 break-inside-avoid text-lg md:text-xl leading-relaxed text-vc-blue-dark/80"
+              className="text-lg md:text-xl leading-relaxed text-vc-blue-dark/80"
             >
               {p}
             </p>
           ))}
         </div>
 
-        <p className="mt-4 text-lg md:text-xl leading-relaxed font-semibold text-vc-blue-dark text-center max-w-3xl mx-auto">
+        <p className="mt-6 text-lg md:text-xl leading-relaxed font-semibold text-vc-blue-dark text-center max-w-4xl mx-auto">
           {closingParagraph}
         </p>
 

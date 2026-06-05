@@ -5,6 +5,7 @@ import {
   createActivity,
   updateActivity,
   deleteActivity,
+  setAdmin,
 } from "@/lib/admin-actions";
 
 export const metadata = {
@@ -138,6 +139,9 @@ export default async function AdminPage({
 
   const rows = (activities ?? []) as AdminActivity[];
 
+  const { data: adminsData } = await supabase.rpc("list_admins");
+  const admins = (adminsData ?? []) as { id: string; email: string }[];
+
   return (
     <main className="min-h-screen bg-vc-cream noise-overlay px-4 sm:px-6 lg:px-8 py-12 md:py-16">
       <div className="relative z-10 max-w-3xl mx-auto">
@@ -217,6 +221,72 @@ export default async function AdminPage({
               Crear actividad
             </button>
           </form>
+        </div>
+
+        {/* Gestionar administradores */}
+        <div className="mt-12">
+          <h2 className="font-[var(--font-display)] text-2xl font-black text-vc-blue-dark uppercase tracking-tight">
+            Administradores
+          </h2>
+          <p className="mt-2 text-base text-vc-blue-dark/70">
+            Las personas con acceso a este panel. Para agregar a alguien, primero
+            debe haberse registrado en la página.
+          </p>
+
+          <div className="mt-4 bg-white rounded-2xl shadow-sm p-6 md:p-8 border border-vc-cream">
+            <ul className="divide-y divide-vc-cream">
+              {admins.map((admin) => (
+                <li
+                  key={admin.id}
+                  className="flex items-center justify-between gap-4 py-3"
+                >
+                  <span className="text-lg text-vc-blue-dark break-all">
+                    {admin.email}
+                    {admin.id === user.id && (
+                      <span className="ml-2 text-sm text-vc-blue-dark/50">
+                        (tú)
+                      </span>
+                    )}
+                  </span>
+                  {admin.id !== user.id && (
+                    <form action={setAdmin}>
+                      <input type="hidden" name="email" value={admin.email} />
+                      <input type="hidden" name="is_admin" value="false" />
+                      <button
+                        type="submit"
+                        className="min-h-[44px] px-4 py-2 border-2 border-red-300 text-red-600 hover:bg-red-50 font-medium rounded-xl"
+                      >
+                        Quitar
+                      </button>
+                    </form>
+                  )}
+                </li>
+              ))}
+            </ul>
+
+            <form
+              action={setAdmin}
+              className="mt-6 flex flex-col sm:flex-row gap-3 sm:items-end"
+            >
+              <label className={`${labelClass} flex-grow`}>
+                Correo de la persona a hacer administradora
+                <input
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="correo@ejemplo.com"
+                  className={inputClass}
+                />
+              </label>
+              <input type="hidden" name="is_admin" value="true" />
+              <button
+                type="submit"
+                className="inline-flex items-center justify-center min-h-[52px] px-6 py-3 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl"
+              >
+                Hacer admin
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </main>

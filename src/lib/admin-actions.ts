@@ -65,3 +65,30 @@ export async function deleteActivity(formData: FormData) {
 function redirectError(msg: string): never {
   redirect("/admin?error=" + encodeURIComponent(msg));
 }
+
+/**
+ * Promover / revocar admin por email (rpc seguro set_admin de back, restringido
+ * a admins). set_admin devuelve {ok, error?, email}.
+ */
+export async function setAdmin(formData: FormData) {
+  const email = String(formData.get("email") ?? "").trim();
+  const isAdmin = formData.get("is_admin") === "true";
+  if (!email) return;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("set_admin", {
+    p_email: email,
+    p_is_admin: isAdmin,
+  });
+
+  if (error) return redirectError(error.message);
+  if (data && data.ok === false) {
+    const msg =
+      data.error === "user_not_found"
+        ? `No existe un usuario con el correo ${email}. Pídele que se registre primero.`
+        : data.error ?? "No se pudo actualizar el administrador.";
+    return redirectError(msg);
+  }
+
+  revalidatePath("/admin");
+}

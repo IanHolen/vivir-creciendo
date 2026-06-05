@@ -50,8 +50,9 @@ export async function signup(formData: FormData) {
   }
 
   const supabase = await createClient();
+  // back captura el nombre desde el body (raw_user_meta_data → profiles.full_name).
   const { data, error } = await supabase.functions.invoke("signup", {
-    body: { email, password },
+    body: { email, password, name },
   });
 
   if (error || !data?.ok) {
@@ -71,9 +72,6 @@ export async function signup(formData: FormData) {
     redirect("/login?error=" + encodeURIComponent("Cuenta creada. Inicia sesión."));
   }
 
-  if (name) {
-    await supabase.auth.updateUser({ data: { name } });
-  }
   redirect("/");
 }
 

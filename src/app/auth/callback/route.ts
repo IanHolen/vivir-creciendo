@@ -1,23 +1,30 @@
 import { NextResponse } from "next/server";
+import type { EmailOtpType } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 
 /**
  * Callback de enlaces de correo (confirmación de cuenta y recuperar contraseña).
- * Supabase manda al usuario aquí con ?code=...; lo canjeamos por sesión y
- * redirigimos a ?next (ej. / o /recuperar/nueva).
- * Back debe allowlistear esta URL en Auth > URL Configuration.
+ * Tolerante a AMBOS formatos de Supabase (robusto ante el template que quede):
+ *   - ?code=...                  → exchangeCodeForSession (flujo PKCE, default).
+ *   - ?token_hash=...&type=...   → verifyOtp.
+ * Canjea por sesión y redirige a ?next. Back/Ian allowlistean esta URL en
+ * Auth > URL Configuration.
  */
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
-  const code = searchParams.get("code");
   const next = searchParams.get("next") ?? "/";
+  const code = searchParams.get("code");
+  const tokenHash = searchParams.get("token_hash");
+  const type = searchParams.get("type") as EmailOtpType | null;
+
+  const supabase = await createClient();
 
   if (code) {
-    const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) {
-      return NextResponse.redirect(`${origin}${next}`);
-    }
+    if (!error) return NextResponse.redirect(`${origin}${next}`);
+  } else if (tokenHash && type) {
+    const { error } = await supabase.auth.verifyOtp({ type, token_hash: tokenHash });
+    if (!error) return NextResponse.redirect(`${origin}${next}`);
   }
 
   return NextResponse.redirect(

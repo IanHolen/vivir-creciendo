@@ -1,13 +1,44 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogIn } from "lucide-react";
 import Logo from "./Logo";
 import TextSizeToggle from "./TextSizeToggle";
 import { navLinks } from "@/lib/content";
+import { logout } from "@/lib/auth-actions";
 
-export default function Navbar() {
+export default function Navbar({
+  isLoggedIn = false,
+  userName = null,
+}: {
+  isLoggedIn?: boolean;
+  userName?: string | null;
+}) {
   const [open, setOpen] = useState(false);
+
+  const loginControl = isLoggedIn ? (
+    <div className="flex items-center gap-3">
+      <span className="text-vc-blue-dark font-medium text-base">
+        Hola{userName ? `, ${userName}` : ""}
+      </span>
+      <form action={logout}>
+        <button
+          type="submit"
+          className="min-h-[44px] px-4 py-2 text-vc-blue-dark hover:text-vc-orange font-medium text-base rounded-lg transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
+        >
+          Cerrar sesión
+        </button>
+      </form>
+    </div>
+  ) : (
+    <a
+      href="/login"
+      className="inline-flex items-center gap-2 min-h-[44px] px-5 py-2 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-base rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
+    >
+      <LogIn className="w-4 h-4" aria-hidden="true" />
+      Iniciar sesión
+    </a>
+  );
 
   return (
     <nav
@@ -31,6 +62,7 @@ export default function Navbar() {
             </a>
           ))}
           <TextSizeToggle />
+          {loginControl}
         </div>
 
         {/* Mobile controls */}
@@ -61,6 +93,10 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
+          {/* login/logout navegan (a /login o redirect a /), así que el menú
+              se reinicia solo en la nueva página — sin onClick setOpen que
+              desmonte el form de logout antes de enviarse. */}
+          <div className="mt-4">{loginControl}</div>
         </div>
       )}
     </nav>

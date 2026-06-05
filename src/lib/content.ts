@@ -279,6 +279,9 @@ export const membershipTiers: MembershipTier[] = [
 export interface FullActivity {
   title: string;
   facilitator: string;
+  /** Adelanto corto — visible sin iniciar sesión (la puntita del iceberg). */
+  preview: string;
+  /** Descripción completa — visible al iniciar sesión. */
   description: string;
   cadence: string;
 }
@@ -287,6 +290,8 @@ export const fullActivities: FullActivity[] = [
   {
     title: "Cine Reflexión",
     facilitator: "Nurit Mileris",
+    preview:
+      "Vemos juntos una película que conmueve y la conversamos por Zoom.",
     description:
       "Cada mes vemos una película que toca temas profundamente humanos y nos reunimos por Zoom para conversar sobre lo que sentimos, pensamos y recordamos. No hace falta saber de cine: lo que importa es tu mirada.",
     cadence: "Mensual · Zoom",
@@ -294,6 +299,8 @@ export const fullActivities: FullActivity[] = [
   {
     title: "Caminemos Juntos",
     facilitator: "Nurit Mileris",
+    preview:
+      "Una rueda comunitaria: un espacio seguro para compartir y sostenernos.",
     description:
       "Nuestra Rueda de Trabajo Comunitario inspirada en la metodología del Dr. Adalberto Barreto. Un espacio seguro y sin juicios donde la fuerza del grupo sostiene lo que cada persona trae para compartir.",
     cadence: "Mensual · Zoom",
@@ -301,6 +308,8 @@ export const fullActivities: FullActivity[] = [
   {
     title: "Salud y Bienestar",
     facilitator: "Alejandra Furman-Paz",
+    preview:
+      "Clases prácticas para cuidar tu cuerpo, mente y emociones, sin dietas ni culpa.",
     description:
       "Clases prácticas para cuidar tu cuerpo, mente y emociones. Sin dietas ni culpa: aprender a escuchar tu cuerpo y hacer cambios sostenibles, con espacio de preguntas y material descargable cada mes.",
     cadence: "Mensual · en vivo",
@@ -308,6 +317,8 @@ export const fullActivities: FullActivity[] = [
   {
     title: "Círculo Cultural",
     facilitator: "Equipo Vivir Creciendo",
+    preview:
+      "Literatura, música, historia y arte, conversados en comunidad.",
     description:
       "Un encuentro para seguir nutriendo la curiosidad: literatura, música, historia y arte conversados en comunidad. Un espacio para pensar, sentir y crear junto a otros.",
     cadence: "Mensual · Zoom",
@@ -315,6 +326,8 @@ export const fullActivities: FullActivity[] = [
   {
     title: "Plática con Foro",
     facilitator: "Invitados especiales",
+    preview:
+      "Una charla mensual con expertos y un foro abierto donde tu voz es protagonista.",
     description:
       "Una charla mensual con expertos invitados sobre temas que nos importan, seguida de un foro abierto de intercambio donde tu voz y tus preguntas son protagonistas.",
     cadence: "Mensual · Zoom",

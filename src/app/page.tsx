@@ -7,7 +7,7 @@ import Newsletter from "@/components/sections/Newsletter";
 import FinalCTA from "@/components/sections/FinalCTA";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
-import { getIsLoggedIn } from "@/lib/session";
+import { getSessionUser } from "@/lib/session";
 
 export default async function Home({
   searchParams,
@@ -15,11 +15,11 @@ export default async function Home({
   searchParams: Promise<{ vista?: string }>;
 }) {
   const sp = await searchParams;
-  const isLoggedIn = await getIsLoggedIn(sp);
+  const { isLoggedIn, name } = await getSessionUser(sp);
 
   return (
     <>
-      <Navbar />
+      <Navbar isLoggedIn={isLoggedIn} userName={name} />
       <main id="main-content">
         {/* Landing v2 — single-page scroll con anclas.
             Mismo layout, render condicional por sesión:

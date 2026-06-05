@@ -12,6 +12,8 @@ import { cookies } from "next/headers";
  * sesión, manteniendo la misma firma para no tocar las secciones.
  */
 export const SESSION_COOKIE = "vc_session";
+/** Nombre para mostrar ("Hola, X"). Stub: lo setea el login; back lo tomará del usuario real. */
+export const NAME_COOKIE = "vc_name";
 
 export async function getIsLoggedIn(searchParams?: {
   vista?: string;
@@ -22,4 +24,17 @@ export async function getIsLoggedIn(searchParams?: {
 
   const store = await cookies();
   return store.has(SESSION_COOKIE);
+}
+
+/**
+ * Estado de sesión + nombre para mostrar. Misma firma estable: cuando back
+ * conecte Supabase Auth, devolverá el usuario real sin tocar los consumidores.
+ */
+export async function getSessionUser(searchParams?: {
+  vista?: string;
+}): Promise<{ isLoggedIn: boolean; name: string | null }> {
+  const isLoggedIn = await getIsLoggedIn(searchParams);
+  if (!isLoggedIn) return { isLoggedIn: false, name: null };
+  const store = await cookies();
+  return { isLoggedIn, name: store.get(NAME_COOKIE)?.value ?? null };
 }

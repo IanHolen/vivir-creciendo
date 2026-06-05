@@ -17,8 +17,8 @@ export default function Memberships({
         </h2>
         <p className="mt-4 text-center text-lg md:text-xl text-vc-blue-dark/70 max-w-2xl mx-auto leading-relaxed">
           {isLoggedIn
-            ? "Tu comunidad, en el plan que elijas. Mirá todo lo que incluye cada membresía."
-            : "Elegí cuánto querés acompañarte de la comunidad. Empezá por lo gratuito y sumá actividades cuando tengas ganas."}
+            ? "Tu comunidad, en el plan que elijas. Mira todo lo que incluye cada membresía."
+            : "Elige cuánto quieres acompañarte de la comunidad. Empieza por lo gratuito y suma actividades cuando tengas ganas."}
         </p>
 
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
@@ -109,7 +109,7 @@ export default function Memberships({
         </div>
 
         <p className="mt-8 text-center text-base text-vc-blue-dark/60">
-          Escribinos y te contamos los detalles. Sin apuros.
+          Escríbenos y te contamos los detalles. Sin apuros.
         </p>
       </div>
     </section>

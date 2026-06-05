@@ -22,8 +22,8 @@ export default function FreeActivities({
           </h2>
           <p className="mt-4 text-xl text-vc-blue-dark/70 leading-relaxed">
             {isLoggedIn
-              ? "Estas son las cinco actividades de nuestra comunidad. Encontrá tu lugar en cada encuentro."
-              : "Encuentros para conversar, aprender y compartir desde la comodidad de tu casa. Sin apuros y sin compromiso: vení a conocernos cuando quieras."}
+              ? "Estas son las cinco actividades de nuestra comunidad. Encuentra tu lugar en cada encuentro."
+              : "Más que actividades online, construimos comunidad. Encuentros para conversar, aprender y compartir desde la comodidad de tu casa, sin apuros y sin compromiso."}
           </p>
         </div>
 

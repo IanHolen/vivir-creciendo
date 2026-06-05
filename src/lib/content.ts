@@ -11,19 +11,38 @@ export const siteConfig = {
 };
 
 export const navLinks = [
-  { label: "Membresías", href: "#membresias" },
-  { label: "Cursos y Talleres", href: "#cursos" },
+  { label: "Quiénes somos", href: "#quienes-somos" },
+  { label: "Nosotros", href: "#nosotros" },
   { label: "Actividades", href: "#actividades" },
-  { label: "Contacto", href: "#contacto" },
+  { label: "Membresías", href: "#membresias" },
 ];
 
 export const heroContent = {
-  title: "TU HISTORIA CONTINÚA",
-  subtitle: "con protagonismo, transformación y trascendencia",
+  title: "SEGUIR CRECIENDO TAMBIÉN ES PARTE DE ENVEJECER",
+  subtitle: "Una comunidad para vivir esta etapa con propósito y conexión",
   description:
-    "Somos una comunidad online en español para personas mayores de 60 años. Conversamos, aprendemos y compartimos experiencias. Ninguna de nuestras historias se escribe en soledad.",
+    "Somos una comunidad online en español para personas mayores de 65 años. Conversamos, aprendemos y compartimos experiencias. Porque la vida no se detiene a los 65.",
   ctaPrimary: "CONOCE NUESTRAS MEMBRESÍAS",
-  ctaSecondary: "Vive una actividad gratis",
+  ctaSecondary: "Conoce nuestras actividades",
+};
+
+export const quienesSomos = {
+  title: "QUIÉNES SOMOS",
+  lead: "Una comunidad para vivir esta etapa con propósito y conexión.",
+  paragraphs: [
+    "Vivir Creciendo es una comunidad online diseñada para personas mayores de 65 años que desean vivir esta etapa de la vida con propósito, conexión y crecimiento continuo.",
+    "Creemos que envejecer no significa detenerse, sino abrir nuevas posibilidades de aprendizaje, reflexión, vínculo y participación.",
+    "Ofrecemos experiencias semanales que combinan conversaciones con expertos, reflexión sobre películas y temas culturales, talleres de aprendizaje, espacios de intercambio y grupos de pares que estimulan la mente, fortalecen los vínculos y enriquecen la vida cotidiana.",
+    "Nuestra propuesta busca acompañar a las personas a cultivar relaciones humanas profundas, desarrollar confianza, mantener la curiosidad viva y seguir construyendo un rol protagonista en su propia historia de vida.",
+    "Vivir Creciendo es una comunidad virtual, participativa y cercana, donde cada persona puede sentirse escuchada, acompañada y parte de algo significativo.",
+    "Sin importar dónde viva o las limitaciones físicas que pueda tener, cada integrante puede acceder desde la comodidad de su hogar a encuentros que promueven bienestar emocional, conexión humana, creatividad y sentido de comunidad.",
+    "Nos une la convicción de que siempre es posible seguir creciendo.",
+  ],
+  highlights: [
+    "Nunca es tarde para aprender, compartir y transformarse.",
+    "Más que actividades online, construimos comunidad.",
+    "Un espacio para seguir pensando, sintiendo y creando junto a otros.",
+  ],
 };
 
 export const emotionalQuestions = [
@@ -195,6 +214,110 @@ export const memberships: Membership[] = [
           "¡Sí! Cada clase incluye un espacio de preguntas y respuestas donde Alejandra responde personalmente.",
       },
     ],
+  },
+];
+
+export interface MembershipTier {
+  name: string;
+  kind: "gratis" | "paga";
+  tagline: string;
+  activities: string[];
+  extras: string[];
+  badge?: string;
+  featured?: boolean;
+  // Vista logueada — contenido completo
+  priceLabel: string; // PLACEHOLDER: precios pendientes de Ian
+  fullDescription: string;
+}
+
+export const membershipTiers: MembershipTier[] = [
+  {
+    name: "Gratis",
+    kind: "gratis",
+    tagline: "Una actividad gratuita para conocernos, sin compromiso.",
+    activities: ["1 actividad gratuita al mes"],
+    extras: [],
+    priceLabel: "Sin costo",
+    fullDescription:
+      "Una puerta de entrada a la comunidad: participá de una actividad gratuita al mes y viví en primera persona cómo conversamos, aprendemos y nos acompañamos. Ideal para conocernos antes de dar el siguiente paso.",
+  },
+  {
+    name: "Básica",
+    kind: "paga",
+    tagline: "Tres espacios para conversar, reflexionar y cuidarte.",
+    activities: [
+      "Cine reflexión",
+      "Caminemos juntos",
+      "Salud y bienestar",
+    ],
+    extras: ["Incluye la actividad gratuita", "Acceso a YouTube"],
+    priceLabel: "Precio por confirmar",
+    fullDescription:
+      "Acceso mensual a nuestras tres actividades fundamentales — Cine reflexión, Caminemos juntos y Salud y bienestar — más la actividad gratuita y el acceso a nuestro canal de YouTube. Una rutina semanal de encuentros que estimulan la mente, cuidan el cuerpo y fortalecen los vínculos.",
+  },
+  {
+    name: "Plus",
+    kind: "paga",
+    tagline: "La experiencia completa de la comunidad.",
+    activities: [
+      "Cine reflexión",
+      "Caminemos juntos",
+      "Salud y bienestar",
+      "Círculo cultural",
+      "1 plática con foro",
+    ],
+    extras: ["Incluye la actividad gratuita", "Acceso a YouTube"],
+    badge: "Más completa",
+    featured: true,
+    priceLabel: "Precio por confirmar",
+    fullDescription:
+      "La membresía más completa: todo lo de Básica más el Círculo cultural y una plática mensual con foro de intercambio. Cinco actividades pensadas para quienes quieren vivir la comunidad a pleno, con más espacios de aprendizaje, cultura y conversación profunda.",
+  },
+];
+
+// Vista logueada — las 5 actividades completas del programa (contenido full)
+export interface FullActivity {
+  title: string;
+  facilitator: string;
+  description: string;
+  cadence: string;
+}
+
+export const fullActivities: FullActivity[] = [
+  {
+    title: "Cine Reflexión",
+    facilitator: "Nurit Mileris",
+    description:
+      "Cada mes vemos una película que toca temas profundamente humanos y nos reunimos por Zoom para conversar sobre lo que sentimos, pensamos y recordamos. No hace falta saber de cine: lo que importa es tu mirada.",
+    cadence: "Mensual · Zoom",
+  },
+  {
+    title: "Caminemos Juntos",
+    facilitator: "Nurit Mileris",
+    description:
+      "Nuestra Rueda de Trabajo Comunitario inspirada en la metodología del Dr. Adalberto Barreto. Un espacio seguro y sin juicios donde la fuerza del grupo sostiene lo que cada persona trae para compartir.",
+    cadence: "Mensual · Zoom",
+  },
+  {
+    title: "Salud y Bienestar",
+    facilitator: "Alejandra Furman-Paz",
+    description:
+      "Clases prácticas para cuidar tu cuerpo, mente y emociones. Sin dietas ni culpa: aprender a escuchar tu cuerpo y hacer cambios sostenibles, con espacio de preguntas y material descargable cada mes.",
+    cadence: "Mensual · en vivo",
+  },
+  {
+    title: "Círculo Cultural",
+    facilitator: "Equipo Vivir Creciendo",
+    description:
+      "Un encuentro para seguir nutriendo la curiosidad: literatura, música, historia y arte conversados en comunidad. Un espacio para pensar, sentir y crear junto a otros.",
+    cadence: "Mensual · Zoom",
+  },
+  {
+    title: "Plática con Foro",
+    facilitator: "Invitados especiales",
+    description:
+      "Una charla mensual con expertos invitados sobre temas que nos importan, seguida de un foro abierto de intercambio donde tu voz y tus preguntas son protagonistas.",
+    cadence: "Mensual · Zoom",
   },
 ];
 

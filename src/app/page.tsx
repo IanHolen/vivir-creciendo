@@ -1,34 +1,40 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/sections/Hero";
-import EmotionalQuestions from "@/components/sections/EmotionalQuestions";
-import Memberships from "@/components/sections/Memberships";
+import QuienesSomos from "@/components/sections/QuienesSomos";
+import Nosotros from "@/components/sections/Nosotros";
 import FreeActivities from "@/components/sections/FreeActivities";
-import Courses from "@/components/sections/Courses";
-import Philosophy from "@/components/sections/Philosophy";
-import Team from "@/components/sections/Team";
-import Testimonials from "@/components/sections/Testimonials";
-import Blog from "@/components/sections/Blog";
-import FAQ from "@/components/sections/FAQ";
+import Memberships from "@/components/sections/Memberships";
 import Newsletter from "@/components/sections/Newsletter";
 import FinalCTA from "@/components/sections/FinalCTA";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import { getIsLoggedIn } from "@/lib/session";
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ vista?: string }>;
+}) {
+  const sp = await searchParams;
+  const isLoggedIn = await getIsLoggedIn(sp);
+
   return (
     <>
       <Navbar />
       <main id="main-content">
+        {/* Landing v2 — single-page scroll con anclas.
+            Mismo layout, render condicional por sesión:
+            deslogueado = teaser de venta; logueado = contenido completo. */}
         <Hero />
-        <EmotionalQuestions />
-        <Memberships />
-        <FreeActivities />
-        <Courses />
-        <Philosophy />
-        <Team />
-        <Testimonials />
-        <Blog />
-        <FAQ />
+        {/* 1 — Quiénes somos */}
+        <QuienesSomos />
+        {/* 2 — Nosotros (Ale + Nurit) */}
+        <Nosotros />
+        {/* 3 — Actividades (chill, no comercial) */}
+        <FreeActivities isLoggedIn={isLoggedIn} />
+        {/* 4 — Membresías */}
+        <Memberships isLoggedIn={isLoggedIn} />
+        {/* Cierre — contacto / newsletter */}
         <Newsletter />
         <FinalCTA />
       </main>

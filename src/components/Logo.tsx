@@ -42,13 +42,16 @@ export default function Logo({ variant = "color", className = "" }: LogoProps) {
           const r2 = 38;
           const leftRad = ((angle - halfW) * Math.PI) / 180;
           const rightRad = ((angle + halfW) * Math.PI) / 180;
+          // Round to fixed precision so SSR (Node) and client (browser) serialize
+          // identically — avoids a React hydration mismatch on the trig output.
+          const p = (n: number) => n.toFixed(3);
           return (
             <polygon
               key={i}
               points={[
-                `${-Math.cos(leftRad) * r1},${-Math.sin(leftRad) * r1}`,
-                `${-Math.cos(rad) * r2},${-Math.sin(rad) * r2}`,
-                `${-Math.cos(rightRad) * r1},${-Math.sin(rightRad) * r1}`,
+                `${p(-Math.cos(leftRad) * r1)},${p(-Math.sin(leftRad) * r1)}`,
+                `${p(-Math.cos(rad) * r2)},${p(-Math.sin(rad) * r2)}`,
+                `${p(-Math.cos(rightRad) * r1)},${p(-Math.sin(rightRad) * r1)}`,
               ].join(" ")}
               fill="#EB5600"
             />

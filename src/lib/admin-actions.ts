@@ -66,6 +66,22 @@ function redirectError(msg: string): never {
   redirect("/admin?error=" + encodeURIComponent(msg));
 }
 
+/** Mapea los códigos de error de set_admin (back) a mensajes claros 60+. */
+function adminErrorMessage(code: string | undefined, email: string): string {
+  switch (code) {
+    case "user_not_found":
+      return `No existe un usuario con el correo ${email}. Pídele que se registre primero.`;
+    case "cannot_remove_last_admin":
+      return "No puedes quitar al último administrador.";
+    case "not_admin":
+      return "No tienes permisos de administrador.";
+    case "not_authenticated":
+      return "Tu sesión expiró. Inicia sesión de nuevo.";
+    default:
+      return code ?? "No se pudo actualizar el administrador.";
+  }
+}
+
 /**
  * Promover / revocar admin por email (rpc seguro set_admin de back, restringido
  * a admins). set_admin devuelve {ok, error?, email}.
@@ -83,11 +99,7 @@ export async function setAdmin(formData: FormData) {
 
   if (error) return redirectError(error.message);
   if (data && data.ok === false) {
-    const msg =
-      data.error === "user_not_found"
-        ? `No existe un usuario con el correo ${email}. Pídele que se registre primero.`
-        : data.error ?? "No se pudo actualizar el administrador.";
-    return redirectError(msg);
+    return redirectError(adminErrorMessage(data.error, email));
   }
 
   revalidatePath("/admin");

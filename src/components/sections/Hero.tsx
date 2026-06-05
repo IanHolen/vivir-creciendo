@@ -35,9 +35,10 @@ export default function Hero() {
         </div>
 
         {/* Quiénes somos — intro + texto largo, ARRIBA de los botones (pedido de Ian). */}
-        {/* Quiénes somos: una sola columna, texto alineado a la izquierda y
-            ritmo de párrafo normal (no disperso) — legible para 60+. */}
-        <div className="mt-8 max-w-4xl mx-auto space-y-4 text-left">
+        {/* Quiénes somos: una sola columna, texto alineado a la izquierda,
+            ancho amplio para aprovechar la página (menos aire lateral) sin
+            perder legibilidad 60+. */}
+        <div className="mt-8 max-w-5xl mx-auto space-y-4 text-left">
           <p className="text-lg md:text-xl text-vc-blue-dark/80 leading-relaxed">
             {heroContent.description}
           </p>

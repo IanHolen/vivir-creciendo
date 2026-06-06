@@ -12,36 +12,40 @@ export default function Hero() {
       className="scroll-mt-20 md:scroll-mt-24 bg-vc-cream noise-overlay py-24 md:py-32 px-4 sm:px-6 lg:px-8"
     >
       <div className="relative z-10 max-w-6xl mx-auto">
-        {/* Título + subtítulo */}
-        <div className="text-center max-w-4xl mx-auto">
-          <h1 className="font-[var(--font-display)] text-4xl md:text-5xl lg:text-6xl font-black text-vc-blue-dark uppercase tracking-tight">
-            {heroContent.title}
-          </h1>
-          <p className="mt-4 font-[var(--font-subtitle)] text-xl md:text-2xl text-vc-blue uppercase italic">
-            {heroContent.subtitle}
-          </p>
+        {/* Bloque superior: 2 columnas en desktop (texto izq · imagen der),
+            stack compacto en mobile (texto → imagen). Composición intencional
+            para equilibrar el peso visual y no dejar la foto flotando sola. */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center">
+          {/* Texto: título + subtítulo + intro corta y cálida (KISS 60+) */}
+          <div className="text-center lg:text-left max-w-2xl mx-auto lg:mx-0">
+            <h1 className="font-[var(--font-display)] text-4xl md:text-5xl lg:text-6xl font-black text-vc-blue-dark uppercase tracking-tight">
+              {heroContent.title}
+            </h1>
+            <p className="mt-4 font-[var(--font-subtitle)] text-xl md:text-2xl text-vc-blue uppercase italic">
+              {heroContent.subtitle}
+            </p>
+            <p className="mt-6 text-lg md:text-xl text-vc-blue-dark/80 leading-relaxed">
+              {heroContent.description}
+            </p>
+          </div>
+
+          {/* Imagen: llena su columna y queda alineada a la derecha en desktop. */}
+          <div className="relative w-full max-w-md mx-auto lg:mx-0 lg:ml-auto aspect-square rounded-3xl overflow-hidden shadow-xl">
+            <Image
+              src="/images/hero-community.jpg"
+              alt="Comunidad de adultos mayores compartiendo y aprendiendo juntos"
+              fill
+              className="object-cover"
+              priority
+              sizes="(max-width: 1024px) 100vw, 28rem"
+            />
+          </div>
         </div>
 
-        {/* Imagen */}
-        <div className="mt-10 mx-auto w-72 h-72 md:w-96 md:h-96 relative rounded-3xl overflow-hidden shadow-xl">
-          <Image
-            src="/images/hero-community.jpg"
-            alt="Comunidad de adultos mayores compartiendo y aprendiendo juntos"
-            fill
-            className="object-cover"
-            priority
-            sizes="(max-width: 768px) 288px, 384px"
-          />
-        </div>
-
-        {/* Quiénes somos — intro + texto largo, ARRIBA de los botones (pedido de Ian). */}
-        {/* Quiénes somos: una sola columna, texto alineado a la izquierda,
-            ancho amplio para aprovechar la página (menos aire lateral) sin
-            perder legibilidad 60+. */}
-        <div className="mt-8 max-w-5xl mx-auto space-y-4 text-left">
-          <p className="text-lg md:text-xl text-vc-blue-dark/80 leading-relaxed">
-            {heroContent.description}
-          </p>
+        {/* Quiénes somos — texto largo (full width), ARRIBA de los botones
+            (pedido de Ian). Una sola columna, alineado a la izquierda, ancho
+            amplio para legibilidad 60+. */}
+        <div className="mt-12 md:mt-16 max-w-5xl mx-auto space-y-4 text-left">
           {bodyParagraphs.map((p, i) => (
             <p
               key={i}

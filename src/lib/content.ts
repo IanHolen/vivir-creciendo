@@ -20,7 +20,11 @@ export const navLinks = [
 export const heroContent = {
   title: "SEGUIR CRECIENDO TAMBIÉN ES PARTE DE ENVEJECER",
   subtitle: "Una comunidad para vivir esta etapa con propósito y conexión",
+  // Intro corta y cálida (1 línea, KISS 60+) — la que se muestra en el hero.
   description:
+    "Una comunidad online en español para seguir creciendo, conversando y compartiendo después de los 65.",
+  // Versión larga preservada para reusar (era el `description` anterior).
+  descriptionLong:
     "Somos una comunidad online en español para personas mayores de 65 años. Conversamos, aprendemos y compartimos experiencias. Porque la vida no se detiene a los 65.",
   ctaPrimary: "CONOCE NUESTRAS MEMBRESÍAS",
   ctaSecondary: "Conoce nuestras actividades",

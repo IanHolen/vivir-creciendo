@@ -17,9 +17,13 @@ export default function Navbar({
 
   const loginControl = isLoggedIn ? (
     <div className="flex items-center gap-3">
-      <span className="text-vc-blue-dark font-medium text-base">
+      <a
+        href="/perfil"
+        className="min-h-[44px] inline-flex items-center px-2 py-2 text-vc-blue-dark hover:text-vc-orange font-medium text-base rounded-lg transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
+        aria-label="Ir a mi perfil"
+      >
         Hola{userName ? `, ${userName}` : ""}
-      </span>
+      </a>
       <form action={logout}>
         <button
           type="submit"

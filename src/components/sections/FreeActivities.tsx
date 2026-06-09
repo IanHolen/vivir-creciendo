@@ -1,4 +1,4 @@
-import { Sparkles, Lock, LogIn } from "lucide-react";
+import { Sparkles, Lock, LogIn, ArrowRight } from "lucide-react";
 import type { Activity } from "@/lib/activities";
 
 export default function FreeActivities({
@@ -34,26 +34,43 @@ export default function FreeActivities({
             {activities.map((activity) => (
               <div
                 key={activity.id}
-                className="bg-vc-cream/40 rounded-2xl p-8 flex flex-col border border-vc-cream"
+                className="bg-vc-cream/40 rounded-2xl flex flex-col border border-vc-cream overflow-hidden"
               >
-                {activity.week != null && (
-                  <div className="flex items-center gap-2 text-vc-orange text-sm font-medium">
-                    <Sparkles className="w-4 h-4" aria-hidden="true" />
-                    <span>Semana {activity.week}</span>
-                  </div>
+                {activity.image_url && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={activity.image_url}
+                    alt={activity.title}
+                    className="w-full h-48 object-cover"
+                  />
                 )}
-                <h3 className="mt-3 font-semibold text-2xl text-vc-blue-dark leading-snug">
-                  {activity.title}
-                </h3>
-                <p className="mt-3 text-lg text-vc-blue-dark/80 leading-relaxed flex-grow">
-                  {activity.full_description ?? activity.short_preview}
-                </p>
-                {!activity.full_description && (
-                  <p className="mt-4 flex items-center gap-2 text-base text-vc-blue-dark/60">
-                    <Lock className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-                    Detalle completo al iniciar sesión
+                <div className="p-8 flex flex-col flex-grow">
+                  {activity.week != null && (
+                    <div className="flex items-center gap-2 text-vc-orange text-sm font-medium">
+                      <Sparkles className="w-4 h-4" aria-hidden="true" />
+                      <span>Semana {activity.week}</span>
+                    </div>
+                  )}
+                  <h3 className="mt-3 font-semibold text-2xl text-vc-blue-dark leading-snug">
+                    {activity.title}
+                  </h3>
+                  <p className="mt-3 text-lg text-vc-blue-dark/80 leading-relaxed flex-grow">
+                    {activity.full_description ?? activity.short_preview}
                   </p>
-                )}
+                  {!activity.full_description && (
+                    <p className="mt-4 flex items-center gap-2 text-base text-vc-blue-dark/60">
+                      <Lock className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                      Detalle completo al iniciar sesión
+                    </p>
+                  )}
+                  <a
+                    href={`/actividades/${activity.id}`}
+                    className="mt-6 inline-flex items-center justify-center gap-2 min-h-[52px] px-6 py-3 border-2 border-vc-orange text-vc-orange hover:bg-vc-orange hover:text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange/40"
+                  >
+                    Más detalle
+                    <ArrowRight className="w-5 h-5" aria-hidden="true" />
+                  </a>
+                </div>
               </div>
             ))}
           </div>

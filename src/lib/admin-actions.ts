@@ -23,6 +23,43 @@ function parseFields(formData: FormData) {
   };
 }
 
+const ACTIVITY_BUCKET = "activity-images";
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
+
+/**
+ * Sube la imagen de una actividad al bucket activity-images (contrato back
+ * adc20faa). Escritura admin-only vía RLS en storage.objects; lectura pública
+ * vía getPublicUrl. Devuelve la URL pública o lanza redirectError si falla.
+ */
+async function uploadActivityImage(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  activityId: string,
+  file: File
+): Promise<string> {
+  if (file.size > MAX_IMAGE_BYTES) {
+    return redirectError("La imagen es muy grande. Máximo 5 MB.");
+  }
+  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+  const path = `${activityId}/${Date.now()}-${safeName}`;
+  const { error: uploadError } = await supabase.storage
+    .from(ACTIVITY_BUCKET)
+    .upload(path, file, { cacheControl: "3600", upsert: true });
+  if (uploadError) {
+    return redirectError("No se pudo subir la imagen: " + uploadError.message);
+  }
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from(ACTIVITY_BUCKET).getPublicUrl(path);
+  return publicUrl;
+}
+
+/** Lee el archivo de imagen del form solo si el admin eligió uno nuevo. */
+function getImageFile(formData: FormData): File | null {
+  const file = formData.get("image");
+  if (file instanceof File && file.size > 0) return file;
+  return null;
+}
+
 function revalidate() {
   revalidatePath("/admin");
   revalidatePath("/");
@@ -30,9 +67,23 @@ function revalidate() {
 
 export async function createActivity(formData: FormData) {
   const supabase = await createClient();
-  const { error } = await supabase.from("activities").insert(parseFields(formData));
-  if (error) {
-    return redirectError(error.message);
+  const { data, error } = await supabase
+    .from("activities")
+    .insert(parseFields(formData))
+    .select("id")
+    .single();
+  if (error || !data) {
+    return redirectError(error?.message ?? "No se pudo crear la actividad.");
+  }
+
+  const file = getImageFile(formData);
+  if (file) {
+    const image_url = await uploadActivityImage(supabase, data.id, file);
+    const { error: imgError } = await supabase
+      .from("activities")
+      .update({ image_url })
+      .eq("id", data.id);
+    if (imgError) return redirectError(imgError.message);
   }
   revalidate();
 }
@@ -41,9 +92,18 @@ export async function updateActivity(formData: FormData) {
   const id = String(formData.get("id") ?? "");
   if (!id) return;
   const supabase = await createClient();
+
+  // Solo sobre-escribe image_url si el admin subió un archivo nuevo; de lo
+  // contrario conserva la imagen actual.
+  const fields: Record<string, unknown> = parseFields(formData);
+  const file = getImageFile(formData);
+  if (file) {
+    fields.image_url = await uploadActivityImage(supabase, id, file);
+  }
+
   const { error } = await supabase
     .from("activities")
-    .update(parseFields(formData))
+    .update(fields)
     .eq("id", id);
   if (error) {
     return redirectError(error.message);

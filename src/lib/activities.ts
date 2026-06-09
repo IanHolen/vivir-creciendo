@@ -14,6 +14,12 @@ export interface Activity {
   full_description: string | null;
   week: number | null;
   sort_order: number | null;
+  /**
+   * URL pública de la imagen de la actividad. Opcional: viene del contrato de
+   * imágenes de back (task adc20faa); si la RPC aún no la expone llega como
+   * undefined/null y la UI cae con elegancia (sin imagen).
+   */
+  image_url?: string | null;
 }
 
 export async function getActivities(): Promise<Activity[]> {
@@ -21,4 +27,10 @@ export async function getActivities(): Promise<Activity[]> {
   const { data, error } = await supabase.rpc("get_activities");
   if (error || !data) return [];
   return data as Activity[];
+}
+
+/** Una sola actividad por id (para la ruta de detalle /actividades/[id]). */
+export async function getActivity(id: string): Promise<Activity | null> {
+  const activities = await getActivities();
+  return activities.find((a) => a.id === id) ?? null;
 }

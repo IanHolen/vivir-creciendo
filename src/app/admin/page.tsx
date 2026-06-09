@@ -21,6 +21,7 @@ interface AdminActivity {
   week: number | null;
   sort_order: number | null;
   is_active: boolean;
+  image_url: string | null;
 }
 
 const inputClass =
@@ -79,6 +80,31 @@ function Fields({ a }: { a?: AdminActivity }) {
           className={inputClass}
         />
       </label>
+      <div className="mt-4">
+        <span className={labelClass}>Imagen de la actividad</span>
+        {a?.image_url && (
+          <div className="mt-2 flex items-center gap-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={a.image_url}
+              alt={`Imagen actual de ${a.title}`}
+              className="w-32 h-24 object-cover rounded-xl border border-vc-cream"
+            />
+            <span className="text-base text-vc-blue-dark/60">
+              Imagen actual. Sube una nueva para reemplazarla.
+            </span>
+          </div>
+        )}
+        <input
+          name="image"
+          type="file"
+          accept="image/*"
+          className="mt-2 block w-full text-base text-vc-blue-dark file:mr-4 file:min-h-[44px] file:px-5 file:py-2 file:rounded-xl file:border-0 file:bg-vc-cream file:text-vc-blue-dark file:font-medium hover:file:bg-vc-cream/70 file:cursor-pointer"
+        />
+        <p className="mt-1 text-sm text-vc-blue-dark/50">
+          Formato JPG o PNG, máximo 5 MB.
+        </p>
+      </div>
       <label className="mt-4 flex items-center gap-3 text-lg text-vc-blue-dark">
         <input
           name="is_active"

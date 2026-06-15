@@ -1,4 +1,4 @@
-import { Globe, Camera, Play } from "lucide-react";
+import { Instagram } from "lucide-react";
 import Logo from "./Logo";
 import { siteConfig, navLinks } from "@/lib/content";
 
@@ -10,34 +10,20 @@ export default function Footer() {
           {/* Logo + social */}
           <div className="flex flex-col items-center md:items-start gap-6">
             <Logo variant="white" className="h-14 w-auto" />
-            <div className="flex gap-4">
-              <a
-                href={siteConfig.social.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
-                aria-label="Facebook"
-              >
-                <Globe className="w-5 h-5" aria-hidden="true" />
-              </a>
+            <div className="flex flex-col items-center md:items-start gap-2">
               <a
                 href={siteConfig.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
-                aria-label="Instagram"
+                className="inline-flex items-center gap-3 min-h-[48px] px-5 rounded-full bg-white/10 hover:bg-white/20 transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
+                aria-label="Síguenos en Instagram"
               >
-                <Camera className="w-5 h-5" aria-hidden="true" />
+                <Instagram className="w-5 h-5" aria-hidden="true" />
+                <span className="font-medium">Síguenos en Instagram</span>
               </a>
-              <a
-                href={siteConfig.social.youtube}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
-                aria-label="YouTube"
-              >
-                <Play className="w-5 h-5" aria-hidden="true" />
-              </a>
+              <span className="text-white/70 text-sm">
+                Encuéntranos como @vivir_creciendo
+              </span>
             </div>
           </div>
 

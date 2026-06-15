@@ -39,7 +39,7 @@ export default function Team() {
         {collaborators.length > 0 && (
           <div className="mt-12">
             <h3 className="text-xl font-semibold text-vc-blue-dark/60 text-center mb-8">
-              Nuestro equipo de especialistas
+              Especialistas que han colaborado con Vivir Creciendo
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {collaborators.map((member) => (

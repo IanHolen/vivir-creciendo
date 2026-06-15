@@ -10,16 +10,36 @@ import { createClient } from "@/lib/supabase/server";
  * que un no-admin recibe error de RLS aunque llegue a llamarlas.
  */
 
+/** Texto libre del form: recortado, y null si quedó vacío. */
+function text(formData: FormData, name: string): string | null {
+  const v = String(formData.get(name) ?? "").trim();
+  return v === "" ? null : v;
+}
+
 function parseFields(formData: FormData) {
   const week = formData.get("week");
   const sortOrder = formData.get("sort_order");
   return {
     title: String(formData.get("title") ?? "").trim(),
     short_preview: String(formData.get("short_preview") ?? "").trim(),
-    full_description: String(formData.get("full_description") ?? "").trim(),
+    full_description: text(formData, "full_description"),
     week: week === null || week === "" ? null : Number(week),
     sort_order: sortOrder === null || sortOrder === "" ? null : Number(sortOrder),
     is_active: formData.get("is_active") === "on",
+    // --- campos del sitio real (bc3bc7bb): columnas en español, todas text ---
+    fecha: text(formData, "fecha"),
+    hora: text(formData, "hora"),
+    modalidad: text(formData, "modalidad"),
+    duracion: text(formData, "duracion"),
+    facilitador: text(formData, "facilitador"),
+    facilitador_rol: text(formData, "facilitador_rol"),
+    publico_objetivo: text(formData, "publico_objetivo"),
+    precio: text(formData, "precio"),
+    precio_nota: text(formData, "precio_nota"),
+    beneficios: text(formData, "beneficios"),
+    enlace_inscripcion: text(formData, "enlace_inscripcion"),
+    faq: text(formData, "faq"),
+    plan: text(formData, "plan"),
   };
 }
 

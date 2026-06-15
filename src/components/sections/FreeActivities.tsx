@@ -1,5 +1,5 @@
 import { Sparkles, Lock, LogIn, ArrowRight } from "lucide-react";
-import type { Activity } from "@/lib/activities";
+import { type Activity, planMeta } from "@/lib/activities";
 
 export default function FreeActivities({
   activities,
@@ -45,12 +45,26 @@ export default function FreeActivities({
                   />
                 )}
                 <div className="p-8 flex flex-col flex-grow">
-                  {activity.week != null && (
-                    <div className="flex items-center gap-2 text-vc-orange text-sm font-medium">
-                      <Sparkles className="w-4 h-4" aria-hidden="true" />
-                      <span>Semana {activity.week}</span>
-                    </div>
-                  )}
+                  {(() => {
+                    const plan = planMeta(activity.plan);
+                    return (
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {activity.week != null && (
+                          <span className="flex items-center gap-2 text-vc-orange text-sm font-medium">
+                            <Sparkles className="w-4 h-4" aria-hidden="true" />
+                            Semana {activity.week}
+                          </span>
+                        )}
+                        {plan && (
+                          <span
+                            className={`text-xs font-bold uppercase tracking-wide px-2 py-0.5 rounded-full ${plan.badgeClass}`}
+                          >
+                            {plan.label}
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })()}
                   <h3 className="mt-3 font-semibold text-2xl text-vc-blue-dark leading-snug">
                     {activity.title}
                   </h3>

@@ -55,9 +55,13 @@ export default function Nosotros() {
         {/* Specialists */}
         {collaborators.length > 0 && (
           <div className="mt-16">
-            <h3 className="text-xl font-semibold text-vc-blue-dark/60 text-center mb-8">
-              Nuestro equipo de especialistas
+            <h3 className="text-xl font-semibold text-vc-blue-dark/60 text-center">
+              Colaboradores que han trabajado con Vivir Creciendo
             </h3>
+            <p className="text-base text-vc-blue-dark/50 text-center mt-2 mb-8 max-w-2xl mx-auto">
+              Profesionales de distintas comunidades que han compartido sus
+              actividades con nosotros.
+            </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {collaborators.map((member) => (
                 <div key={member.name} className="text-center p-4">

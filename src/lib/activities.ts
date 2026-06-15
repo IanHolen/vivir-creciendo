@@ -26,6 +26,16 @@ export function planMeta(plan: string | null | undefined) {
   return PLAN_META[plan.trim().toLowerCase() as ActivityPlan] ?? null;
 }
 
+/** Orden de los planes para agrupar/ordenar en el landing. */
+export const PLAN_ORDER: ActivityPlan[] = ["gratuita", "basica", "plus"];
+
+/** Rango de orden de un plan (gratuita=0, basica=1, plus=2, sin/desconocido=último). */
+export function planRank(plan: string | null | undefined): number {
+  if (!plan) return PLAN_ORDER.length;
+  const i = PLAN_ORDER.indexOf(plan.trim().toLowerCase() as ActivityPlan);
+  return i === -1 ? PLAN_ORDER.length : i;
+}
+
 /** Etiqueta legible de la modalidad (texto libre en DB). */
 export function modalidadLabel(m: string | null | undefined): string | null {
   if (!m) return null;

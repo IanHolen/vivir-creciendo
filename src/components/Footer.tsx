@@ -1,6 +1,26 @@
-import { Instagram } from "lucide-react";
 import Logo from "./Logo";
 import { siteConfig, navLinks } from "@/lib/content";
+
+// Ícono de Instagram inline: lucide-react 1.x ya no exporta íconos de marca
+// (Instagram/Facebook/YouTube fueron removidos), así que lo dibujamos a mano.
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+    </svg>
+  );
+}
 
 export default function Footer() {
   return (
@@ -18,7 +38,7 @@ export default function Footer() {
                 className="inline-flex items-center gap-3 min-h-[48px] px-5 rounded-full bg-white/10 hover:bg-white/20 transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
                 aria-label="Síguenos en Instagram"
               >
-                <Instagram className="w-5 h-5" aria-hidden="true" />
+                <InstagramIcon className="w-5 h-5" />
                 <span className="font-medium">Síguenos en Instagram</span>
               </a>
               <span className="text-white/70 text-sm">

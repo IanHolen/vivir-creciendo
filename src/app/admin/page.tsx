@@ -24,6 +24,8 @@ import {
   adminResetPassword,
 } from "@/lib/admin-actions";
 import { PLAN_META } from "@/lib/activities";
+import FechaPicker from "@/components/admin/FechaPicker";
+import HoraPicker from "@/components/admin/HoraPicker";
 
 export const metadata = {
   title: "Panel de administración — Vivir Creciendo",
@@ -190,25 +192,9 @@ function Fields({ a }: { a?: AdminActivity }) {
         title="Cuándo y cómo"
         hint="Tal cual quieres que lo lea la gente. Puedes dejar en blanco lo que no aplique."
       >
+        <FechaPicker defaultValue={a?.fecha} />
+        <HoraPicker defaultValue={a?.hora} />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <label className={labelClass}>
-            Fecha
-            <input
-              name="fecha"
-              defaultValue={a?.fecha ?? ""}
-              placeholder="Miércoles 16, 23 y 30 de julio"
-              className={inputClass}
-            />
-          </label>
-          <label className={labelClass}>
-            Horario
-            <input
-              name="hora"
-              defaultValue={a?.hora ?? ""}
-              placeholder="10 hs CDMX · 12 hs ARG"
-              className={inputClass}
-            />
-          </label>
           <label className={labelClass}>
             Duración
             <input

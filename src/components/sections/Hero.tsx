@@ -18,10 +18,10 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center">
           {/* Texto: título + subtítulo + intro corta y cálida (KISS 60+) */}
           <div className="text-center lg:text-left max-w-2xl mx-auto lg:mx-0">
-            <h1 className="font-[var(--font-display)] text-4xl md:text-5xl lg:text-6xl font-black text-vc-blue-dark uppercase tracking-tight">
+            <h1 className="font-[var(--font-display)] text-4xl md:text-5xl lg:text-6xl font-black text-vc-blue-dark tracking-tight">
               {heroContent.title}
             </h1>
-            <p className="mt-4 font-[var(--font-subtitle)] text-xl md:text-2xl text-vc-blue uppercase italic">
+            <p className="mt-4 font-[var(--font-subtitle)] text-xl md:text-2xl text-vc-blue italic">
               {heroContent.subtitle}
             </p>
             <p className="mt-6 text-lg md:text-xl text-vc-blue-dark/80 leading-relaxed">
@@ -39,6 +39,31 @@ export default function Hero() {
               priority
               sizes="(max-width: 1024px) 100vw, 28rem"
             />
+          </div>
+        </div>
+
+        {/* Video institucional — espacio reservado (Ian 2026-06-28).
+            Ian entrega el video en julio 2026: NO insertar <video> todavía,
+            solo dejar la ranura lista para reemplazar este placeholder. */}
+        <div className="mt-12 md:mt-16 max-w-4xl mx-auto">
+          <div
+            className="relative aspect-video w-full rounded-3xl overflow-hidden bg-vc-blue/5 border border-vc-blue/10 flex flex-col items-center justify-center text-center px-6"
+            role="img"
+            aria-label="Video próximamente"
+          >
+            <span className="flex items-center justify-center w-16 h-16 rounded-full bg-white/70 shadow">
+              <svg
+                className="w-7 h-7 text-vc-blue translate-x-0.5"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </span>
+            <p className="mt-4 text-base md:text-lg font-medium text-vc-blue-dark/60">
+              Video próximamente
+            </p>
           </div>
         </div>
 

@@ -1,10 +1,20 @@
 import Image from "next/image";
-import { User } from "lucide-react";
-import { teamMembers } from "@/lib/content";
+import {
+  User,
+  UsersRound,
+  Laptop,
+  HeartPulse,
+  Flower2,
+  TrendingUp,
+} from "lucide-react";
+import { teamMembers, expertAreasTitle, expertAreas } from "@/lib/content";
+
+// Las 5 áreas de especialistas con su ícono (pareadas por índice con
+// `expertAreas` en content.ts).
+const EXPERT_AREA_ICONS = [UsersRound, Laptop, HeartPulse, Flower2, TrendingUp];
 
 export default function Nosotros() {
   const cofounders = teamMembers.filter((m) => m.cofounder);
-  const collaborators = teamMembers.filter((m) => !m.cofounder);
 
   return (
     <section
@@ -42,41 +52,50 @@ export default function Nosotros() {
               <h3 className="mt-5 font-semibold text-2xl text-vc-blue-dark">
                 {member.name}
               </h3>
-              <p className="text-vc-blue text-lg">{member.role}</p>
-              {member.quote && (
-                <blockquote className="mt-4 italic text-lg text-vc-blue-dark/70 leading-relaxed">
-                  &ldquo;{member.quote}&rdquo;
-                </blockquote>
+              {member.bio ? (
+                <p className="mt-4 text-lg text-vc-blue-dark/80 leading-relaxed text-left">
+                  {member.bio}
+                </p>
+              ) : (
+                <>
+                  <p className="text-vc-blue text-lg">{member.role}</p>
+                  {member.quote && (
+                    <blockquote className="mt-4 italic text-lg text-vc-blue-dark/70 leading-relaxed">
+                      &ldquo;{member.quote}&rdquo;
+                    </blockquote>
+                  )}
+                </>
               )}
             </div>
           ))}
         </div>
 
-        {/* Specialists */}
-        {collaborators.length > 0 && (
-          <div className="mt-16">
-            <h3 className="text-xl font-semibold text-vc-blue-dark/60 text-center">
-              Colaboradores que han trabajado con Vivir Creciendo
-            </h3>
-            <p className="text-base text-vc-blue-dark/50 text-center mt-2 mb-8 max-w-2xl mx-auto">
-              Profesionales de distintas comunidades que han compartido sus
-              actividades con nosotros.
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {collaborators.map((member) => (
-                <div key={member.name} className="text-center p-4">
-                  <div className="w-16 h-16 rounded-full mx-auto bg-vc-cream/60 flex items-center justify-center mb-3">
-                    <User className="w-7 h-7 text-vc-blue/30" aria-hidden="true" />
-                  </div>
-                  <p className="font-medium text-vc-blue-dark text-base">
-                    {member.name}
+        {/* Especialistas — "Nos nutrimos con expertos especialistas en"
+            (Ian 2026-06-28): reemplaza la grilla de avatares por 5 categorías
+            con ícono. Apila en mobile, 5 en una fila en desktop. */}
+        <div className="mt-16 md:mt-20">
+          <h3 className="font-[var(--font-display)] text-2xl md:text-3xl lg:text-4xl font-black text-vc-blue-dark text-center uppercase tracking-tight max-w-4xl mx-auto">
+            {expertAreasTitle}
+          </h3>
+          <ul className="mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            {expertAreas.map((area, i) => {
+              const Icon = EXPERT_AREA_ICONS[i] ?? User;
+              return (
+                <li
+                  key={area}
+                  className="bg-vc-cream/40 rounded-2xl p-6 border border-vc-cream flex flex-col items-center text-center"
+                >
+                  <span className="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-4 shadow-sm">
+                    <Icon className="w-8 h-8 text-vc-orange" aria-hidden="true" />
+                  </span>
+                  <p className="font-semibold text-lg text-vc-blue-dark leading-snug">
+                    {area}
                   </p>
-                  <p className="text-vc-blue-dark/50 text-sm">{member.role}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
     </section>
   );

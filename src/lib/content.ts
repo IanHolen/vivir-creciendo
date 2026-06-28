@@ -18,17 +18,86 @@ export const navLinks = [
 ];
 
 export const heroContent = {
-  title: "SEGUIR CRECIENDO TAMBIÉN ES PARTE DE ENVEJECER",
-  subtitle: "Una comunidad para vivir esta etapa con propósito y conexión",
+  title:
+    "Una Comunidad global +65 para nutrir la mente, ampliar vínculos y renovar el sentido.",
+  // Texto destacado debajo del título (Ian 2026-06-28).
+  subtitle: "100% online, en español.",
   // Intro corta y cálida (1 línea, KISS 60+) — la que se muestra en el hero.
   description:
     "Una comunidad online en español para seguir creciendo, conversando y compartiendo después de los 65.",
   // Versión larga preservada para reusar (era el `description` anterior).
   descriptionLong:
     "Somos una comunidad online en español para personas mayores de 65 años. Conversamos, aprendemos y compartimos experiencias. Porque la vida no se detiene a los 65.",
-  ctaPrimary: "CONOCE NUESTRAS MEMBRESÍAS",
+  ctaPrimary: "Conoce nuestras membresías",
   ctaSecondary: "Conoce nuestras actividades",
 };
+
+// Bloque que reemplaza la sección "Nuestras Actividades" en la landing
+// (Ian 2026-06-28). Título, texto y botón en un solo lugar para editar fácil.
+export const comunidadVentana = {
+  // NOTA: la "o" del título está en revisión por Ian. Editar libremente aquí.
+  title: "Una Ventana a nuestra Comunidad o a Vivir Creciendo",
+  text: "Te invitamos a participar de una actividad gratuita cada mes para que experimentes el espíritu de Vivir Creciendo: conversaciones con sentido, aprendizaje continuo y relaciones auténticas. Conócenos desde dentro y descubre todo lo que puede aportar esta comunidad a tu vida.",
+  ctaLabel: "SUMAR",
+  // Destino del botón PENDIENTE de confirmar con Ian. Por defecto apunta al
+  // mismo flujo de alta que el botón de membresías (#contacto). Fácil de
+  // re-cablear cambiando solo este valor.
+  ctaHref: "#contacto",
+};
+
+// Bloque "¿Qué incluyen las Membresías?" (Ian 2026-06-28). Reemplaza las
+// tarjetas con precios en la sección #membresias. SIN precios (por confirmar)
+// y SIN botón propio (el CTA 'Quiero sumarme' vive en otro bloque/task).
+export const membershipIncludes = {
+  title: "¿Qué incluyen las Membresías?",
+  esencial: {
+    titulo: "Esencial",
+    items: [
+      {
+        k: "Cine y Reflexión",
+        v: "Te enviamos una película, la ves y luego conversamos juntos.",
+      },
+      {
+        k: "Caminando Juntos",
+        v: "Una Rueda de Trabajo para poner palabras a lo que estás viviendo, escuchar otras historias y descubrir la energía de la Comunidad.",
+      },
+      {
+        k: "Nutrición y Bienestar",
+        v: "Trabajamos la relación con el cuerpo desde el cuidado. Exploramos hábitos que sostienen la energía, la claridad y vitalidad.",
+      },
+      {
+        k: "Acceso a toda la biblioteca de contenidos en YouTube",
+        v: "Talleres, Entrevistas, Conversaciones con Expertos.",
+      },
+    ],
+  },
+  plus: {
+    titulo: "Plus",
+    encabezado: "Incluye todo lo de la membresía esencial, más:",
+    items: [
+      {
+        k: "Diálogos culturales",
+        v: "Tomamos disparadores culturales para generar conversaciones que nos nutren.",
+      },
+      {
+        k: "Conversación con Especialistas",
+        v: "Conversaciones con especialistas que nos invitan a pensar, sentir y ampliar nuestra manera de vivir y cuidarnos.",
+      },
+    ],
+  },
+};
+
+// Sección "Nos nutrimos con expertos especialistas en" (Ian 2026-06-28).
+// Reemplaza la grilla de colaboradores/avatares por 5 categorías con ícono.
+// El ícono (componente lucide) se mapea por índice en Nosotros.tsx.
+export const expertAreasTitle = "Nos nutrimos con expertos especialistas en";
+export const expertAreas = [
+  "Vínculos, emociones y vida íntima",
+  "Tecnología e Inteligencia Artificial",
+  "Salud y Longevidad",
+  "Espiritualidad y Trascendencia",
+  "Finanzas y habilidades prácticas para la vida diaria",
+];
 
 export const quienesSomos = {
   title: "QUIÉNES SOMOS",
@@ -415,6 +484,9 @@ export interface TeamMember {
   name: string;
   role: string;
   quote: string | null;
+  /** Presentación en primera persona (cofundadoras). Si existe, se muestra
+   *  en lugar del role/quote en la sección NOSOTRAS de la landing. */
+  bio?: string | null;
   image: string | null;
   cofounder: boolean;
 }
@@ -425,7 +497,8 @@ export const teamMembers: TeamMember[] = [
     role: "Coach de Bienestar y Nutrición Integrativa. Cofundadora.",
     quote:
       "Te voy a decir algo: yo viví 50 años engañada. A mis 55 viví una experiencia transformadora para mi cuerpo y mente.",
-    image: null, // PLACEHOLDER: agregar foto
+    bio: "Soy Coach de Nutrición Integrativa, me especializo en acompañar a personas en el proceso de vivir con nutrición y bienestar. Combino mi experiencia con ciencia y calidez humana, para ayudarte a recuperar energía y vitalidad, sin dietas rígidas ni promesas vacías.",
+    image: null, // PLACEHOLDER: foto aún no publicada (Ian 2026-06-28) — mantener icono
     cofounder: true,
   },
   {
@@ -433,7 +506,8 @@ export const teamMembers: TeamMember[] = [
     role: "Psicoterapeuta con más de 30 años de experiencia. Cofundadora.",
     quote:
       "Vivir Creciendo es una comunidad que sostiene, que transforma, que legitima.",
-    image: null, // PLACEHOLDER: agregar foto
+    bio: "Soy Nurit Mileris-Zylbersztejn psicoterapeuta, docente y creadora de espacios de encuentro y reflexión, con más de 40 años de experiencia. Desde una mirada narrativa, colaborativa y coaching existencial, acompaño a las personas a construir historias de esperanza, crecimiento y nuevas posibilidades a lo largo de la vida.",
+    image: "/images/nurit.png", // foto real (Ian 2026-06-28)
     cofounder: true,
   },
   {
@@ -620,6 +694,19 @@ export const finalCta = {
   description:
     "Únete a una comunidad que te escucha, te acompaña y celebra cada etapa de tu vida. Tu historia merece ser compartida.",
   button: "VER MEMBRESÍAS",
+};
+
+// Sección "Soporte humano" (Ian 2026-06-28). Email y WhatsApp con PLACEHOLDERS
+// hasta que Ian pase los datos reales. Reemplazar solo estos valores:
+//   emailHref  → mailto:correo-real
+//   whatsappHref → https://wa.me/numero-real
+export const soporte = {
+  titulo: "Soporte humano",
+  emailLabel: "Por email",
+  emailHref: "mailto:#", // PENDIENTE Ian
+  whatsappLabel: "WhatsApp",
+  whatsappText: "unirse a la comunidad",
+  whatsappHref: "https://wa.me/#", // PENDIENTE Ian
 };
 
 export const footerText =

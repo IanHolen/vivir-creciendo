@@ -2,10 +2,6 @@ import Image from "next/image";
 import { heroContent, quienesSomos } from "@/lib/content";
 
 export default function Hero() {
-  const paragraphs = quienesSomos.paragraphs;
-  const bodyParagraphs = paragraphs.slice(0, -1);
-  const closingParagraph = paragraphs[paragraphs.length - 1];
-
   return (
     <section
       id="quienes-somos"
@@ -40,23 +36,6 @@ export default function Hero() {
               sizes="(max-width: 1024px) 100vw, 28rem"
             />
           </div>
-        </div>
-
-        {/* Quiénes somos — texto largo (full width), ARRIBA de los botones
-            (pedido de Ian). Una sola columna, alineado a la izquierda, ancho
-            amplio para legibilidad 60+. */}
-        <div className="mt-12 md:mt-16 max-w-5xl mx-auto space-y-4 text-left">
-          {bodyParagraphs.map((p, i) => (
-            <p
-              key={i}
-              className="text-lg md:text-xl leading-relaxed text-vc-blue-dark/80 text-justify hyphens-auto"
-            >
-              {p}
-            </p>
-          ))}
-          <p className="text-lg md:text-xl leading-relaxed font-semibold text-vc-blue-dark text-justify hyphens-auto">
-            {closingParagraph}
-          </p>
         </div>
 
         {/* Marco de video — ARRIBA de los 3 quotes (Ian 2026-06-29).

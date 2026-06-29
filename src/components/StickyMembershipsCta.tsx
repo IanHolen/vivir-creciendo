@@ -5,8 +5,9 @@ import { createPortal } from "react-dom";
 
 // Barra flotante de 3 botones (Ian 2026-06-29): Membresías · Actividades ·
 // Nosotras. Reemplaza el pill suelto de 1 botón.
-// - Aparece DESPUÉS de pasar el hero y SIGUE al usuario, fija abajo-centro,
-//   hasta cerca del footer (NO se oculta en #membresias).
+// - Aparece DESPUÉS de pasar el hero y SIGUE al usuario, fija ARRIBA pegada
+//   bajo el navbar (top-16/md:top-20), hasta cerca del footer (NO se oculta
+//   en #membresias).
 // - Render por portal a <body> para que ningún ancestro con transform/filter
 //   rompa el position:fixed.
 const ITEMS: { label: string; target?: string; href?: string }[] = [
@@ -67,10 +68,10 @@ export default function StickyMembershipsCta() {
 
   return createPortal(
     <div
-      className={`fixed bottom-3 inset-x-0 z-50 flex justify-center px-3 transition-all duration-300 ${
+      className={`fixed top-16 md:top-20 inset-x-0 z-30 flex justify-center px-3 transition-all duration-300 ${
         show
           ? "opacity-100 translate-y-0 pointer-events-auto"
-          : "opacity-0 translate-y-4 pointer-events-none"
+          : "opacity-0 -translate-y-4 pointer-events-none"
       }`}
     >
       <div className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/95 backdrop-blur shadow-xl ring-1 ring-vc-blue-dark/10 p-1.5">

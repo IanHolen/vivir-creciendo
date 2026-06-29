@@ -42,31 +42,6 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Video institucional — espacio reservado (Ian 2026-06-28).
-            Ian entrega el video en julio 2026: NO insertar <video> todavía,
-            solo dejar la ranura lista para reemplazar este placeholder. */}
-        <div className="mt-12 md:mt-16 max-w-4xl mx-auto">
-          <div
-            className="relative aspect-video w-full rounded-3xl overflow-hidden bg-vc-blue/5 border border-vc-blue/10 flex flex-col items-center justify-center text-center px-6"
-            role="img"
-            aria-label="Video próximamente"
-          >
-            <span className="flex items-center justify-center w-16 h-16 rounded-full bg-white/70 shadow">
-              <svg
-                className="w-7 h-7 text-vc-blue translate-x-0.5"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </span>
-            <p className="mt-4 text-base md:text-lg font-medium text-vc-blue-dark/60">
-              Video próximamente
-            </p>
-          </div>
-        </div>
-
         {/* Quiénes somos — texto largo (full width), ARRIBA de los botones
             (pedido de Ian). Una sola columna, alineado a la izquierda, ancho
             amplio para legibilidad 60+. */}

@@ -5,6 +5,7 @@ import FreeActivities from "@/components/sections/FreeActivities";
 import Memberships from "@/components/sections/Memberships";
 import FinalCTA from "@/components/sections/FinalCTA";
 import Footer from "@/components/Footer";
+import StickyMembershipsCta from "@/components/StickyMembershipsCta";
 import { getSessionUser } from "@/lib/session";
 import { getActivities } from "@/lib/activities";
 
@@ -40,6 +41,7 @@ export default async function Home({
         <FinalCTA />
       </main>
       <Footer />
+      <StickyMembershipsCta />
     </>
   );
 }

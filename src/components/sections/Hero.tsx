@@ -59,19 +59,7 @@ export default function Hero() {
           </p>
         </div>
 
-        <ul className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-          {quienesSomos.highlights.map((phrase) => (
-            <li
-              key={phrase}
-              className="bg-white/70 rounded-2xl p-6 text-center text-lg font-medium italic text-vc-blue-dark leading-snug border border-white/80"
-            >
-              &ldquo;{phrase}&rdquo;
-            </li>
-          ))}
-        </ul>
-
-        {/* Marco de video — PRIMERO, debajo del texto Quiénes somos
-            (Ian 2026-06-29: orden invertido, el video va antes que los botones).
+        {/* Marco de video — ARRIBA de los 3 quotes (Ian 2026-06-29).
             El video real llega en julio; por ahora marco/placeholder. */}
         <div className="mt-12 max-w-4xl mx-auto">
           <div
@@ -95,7 +83,19 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Botones CTA — DESPUÉS del marco de video. */}
+        {/* 3 quotes — DEBAJO del marco de video. */}
+        <ul className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+          {quienesSomos.highlights.map((phrase) => (
+            <li
+              key={phrase}
+              className="bg-white/70 rounded-2xl p-6 text-center text-lg font-medium italic text-vc-blue-dark leading-snug border border-white/80"
+            >
+              &ldquo;{phrase}&rdquo;
+            </li>
+          ))}
+        </ul>
+
+        {/* Botones CTA — debajo de los quotes. */}
         <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
           <a
             href="#membresias"

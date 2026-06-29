@@ -30,7 +30,7 @@ export default function FreeActivities({
             <h2 className="font-[var(--font-display)] text-3xl md:text-4xl font-black text-vc-blue-dark uppercase tracking-tight">
               {comunidadVentana.title}
             </h2>
-            <p className="mt-5 text-lg md:text-xl text-vc-blue-dark/80 leading-relaxed">
+            <p className="mt-5 text-lg md:text-xl text-vc-blue-dark/80 leading-relaxed text-justify hyphens-auto">
               {comunidadVentana.text}
             </p>
             <div className="mt-8 flex justify-center lg:justify-start">
@@ -47,8 +47,8 @@ export default function FreeActivities({
           {/* Imagen — llena la otra mitad (debajo en mobile, derecha en desktop) */}
           <div className="relative w-full h-60 sm:h-72 lg:h-auto lg:min-h-[420px]">
             <Image
-              src="/images/seniors-together.jpg"
-              alt="Personas de la comunidad Vivir Creciendo compartiendo una actividad"
+              src="/images/comunidad-ventana.jpg"
+              alt="Grupo de personas mayores de la comunidad Vivir Creciendo conversando y compartiendo"
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"

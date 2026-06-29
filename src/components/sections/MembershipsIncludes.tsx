@@ -37,7 +37,7 @@ export default function MembershipsIncludes() {
                     <span className="block font-semibold text-lg text-vc-blue-dark leading-snug">
                       {item.k}
                     </span>
-                    <span className="block mt-1 text-base text-vc-blue-dark/70 leading-relaxed">
+                    <span className="block mt-1 text-base text-vc-blue-dark/70 leading-relaxed text-justify hyphens-auto">
                       {item.v}
                     </span>
                   </span>
@@ -65,7 +65,7 @@ export default function MembershipsIncludes() {
                     <span className="block font-semibold text-lg text-vc-blue-dark leading-snug">
                       {item.k}
                     </span>
-                    <span className="block mt-1 text-base text-vc-blue-dark/70 leading-relaxed">
+                    <span className="block mt-1 text-base text-vc-blue-dark/70 leading-relaxed text-justify hyphens-auto">
                       {item.v}
                     </span>
                   </span>

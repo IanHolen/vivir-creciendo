@@ -24,7 +24,7 @@ export default function Hero() {
             <p className="mt-4 font-[var(--font-subtitle)] text-xl md:text-2xl text-vc-blue italic">
               {heroContent.subtitle}
             </p>
-            <p className="mt-6 text-lg md:text-xl text-vc-blue-dark/80 leading-relaxed">
+            <p className="mt-6 text-lg md:text-xl text-vc-blue-dark/80 leading-relaxed text-justify hyphens-auto">
               {heroContent.description}
             </p>
           </div>
@@ -49,12 +49,12 @@ export default function Hero() {
           {bodyParagraphs.map((p, i) => (
             <p
               key={i}
-              className="text-lg md:text-xl leading-relaxed text-vc-blue-dark/80"
+              className="text-lg md:text-xl leading-relaxed text-vc-blue-dark/80 text-justify hyphens-auto"
             >
               {p}
             </p>
           ))}
-          <p className="text-lg md:text-xl leading-relaxed font-semibold text-vc-blue-dark">
+          <p className="text-lg md:text-xl leading-relaxed font-semibold text-vc-blue-dark text-justify hyphens-auto">
             {closingParagraph}
           </p>
         </div>

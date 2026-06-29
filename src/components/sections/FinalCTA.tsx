@@ -39,7 +39,7 @@ export default function FinalCTA() {
           <h2 className="font-[var(--font-display)] text-3xl md:text-4xl lg:text-5xl font-black text-white uppercase tracking-tight">
             {finalCta.title}
           </h2>
-          <p className="mt-4 text-xl text-white/90 leading-relaxed">
+          <p className="mt-4 text-xl text-white/90 leading-relaxed text-justify hyphens-auto sm:text-center">
             {finalCta.description}
           </p>
         </div>

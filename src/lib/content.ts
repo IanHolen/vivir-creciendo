@@ -498,7 +498,7 @@ export const teamMembers: TeamMember[] = [
     quote:
       "Te voy a decir algo: yo viví 50 años engañada. A mis 55 viví una experiencia transformadora para mi cuerpo y mente.",
     bio: "Soy Coach de Nutrición Integrativa, me especializo en acompañar a personas en el proceso de vivir con nutrición y bienestar. Combino mi experiencia con ciencia y calidez humana, para ayudarte a recuperar energía y vitalidad, sin dietas rígidas ni promesas vacías.",
-    image: null, // PLACEHOLDER: foto aún no publicada (Ian 2026-06-28) — mantener icono
+    image: "/images/ale.jpg", // foto real (Ian 2026-06-29)
     cofounder: true,
   },
   {
@@ -506,7 +506,7 @@ export const teamMembers: TeamMember[] = [
     role: "Psicoterapeuta con más de 30 años de experiencia. Cofundadora.",
     quote:
       "Vivir Creciendo es una comunidad que sostiene, que transforma, que legitima.",
-    bio: "Soy Nurit Mileris-Zylbersztejn psicoterapeuta, docente y creadora de espacios de encuentro y reflexión, con más de 40 años de experiencia. Desde una mirada narrativa, colaborativa y coaching existencial, acompaño a las personas a construir historias de esperanza, crecimiento y nuevas posibilidades a lo largo de la vida.",
+    bio: "Soy psicoterapeuta, docente y creadora de espacios de encuentro y reflexión, con más de 40 años de experiencia. Desde una mirada narrativa, colaborativa y coaching existencial, acompaño a las personas a construir historias de esperanza, crecimiento y nuevas posibilidades a lo largo de la vida.",
     image: "/images/nurit.png", // foto real (Ian 2026-06-28)
     cofounder: true,
   },

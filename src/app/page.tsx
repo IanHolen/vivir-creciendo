@@ -3,7 +3,6 @@ import Hero from "@/components/sections/Hero";
 import Nosotros from "@/components/sections/Nosotros";
 import FreeActivities from "@/components/sections/FreeActivities";
 import Memberships from "@/components/sections/Memberships";
-import MembershipsIncludes from "@/components/sections/MembershipsIncludes";
 import FinalCTA from "@/components/sections/FinalCTA";
 import Footer from "@/components/Footer";
 import { getSessionUser } from "@/lib/session";
@@ -33,10 +32,10 @@ export default async function Home({
         <Nosotros />
         {/* 3 — Actividades (chill, no comercial) */}
         <FreeActivities activities={activities} isLoggedIn={isLoggedIn} />
-        {/* 4 — Membresías (precios, ancla #membresias — destino del Hero) */}
+        {/* 4 — Membresías (precios, ancla #membresias — destino del Hero).
+            Las descripciones del viejo bloque "¿Qué incluyen?" ahora viven
+            dentro de cada tarjeta de precios. */}
         <Memberships isLoggedIn={isLoggedIn} />
-        {/* 4b — ¿Qué incluyen las Membresías? (Esencial + Plus), coexiste debajo */}
-        <MembershipsIncludes />
         {/* Cierre — contacto (incluye el link secundario a /nosotros) */}
         <FinalCTA />
       </main>

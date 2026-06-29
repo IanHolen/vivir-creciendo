@@ -304,9 +304,32 @@ export interface MembershipTier {
   fullDescription: string;
 }
 
+// Descripción por ítem del checklist de las membresías (Ian 2026-06-29).
+// Fusiona las descripciones del viejo bloque "¿Qué incluyen las Membresías?"
+// dentro de las tarjetas de precios. Mismo concepto = misma desc en todos los
+// planes; se busca por el texto exacto del ítem.
+export const membershipItemDescriptions: Record<string, string> = {
+  "1 actividad gratuita al mes":
+    "Participá de una actividad gratuita al mes para conocernos sin compromiso.",
+  "Incluye la actividad gratuita":
+    "Participá de una actividad gratuita al mes para conocernos sin compromiso.",
+  "Cine reflexión":
+    "Te enviamos una película, la ves y luego conversamos juntos.",
+  "Caminemos juntos":
+    "Una Rueda de Trabajo para poner palabras a lo que estás viviendo, escuchar otras historias y descubrir la energía de la Comunidad.",
+  "Salud y bienestar":
+    "Trabajamos la relación con el cuerpo desde el cuidado. Exploramos hábitos que sostienen la energía, la claridad y vitalidad.",
+  "Círculo cultural":
+    "Tomamos disparadores culturales para generar conversaciones que nos nutren.",
+  "1 plática con foro":
+    "Conversaciones con especialistas que nos invitan a pensar, sentir y ampliar nuestra manera de vivir y cuidarnos.",
+  "Acceso a YouTube":
+    "Talleres, Entrevistas, Conversaciones con Expertos.",
+};
+
 export const membershipTiers: MembershipTier[] = [
   {
-    name: "Gratis",
+    name: "Gratuita",
     kind: "gratis",
     tagline: "Una actividad gratuita para conocernos, sin compromiso.",
     activities: ["1 actividad gratuita al mes"],

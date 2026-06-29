@@ -1,5 +1,5 @@
 import { Check, Gift, Plus } from "lucide-react";
-import { membershipTiers } from "@/lib/content";
+import { membershipTiers, membershipItemDescriptions } from "@/lib/content";
 
 export default function Memberships({
   isLoggedIn = false,
@@ -62,15 +62,22 @@ export default function Memberships({
                 </p>
               )}
 
-              <ul className="space-y-3 mb-6 flex-1">
+              <ul className="space-y-4 mb-6 flex-1">
                 {tier.activities.map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <Check
-                      className="w-5 h-5 text-vc-orange flex-shrink-0 mt-0.5"
+                      className="w-5 h-5 text-vc-orange flex-shrink-0 mt-1"
                       aria-hidden="true"
                     />
-                    <span className="text-vc-blue-dark/90 text-lg leading-snug">
-                      {item}
+                    <span>
+                      <span className="block text-vc-blue-dark/90 text-lg leading-snug font-medium">
+                        {item}
+                      </span>
+                      {membershipItemDescriptions[item] && (
+                        <span className="block mt-1 text-base text-vc-blue-dark/70 leading-relaxed">
+                          {membershipItemDescriptions[item]}
+                        </span>
+                      )}
                     </span>
                   </li>
                 ))}
@@ -80,10 +87,19 @@ export default function Memberships({
                     className="flex items-start gap-3 text-vc-blue-dark/60"
                   >
                     <Plus
-                      className="w-5 h-5 text-vc-blue flex-shrink-0 mt-0.5"
+                      className="w-5 h-5 text-vc-blue flex-shrink-0 mt-1"
                       aria-hidden="true"
                     />
-                    <span className="text-base leading-snug">{item}</span>
+                    <span>
+                      <span className="block text-base leading-snug font-medium">
+                        {item}
+                      </span>
+                      {membershipItemDescriptions[item] && (
+                        <span className="block mt-1 text-sm leading-relaxed">
+                          {membershipItemDescriptions[item]}
+                        </span>
+                      )}
+                    </span>
                   </li>
                 ))}
               </ul>

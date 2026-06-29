@@ -340,7 +340,7 @@ export const membershipTiers: MembershipTier[] = [
     extras: [],
     priceLabel: "Sin costo",
     fullDescription:
-      "Una puerta de entrada a la comunidad: participá de una actividad gratuita al mes y viví en primera persona cómo conversamos, aprendemos y nos acompañamos. Ideal para conocernos antes de dar el siguiente paso.",
+      "Una puerta de entrada a la comunidad: participá de una actividad gratuita al mes y conocé en primera persona cómo conversamos y nos acompañamos.",
   },
   {
     name: "Esencial",
@@ -354,7 +354,7 @@ export const membershipTiers: MembershipTier[] = [
     extras: ["Incluye la actividad gratuita", "Acceso a YouTube"],
     priceLabel: "Precio por confirmar",
     fullDescription:
-      "Acceso mensual a nuestras tres actividades fundamentales — Cine reflexión, Caminemos juntos y Salud y bienestar — más la actividad gratuita y el acceso a nuestro canal de YouTube. Una rutina semanal de encuentros que estimulan la mente, cuidan el cuerpo y fortalecen los vínculos.",
+      "Acceso mensual a nuestras tres actividades fundamentales, más la actividad gratuita y el canal de YouTube. Encuentros semanales que estimulan la mente y fortalecen los vínculos.",
   },
   {
     name: "Plus",
@@ -373,7 +373,7 @@ export const membershipTiers: MembershipTier[] = [
     inheritsFrom: "Esencial",
     priceLabel: "Precio por confirmar",
     fullDescription:
-      "La membresía más completa: todo lo de Esencial más el Círculo cultural y una plática mensual con foro de intercambio. Cinco actividades pensadas para quienes quieren vivir la comunidad a pleno, con más espacios de aprendizaje, cultura y conversación profunda.",
+      "La membresía más completa: todo lo de Esencial, más el Círculo cultural y una plática mensual con foro. Para vivir la comunidad a pleno.",
   },
 ];
 

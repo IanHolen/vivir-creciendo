@@ -137,7 +137,7 @@ export default function FinalCTA() {
             href="/nosotros"
             className="inline-flex items-center justify-center gap-2 min-h-[52px] px-8 py-3.5 border-2 border-white/80 text-white hover:bg-white hover:text-vc-orange font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-white"
           >
-            Conoce más detalles sobre Nosotros
+            Conoce más detalles sobre Nosotras
             <ArrowRight className="w-5 h-5" aria-hidden="true" />
           </a>
         </div>

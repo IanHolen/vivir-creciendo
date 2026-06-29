@@ -2,15 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { ArrowRight } from "lucide-react";
 
-// CTA flotante "Conoce nuestras membresías" (Ian 2026-06-29).
-// - Aparece DESPUÉS de pasar el hero (no dentro del hero).
-// - QUEDA FIJO al viewport y sigue al usuario por todas las secciones,
+// Barra flotante de 3 botones (Ian 2026-06-29): Membresías · Actividades ·
+// Nosotras. Reemplaza el pill suelto de 1 botón.
+// - Aparece DESPUÉS de pasar el hero y SIGUE al usuario, fija abajo-centro,
 //   hasta cerca del footer (NO se oculta en #membresias).
-// - Se renderiza por portal a <body> para que ningún ancestro con
-//   transform/filter/overflow rompa el position:fixed.
-// - Abajo a la derecha. Click = scroll suave a #membresias.
+// - Render por portal a <body> para que ningún ancestro con transform/filter
+//   rompa el position:fixed.
+const ITEMS: { label: string; target?: string; href?: string }[] = [
+  { label: "Membresías", target: "membresias" },
+  { label: "Actividades", target: "actividades" },
+  { label: "Nosotras", href: "/nosotros" },
+];
+
 export default function StickyMembershipsCta() {
   const [mounted, setMounted] = useState(false);
   const [show, setShow] = useState(false);
@@ -28,8 +32,6 @@ export default function StickyMembershipsCta() {
       (entries) => {
         for (const e of entries) {
           if (e.target === hero) {
-            // Pasamos el hero cuando su parte inferior ya quedó por encima
-            // del viewport.
             state.pastHero =
               !e.isIntersecting && e.boundingClientRect.bottom <= 0;
           } else if (e.target === footer) {
@@ -43,7 +45,6 @@ export default function StickyMembershipsCta() {
 
     [hero, footer].forEach((el) => el && io.observe(el));
 
-    // Estado inicial (por si la página ya viene scrolleada).
     if (hero) state.pastHero = hero.getBoundingClientRect().bottom <= 0;
     if (footer) {
       const fr = footer.getBoundingClientRect();
@@ -54,30 +55,43 @@ export default function StickyMembershipsCta() {
     return () => io.disconnect();
   }, []);
 
-  const handleClick = (e: React.MouseEvent) => {
+  const scrollTo = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
-    document
-      .getElementById("membresias")
-      ?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   if (!mounted) return null;
 
+  const pill =
+    "inline-flex items-center justify-center min-h-[44px] px-3 sm:px-5 rounded-full bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-xs sm:text-base whitespace-nowrap transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange";
+
   return createPortal(
-    <a
-      href="#membresias"
-      onClick={handleClick}
-      aria-hidden={!show}
-      tabIndex={show ? 0 : -1}
-      className={`fixed bottom-5 right-5 z-50 inline-flex items-center justify-center gap-2 min-h-[52px] px-5 sm:px-6 py-3 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-sm sm:text-base rounded-full shadow-xl transition-all duration-300 focus-visible:ring-4 focus-visible:ring-vc-orange ${
+    <div
+      className={`fixed bottom-3 inset-x-0 z-50 flex justify-center px-3 transition-all duration-300 ${
         show
           ? "opacity-100 translate-y-0 pointer-events-auto"
           : "opacity-0 translate-y-4 pointer-events-none"
       }`}
     >
-      Conoce nuestras membresías
-      <ArrowRight className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
-    </a>,
+      <div className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/95 backdrop-blur shadow-xl ring-1 ring-vc-blue-dark/10 p-1.5">
+        {ITEMS.map((it) =>
+          it.href ? (
+            <a key={it.label} href={it.href} className={pill}>
+              {it.label}
+            </a>
+          ) : (
+            <a
+              key={it.label}
+              href={`#${it.target}`}
+              onClick={scrollTo(it.target as string)}
+              className={pill}
+            >
+              {it.label}
+            </a>
+          ),
+        )}
+      </div>
+    </div>,
     document.body,
   );
 }

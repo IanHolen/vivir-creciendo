@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Phone, ArrowRight } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { finalCta, soporte } from "@/lib/content";
 
 // Handler centralizado de la captura "Quiero sumarme".
@@ -127,19 +127,6 @@ export default function FinalCTA() {
           <p className="mt-4 text-center text-sm text-white/60">
             Datos de contacto próximamente.
           </p>
-        </div>
-
-        {/* Acción secundaria — conocer más sobre Nosotros (/nosotros).
-            Antes flotaba en una banda blanca suelta entre la zona naranja y el
-            footer (se veía huérfana); ahora va agrupada acá, debajo de Soporte. */}
-        <div className="mt-10 pt-8 border-t border-white/20 text-center">
-          <a
-            href="/nosotros"
-            className="inline-flex items-center justify-center gap-2 min-h-[52px] px-8 py-3.5 border-2 border-white/80 text-white hover:bg-white hover:text-vc-orange font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-white"
-          >
-            Conoce más detalles sobre Nosotras
-            <ArrowRight className="w-5 h-5" aria-hidden="true" />
-          </a>
         </div>
       </div>
     </section>

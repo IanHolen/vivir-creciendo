@@ -88,6 +88,12 @@ export default function Hero() {
           >
             {heroContent.ctaSecondary}
           </a>
+          <a
+            href="/nosotros"
+            className="inline-flex items-center justify-center min-h-[56px] px-8 py-4 text-vc-blue-dark font-semibold text-lg hover:text-vc-orange transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded-xl"
+          >
+            Conoce más detalles sobre Nosotras
+          </a>
         </div>
       </div>
     </section>

@@ -90,7 +90,8 @@ export const membershipIncludes = {
 // Sección "Nos nutrimos con expertos especialistas en" (Ian 2026-06-28).
 // Reemplaza la grilla de colaboradores/avatares por 5 categorías con ícono.
 // El ícono (componente lucide) se mapea por índice en Nosotros.tsx.
-export const expertAreasTitle = "Nos nutrimos con expertos especialistas en";
+export const expertAreasTitle =
+  "Nos enriquecemos con profesionales especializados en";
 export const expertAreas = [
   "Vínculos, emociones y vida íntima",
   "Tecnología e Inteligencia Artificial",

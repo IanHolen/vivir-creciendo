@@ -315,7 +315,7 @@ export const membershipTiers: MembershipTier[] = [
       "Una puerta de entrada a la comunidad: participá de una actividad gratuita al mes y viví en primera persona cómo conversamos, aprendemos y nos acompañamos. Ideal para conocernos antes de dar el siguiente paso.",
   },
   {
-    name: "Básica",
+    name: "Esencial",
     kind: "paga",
     tagline: "Tres espacios para conversar, reflexionar y cuidarte.",
     activities: [
@@ -344,7 +344,7 @@ export const membershipTiers: MembershipTier[] = [
     featured: true,
     priceLabel: "Precio por confirmar",
     fullDescription:
-      "La membresía más completa: todo lo de Básica más el Círculo cultural y una plática mensual con foro de intercambio. Cinco actividades pensadas para quienes quieren vivir la comunidad a pleno, con más espacios de aprendizaje, cultura y conversación profunda.",
+      "La membresía más completa: todo lo de Esencial más el Círculo cultural y una plática mensual con foro de intercambio. Cinco actividades pensadas para quienes quieren vivir la comunidad a pleno, con más espacios de aprendizaje, cultura y conversación profunda.",
   },
 ];
 

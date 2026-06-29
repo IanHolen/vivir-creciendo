@@ -70,25 +70,9 @@ export default function Hero() {
           ))}
         </ul>
 
-        {/* Botones CTA — debajo del texto Quiénes somos. */}
-        <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-          <a
-            href="#membresias"
-            className="inline-flex items-center justify-center min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange shadow-lg"
-          >
-            {heroContent.ctaPrimary}
-          </a>
-          <a
-            href="#actividades"
-            className="inline-flex items-center justify-center min-h-[56px] px-8 py-4 text-vc-blue-dark font-semibold text-lg hover:text-vc-orange transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded-xl"
-          >
-            {heroContent.ctaSecondary}
-          </a>
-        </div>
-
-        {/* Marco de video — reincorporado y ordenado DEBAJO del texto del hero
-            + botón "Conoce nuestras membresías" (Ian 2026-06-29). El video real
-            llega en julio; por ahora marco/placeholder. */}
+        {/* Marco de video — PRIMERO, debajo del texto Quiénes somos
+            (Ian 2026-06-29: orden invertido, el video va antes que los botones).
+            El video real llega en julio; por ahora marco/placeholder. */}
         <div className="mt-12 max-w-4xl mx-auto">
           <div
             className="relative aspect-video w-full rounded-3xl overflow-hidden bg-white/70 border border-white/80 flex flex-col items-center justify-center text-center px-6"
@@ -109,6 +93,22 @@ export default function Hero() {
               Video próximamente
             </p>
           </div>
+        </div>
+
+        {/* Botones CTA — DESPUÉS del marco de video. */}
+        <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="#membresias"
+            className="inline-flex items-center justify-center min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange shadow-lg"
+          >
+            {heroContent.ctaPrimary}
+          </a>
+          <a
+            href="#actividades"
+            className="inline-flex items-center justify-center min-h-[56px] px-8 py-4 text-vc-blue-dark font-semibold text-lg hover:text-vc-orange transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded-xl"
+          >
+            {heroContent.ctaSecondary}
+          </a>
         </div>
       </div>
     </section>

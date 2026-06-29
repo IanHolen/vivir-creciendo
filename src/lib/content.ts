@@ -299,6 +299,10 @@ export interface MembershipTier {
   extras: string[];
   badge?: string;
   featured?: boolean;
+  /** Si el plan incluye todo lo de otro plan: se muestra una línea resumen
+   *  "Incluye todas las actividades de la membresía <inheritsFrom>." y se
+   *  ocultan los ítems heredados, dejando solo los exclusivos. */
+  inheritsFrom?: string;
   // Vista logueada — contenido completo
   priceLabel: string; // PLACEHOLDER: precios pendientes de Ian
   fullDescription: string;
@@ -366,6 +370,7 @@ export const membershipTiers: MembershipTier[] = [
     extras: ["Incluye la actividad gratuita", "Acceso a YouTube"],
     badge: "Más completa",
     featured: true,
+    inheritsFrom: "Esencial",
     priceLabel: "Precio por confirmar",
     fullDescription:
       "La membresía más completa: todo lo de Esencial más el Círculo cultural y una plática mensual con foro de intercambio. Cinco actividades pensadas para quienes quieren vivir la comunidad a pleno, con más espacios de aprendizaje, cultura y conversación profunda.",

@@ -22,7 +22,21 @@ export default function Memberships({
         </p>
 
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-          {membershipTiers.map((tier) => (
+          {membershipTiers.map((tier) => {
+            // Si el plan hereda de otro (ej. Plus ← Esencial), mostramos una
+            // línea resumen y ocultamos los ítems heredados, dejando solo los
+            // exclusivos de este plan.
+            const inherited = tier.inheritsFrom
+              ? membershipTiers.find((t) => t.name === tier.inheritsFrom)
+              : undefined;
+            const inheritedSet = new Set(
+              inherited ? [...inherited.activities, ...inherited.extras] : [],
+            );
+            const shownActivities = tier.activities.filter(
+              (a) => !inheritedSet.has(a),
+            );
+            const shownExtras = tier.extras.filter((e) => !inheritedSet.has(e));
+            return (
             <div
               key={tier.name}
               className={`relative bg-white rounded-2xl shadow-lg p-8 flex flex-col ${
@@ -62,11 +76,23 @@ export default function Memberships({
                 </p>
               )}
 
-              <ul className="space-y-4 mb-6 flex-1">
-                {tier.activities.map((item) => (
+              <ul className="space-y-3 mb-6 flex-1">
+                {inherited && (
+                  <li className="flex items-start gap-3">
+                    <Check
+                      className="w-5 h-5 text-vc-orange flex-shrink-0 mt-0.5"
+                      aria-hidden="true"
+                    />
+                    <span className="block text-vc-blue-dark text-lg leading-snug font-bold">
+                      Incluye todas las actividades de la membresía{" "}
+                      {tier.inheritsFrom}.
+                    </span>
+                  </li>
+                )}
+                {shownActivities.map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <Check
-                      className="w-5 h-5 text-vc-orange flex-shrink-0 mt-1"
+                      className="w-5 h-5 text-vc-orange flex-shrink-0 mt-0.5"
                       aria-hidden="true"
                     />
                     <span>
@@ -74,20 +100,20 @@ export default function Memberships({
                         {item}
                       </span>
                       {membershipItemDescriptions[item] && (
-                        <span className="block mt-1 text-base text-vc-blue-dark/70 leading-relaxed">
+                        <span className="block mt-0.5 text-sm text-vc-blue-dark/55 leading-snug">
                           {membershipItemDescriptions[item]}
                         </span>
                       )}
                     </span>
                   </li>
                 ))}
-                {tier.extras.map((item) => (
+                {shownExtras.map((item) => (
                   <li
                     key={item}
                     className="flex items-start gap-3 text-vc-blue-dark/60"
                   >
                     <Plus
-                      className="w-5 h-5 text-vc-blue flex-shrink-0 mt-1"
+                      className="w-5 h-5 text-vc-blue flex-shrink-0 mt-0.5"
                       aria-hidden="true"
                     />
                     <span>
@@ -95,7 +121,7 @@ export default function Memberships({
                         {item}
                       </span>
                       {membershipItemDescriptions[item] && (
-                        <span className="block mt-1 text-sm leading-relaxed">
+                        <span className="block mt-0.5 text-sm leading-snug text-vc-blue-dark/55">
                           {membershipItemDescriptions[item]}
                         </span>
                       )}
@@ -121,7 +147,8 @@ export default function Memberships({
                 {tier.kind === "gratis" ? "Quiero probar gratis" : "Quiero sumarme"}
               </a>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         <p className="mt-8 text-center text-base text-vc-blue-dark/60">

@@ -63,8 +63,10 @@ export default function StickyMembershipsCta() {
 
   if (!mounted) return null;
 
+  // Pills grandes, estilo de los botones inline del Hero. En mobile entran los
+  // 3 con label corto pero a buen tamaño; en desktop más holgados.
   const pill =
-    "inline-flex items-center justify-center min-h-[44px] px-3 sm:px-5 rounded-full bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-xs sm:text-base whitespace-nowrap transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange";
+    "inline-flex items-center justify-center min-h-[52px] px-3.5 sm:px-7 rounded-full bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-sm sm:text-lg whitespace-nowrap shadow-md transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange";
 
   return createPortal(
     <div
@@ -74,7 +76,7 @@ export default function StickyMembershipsCta() {
           : "opacity-0 -translate-y-4 pointer-events-none"
       }`}
     >
-      <div className="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/95 backdrop-blur shadow-xl ring-1 ring-vc-blue-dark/10 p-1.5">
+      <div className="flex items-center gap-2 sm:gap-3 rounded-full bg-white/95 backdrop-blur shadow-xl ring-1 ring-vc-blue-dark/10 p-2">
         {ITEMS.map((it) =>
           it.href ? (
             <a key={it.label} href={it.href} className={pill}>

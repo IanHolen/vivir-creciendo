@@ -4,10 +4,8 @@ import Nosotros from "@/components/sections/Nosotros";
 import FreeActivities from "@/components/sections/FreeActivities";
 import Memberships from "@/components/sections/Memberships";
 import MembershipsIncludes from "@/components/sections/MembershipsIncludes";
-import Newsletter from "@/components/sections/Newsletter";
 import FinalCTA from "@/components/sections/FinalCTA";
 import Footer from "@/components/Footer";
-import WhatsAppFloat from "@/components/WhatsAppFloat";
 import { ArrowRight } from "lucide-react";
 import { getSessionUser } from "@/lib/session";
 import { getActivities } from "@/lib/activities";
@@ -40,8 +38,7 @@ export default async function Home({
         <Memberships isLoggedIn={isLoggedIn} />
         {/* 4b — ¿Qué incluyen las Membresías? (Esencial + Plus), coexiste debajo */}
         <MembershipsIncludes />
-        {/* Cierre — contacto / newsletter */}
-        <Newsletter />
+        {/* Cierre — contacto */}
         <FinalCTA />
         {/* Banda de cierre — link secundario a la página Nosotros (Ian 2026-06-28) */}
         <section className="bg-white py-16 px-4 sm:px-6 lg:px-8">
@@ -57,7 +54,6 @@ export default async function Home({
         </section>
       </main>
       <Footer />
-      <WhatsAppFloat />
     </>
   );
 }

@@ -85,6 +85,31 @@ export default function Hero() {
             {heroContent.ctaSecondary}
           </a>
         </div>
+
+        {/* Marco de video — reincorporado y ordenado DEBAJO del texto del hero
+            + botón "Conoce nuestras membresías" (Ian 2026-06-29). El video real
+            llega en julio; por ahora marco/placeholder. */}
+        <div className="mt-12 max-w-4xl mx-auto">
+          <div
+            className="relative aspect-video w-full rounded-3xl overflow-hidden bg-white/70 border border-white/80 flex flex-col items-center justify-center text-center px-6"
+            role="img"
+            aria-label="Video próximamente"
+          >
+            <span className="flex items-center justify-center w-16 h-16 rounded-full bg-white shadow">
+              <svg
+                className="w-7 h-7 text-vc-blue translate-x-0.5"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </span>
+            <p className="mt-4 text-base md:text-lg font-medium text-vc-blue-dark/60">
+              Video próximamente
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );

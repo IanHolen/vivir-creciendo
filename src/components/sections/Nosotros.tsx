@@ -53,7 +53,10 @@ export default function Nosotros() {
                 {member.name}
               </h3>
               {member.bio ? (
-                <p className="mt-4 text-lg text-vc-blue-dark/80 leading-relaxed text-left">
+                <p
+                  lang="es"
+                  className="mt-4 text-lg text-vc-blue-dark/80 leading-relaxed text-justify hyphens-auto"
+                >
                   {member.bio}
                 </p>
               ) : (

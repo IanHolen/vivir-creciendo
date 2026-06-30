@@ -63,11 +63,10 @@ export default function StickyMembershipsCta() {
 
   if (!mounted) return null;
 
-  // Pills un poco menos altos/chunky pero MÁS amplios: en mobile flex-1 para que
-  // los 3 se repartan a lo ancho (sin desbordar); en desktop ancho natural con
-  // mucho gap dentro de una barra más ancha.
+  // Tamaño punto medio (~50). En mobile flex-1 para que los 3 se repartan a lo
+  // ancho (sin desbordar); en desktop ancho natural, repartidos y centrados.
   const pill =
-    "flex-1 sm:flex-none inline-flex items-center justify-center min-h-[46px] px-3 sm:px-8 rounded-full bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-sm sm:text-base whitespace-nowrap shadow-md transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange";
+    "flex-1 sm:flex-none inline-flex items-center justify-center min-h-[50px] px-4 sm:px-8 rounded-full bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-sm sm:text-base whitespace-nowrap transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange";
 
   return createPortal(
     <div
@@ -77,7 +76,7 @@ export default function StickyMembershipsCta() {
           : "opacity-0 -translate-y-4 pointer-events-none"
       }`}
     >
-      <div className="flex items-center justify-evenly w-full max-w-2xl gap-2 sm:gap-6 rounded-full bg-white/95 backdrop-blur shadow-xl ring-1 ring-vc-blue-dark/10 px-3 sm:px-5 py-2">
+      <div className="flex items-center justify-evenly w-full max-w-xl gap-2 sm:gap-4 rounded-full bg-white/95 backdrop-blur shadow-lg ring-1 ring-vc-blue-dark/10 p-2 sm:p-2.5">
         {ITEMS.map((it) =>
           it.href ? (
             <a key={it.label} href={it.href} className={pill}>

@@ -9,7 +9,7 @@ export default function Memberships({
   return (
     <section
       id="membresias"
-      className="scroll-mt-20 md:scroll-mt-24 bg-vc-cream noise-overlay py-24 md:py-32 px-4 sm:px-6 lg:px-8"
+      className="scroll-mt-20 md:scroll-mt-24 bg-vc-sky py-24 md:py-32 px-4 sm:px-6 lg:px-8"
     >
       <div className="relative z-10 max-w-6xl mx-auto">
         <h2 className="font-[var(--font-display)] text-3xl md:text-4xl lg:text-5xl font-black text-vc-blue-dark text-center uppercase tracking-tight">

@@ -16,6 +16,10 @@
   --color-vc-orange: #EB5600;
   --color-vc-orange-light: #FF8243;
   --color-vc-cream: #EAD2C2;
+  /* Re-skin azul+blanco (Ian 2026-06-30): celeste muy claro para bandas y
+     tarjetas; reemplaza al crema como fondo de variación. */
+  --color-vc-sky: #F2F5FB;
+  --color-vc-sky-border: #E2E8F2;
   --color-vc-black: #000000;
   --color-vc-white: #FFFFFF;
 

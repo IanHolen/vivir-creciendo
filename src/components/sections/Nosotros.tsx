@@ -34,9 +34,9 @@ export default function Nosotros() {
           {cofounders.map((member) => (
             <div
               key={member.name}
-              className="bg-vc-cream/50 rounded-2xl p-8 max-w-md w-full text-center border border-vc-cream"
+              className="bg-vc-sky rounded-2xl p-8 max-w-md w-full text-center border border-vc-sky-border"
             >
-              <div className="w-28 h-28 rounded-full mx-auto bg-vc-cream flex items-center justify-center overflow-hidden">
+              <div className="w-28 h-28 rounded-full mx-auto bg-vc-sky flex items-center justify-center overflow-hidden">
                 {member.image ? (
                   <Image
                     src={member.image}
@@ -86,7 +86,7 @@ export default function Nosotros() {
               return (
                 <li
                   key={area}
-                  className="bg-vc-cream/40 rounded-2xl p-6 border border-vc-cream flex flex-col items-center text-center"
+                  className="bg-vc-sky rounded-2xl p-6 border border-vc-sky-border flex flex-col items-center text-center"
                 >
                   <span className="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-4 shadow-sm">
                     <Icon className="w-8 h-8 text-vc-orange" aria-hidden="true" />

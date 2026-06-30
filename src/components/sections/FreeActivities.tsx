@@ -24,7 +24,7 @@ export default function FreeActivities({
       className="scroll-mt-20 md:scroll-mt-24 bg-white py-16 md:py-20 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 items-stretch rounded-3xl overflow-hidden border border-vc-cream bg-vc-cream/40 shadow-sm">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-stretch rounded-3xl overflow-hidden border border-vc-sky-border bg-vc-sky shadow-sm">
           {/* Texto + CTA */}
           <div className="p-8 md:p-12 flex flex-col justify-center text-center lg:text-left">
             <h2 className="font-[var(--font-display)] text-3xl md:text-4xl font-black text-vc-blue-dark uppercase tracking-tight">

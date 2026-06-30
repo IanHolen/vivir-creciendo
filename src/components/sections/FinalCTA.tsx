@@ -32,7 +32,7 @@ export default function FinalCTA() {
   return (
     <section
       id="contacto"
-      className="scroll-mt-20 md:scroll-mt-24 bg-vc-orange noise-overlay py-24 md:py-32 px-4 sm:px-6 lg:px-8"
+      className="scroll-mt-20 md:scroll-mt-24 bg-vc-blue-dark noise-overlay py-24 md:py-32 px-4 sm:px-6 lg:px-8"
     >
       <div className="relative z-10 max-w-2xl mx-auto">
         <div className="text-center">
@@ -65,7 +65,7 @@ export default function FinalCTA() {
               <button
                 type="button"
                 onClick={() => setFormState("open")}
-                className="w-full sm:w-auto inline-flex items-center justify-center min-h-[56px] px-10 py-4 bg-white text-vc-orange hover:bg-vc-cream font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-white shadow-lg"
+                className="w-full sm:w-auto inline-flex items-center justify-center min-h-[56px] px-10 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-white shadow-lg"
               >
                 Quiero sumarme
               </button>
@@ -92,7 +92,7 @@ export default function FinalCTA() {
                 <button
                   type="submit"
                   disabled={formState === "sending"}
-                  className="min-h-[56px] px-8 py-4 bg-white text-vc-orange hover:bg-vc-cream font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-white disabled:opacity-60"
+                  className="min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-white disabled:opacity-60"
                 >
                   {formState === "sending" ? "Enviando..." : "Quiero sumarme"}
                 </button>

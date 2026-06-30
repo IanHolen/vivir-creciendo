@@ -5,7 +5,7 @@ export default function Hero() {
   return (
     <section
       id="quienes-somos"
-      className="scroll-mt-20 md:scroll-mt-24 bg-vc-cream noise-overlay py-24 md:py-32 px-4 sm:px-6 lg:px-8"
+      className="scroll-mt-20 md:scroll-mt-24 bg-white py-24 md:py-32 px-4 sm:px-6 lg:px-8"
     >
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Bloque superior: 2 columnas en desktop (texto izq · imagen der),
@@ -42,7 +42,7 @@ export default function Hero() {
             El video real llega en julio; por ahora marco/placeholder. */}
         <div className="mt-12 max-w-4xl mx-auto">
           <div
-            className="relative aspect-video w-full rounded-3xl overflow-hidden bg-white/70 border border-white/80 flex flex-col items-center justify-center text-center px-6"
+            className="relative aspect-video w-full rounded-3xl overflow-hidden bg-vc-sky border border-vc-sky-border flex flex-col items-center justify-center text-center px-6"
             role="img"
             aria-label="Video próximamente"
           >
@@ -67,7 +67,7 @@ export default function Hero() {
           {quienesSomos.highlights.map((phrase) => (
             <li
               key={phrase}
-              className="bg-white/70 rounded-2xl p-6 text-center text-lg font-medium italic text-vc-blue-dark leading-snug border border-white/80"
+              className="bg-vc-sky rounded-2xl p-6 text-center text-lg font-medium italic text-vc-blue-dark leading-snug border border-vc-sky-border"
             >
               &ldquo;{phrase}&rdquo;
             </li>

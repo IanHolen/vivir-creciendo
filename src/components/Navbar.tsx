@@ -80,7 +80,7 @@ export default function Navbar({
           )}
           <button
             onClick={() => setOpen(!open)}
-            className="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-lg text-vc-blue-dark hover:bg-vc-cream transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
+            className="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-lg text-vc-blue-dark hover:bg-vc-sky transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={open}
             type="button"

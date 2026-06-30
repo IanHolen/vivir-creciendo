@@ -19,7 +19,7 @@ export default function Navbar({
     <div className="flex items-center gap-3">
       <a
         href="/perfil"
-        className="min-h-[44px] inline-flex items-center px-2 py-2 text-vc-blue-dark hover:text-vc-orange font-medium text-base rounded-lg transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
+        className="min-h-[44px] inline-flex items-center px-2 py-2 text-white hover:text-vc-orange font-medium text-base rounded-lg transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
         aria-label="Ir a mi perfil"
       >
         Hola{userName ? `, ${userName}` : ""}
@@ -27,7 +27,7 @@ export default function Navbar({
       <form action={logout}>
         <button
           type="submit"
-          className="min-h-[44px] px-4 py-2 text-vc-blue-dark hover:text-vc-orange font-medium text-base rounded-lg transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
+          className="min-h-[44px] px-4 py-2 text-white hover:text-vc-orange font-medium text-base rounded-lg transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
         >
           Cerrar sesión
         </button>
@@ -45,12 +45,12 @@ export default function Navbar({
 
   return (
     <nav
-      className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-100"
+      className="sticky top-0 z-40 bg-vc-blue-dark border-b border-white/10"
       aria-label="Navegación principal"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-20">
         <a href="#" className="flex-shrink-0 focus-visible:ring-4 focus-visible:ring-vc-orange rounded-lg">
-          <Logo className="h-12 w-auto md:h-14" />
+          <Logo variant="white" className="h-12 w-auto md:h-14" />
         </a>
 
         {/* Desktop links */}
@@ -59,7 +59,7 @@ export default function Navbar({
             <a
               key={link.label}
               href={link.href}
-              className="text-vc-blue-dark hover:text-vc-orange transition-colors font-medium text-base focus-visible:ring-4 focus-visible:ring-vc-orange rounded-lg px-2 py-1"
+              className="text-white hover:text-vc-orange transition-colors font-medium text-base focus-visible:ring-4 focus-visible:ring-vc-orange rounded-lg px-2 py-1"
             >
               {link.label}
             </a>
@@ -80,7 +80,7 @@ export default function Navbar({
           )}
           <button
             onClick={() => setOpen(!open)}
-            className="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-lg text-vc-blue-dark hover:bg-vc-sky transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
+            className="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-lg text-white hover:bg-white/10 transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={open}
             type="button"
@@ -92,13 +92,13 @@ export default function Navbar({
 
       {/* Mobile menu */}
       {open && (
-        <div className="lg:hidden fixed inset-0 top-16 md:top-20 bg-white z-30 flex flex-col items-center justify-center gap-8 p-8">
+        <div className="lg:hidden fixed inset-0 top-16 md:top-20 bg-vc-blue-dark z-30 flex flex-col items-center justify-center gap-8 p-8">
           {navLinks.map((link) => (
             <a
               key={link.label}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="text-2xl font-semibold text-vc-blue-dark hover:text-vc-orange transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded-lg px-4 py-2"
+              className="text-2xl font-semibold text-white hover:text-vc-orange transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded-lg px-4 py-2"
             >
               {link.label}
             </a>

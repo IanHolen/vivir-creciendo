@@ -1,8 +1,7 @@
 import Logo from "./Logo";
-import { siteConfig, navLinks } from "@/lib/content";
+import { siteConfig, navLinks, footerContent, whatsappHref } from "@/lib/content";
 
-// Ícono de Instagram inline: lucide-react 1.x ya no exporta íconos de marca
-// (Instagram/Facebook/YouTube fueron removidos), así que lo dibujamos a mano.
+// Íconos de marca inline: lucide-react 1.x ya no exporta Instagram/Facebook.
 function InstagramIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -22,35 +21,54 @@ function InstagramIcon({ className }: { className?: string }) {
   );
 }
 
-export default function Footer() {
+function FacebookIcon({ className }: { className?: string }) {
   return (
-    <footer className="bg-vc-blue-dark text-white">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  );
+}
+
+// Sección 12 — Footer. Tres columnas: logo + tagline / navegación / contacto,
+// con la línea legal abajo.
+export default function Footer() {
+  const wa = whatsappHref();
+
+  return (
+    <footer className="bg-vc-ink text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
-          {/* Logo + social */}
-          <div className="flex flex-col items-center md:items-start gap-6">
+          {/* Logo + tagline */}
+          <div className="flex flex-col items-center md:items-start gap-5">
             <Logo variant="white" className="h-14 w-auto" />
-            <div className="flex flex-col items-center md:items-start gap-2">
-              <a
-                href={siteConfig.social.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 min-h-[48px] px-5 rounded-full bg-white/10 hover:bg-white/20 transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
-                aria-label="Síguenos en Instagram"
-              >
-                <InstagramIcon className="w-5 h-5" />
-                <span className="font-medium">Síguenos en Instagram</span>
-              </a>
-              <span className="text-white/70 text-sm">
-                Encuéntranos como @vivir_creciendo
-              </span>
-            </div>
+            <p className="font-(family-name:--font-subtitle) text-lg italic text-white/80 text-center md:text-left">
+              {footerContent.tagline}
+            </p>
           </div>
 
-          {/* Navigation */}
-          <div className="text-center md:text-left">
-            <h3 className="font-semibold text-lg mb-4">Navegación</h3>
+          {/* Navegación */}
+          <nav className="text-center md:text-left" aria-label="Navegación del pie">
+            <h2 className="font-semibold text-lg mb-4">
+              {footerContent.navTitle}
+            </h2>
             <ul className="space-y-3">
+              <li>
+                <a
+                  href="#"
+                  className="text-white/80 hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
+                >
+                  Inicio
+                </a>
+              </li>
               {navLinks.map((link) => (
                 <li key={link.label}>
                   <a
@@ -61,12 +79,22 @@ export default function Footer() {
                   </a>
                 </li>
               ))}
+              <li>
+                <a
+                  href="#contacto"
+                  className="text-white/80 hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
+                >
+                  Contacto
+                </a>
+              </li>
             </ul>
-          </div>
+          </nav>
 
-          {/* Contact + legal */}
+          {/* Contacto */}
           <div className="text-center md:text-left">
-            <h3 className="font-semibold text-lg mb-4">Contacto</h3>
+            <h2 className="font-semibold text-lg mb-4">
+              {footerContent.contactTitle}
+            </h2>
             <ul className="space-y-3 text-white/80">
               <li>
                 <a
@@ -76,21 +104,69 @@ export default function Footer() {
                   {siteConfig.email}
                 </a>
               </li>
-              <li>WhatsApp: {siteConfig.whatsapp}</li>
+              {/* PENDIENTE fundadoras: número dedicado de la comunidad. Sin
+                  número no se pinta la línea — antes decía "+52 1 55 0000 0000",
+                  un placeholder visible en producción. */}
+              {wa && (
+                <li>
+                  <a
+                    href={wa}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
+                  >
+                    WhatsApp: {siteConfig.whatsapp}
+                  </a>
+                </li>
+              )}
+              <li>
+                <a
+                  href={siteConfig.social.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
+                >
+                  <InstagramIcon className="w-5 h-5" />
+                  @vivir_creciendo
+                </a>
+              </li>
+              <li>
+                <a
+                  href={siteConfig.social.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
+                >
+                  <FacebookIcon className="w-5 h-5" />
+                  vivircreciendo
+                </a>
+              </li>
             </ul>
-            <div className="mt-6 space-y-2 text-white/60 text-sm">
-              <a href="#" className="block hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1">
-                Política de privacidad
-              </a>
-              <a href="#" className="block hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1">
-                Términos y condiciones
-              </a>
-            </div>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-white/10 text-center text-white/50 text-sm">
-          &copy; 2026 Vivir Creciendo. Todos los derechos reservados.
+        <div className="mt-12 pt-8 border-t border-white/15 flex flex-col sm:flex-row items-center justify-center gap-x-4 gap-y-2 text-center text-white/60 text-base">
+          <span>{footerContent.legal}</span>
+          <span className="hidden sm:inline" aria-hidden="true">
+            |
+          </span>
+          {/* PENDIENTE: páginas legales reales. El doc las marca como
+              requisito visible para publicar. */}
+          <a
+            href="#"
+            className="hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
+          >
+            Política de Privacidad
+          </a>
+          <span className="hidden sm:inline" aria-hidden="true">
+            |
+          </span>
+          <a
+            href="#"
+            className="hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
+          >
+            Términos y Condiciones
+          </a>
         </div>
       </div>
     </footer>

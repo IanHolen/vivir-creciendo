@@ -6,7 +6,7 @@ export default function Blog() {
     <section className="bg-white py-24 md:py-32 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center">
-          <h2 className="font-[var(--font-display)] text-3xl md:text-4xl lg:text-5xl font-black text-vc-blue-dark uppercase tracking-tight">
+          <h2 className="font-(family-name:--font-display) text-3xl md:text-4xl lg:text-5xl font-black text-vc-blue-dark uppercase tracking-tight">
             BLOG
           </h2>
           <p className="mt-4 text-xl text-vc-blue-dark/70">
@@ -24,7 +24,7 @@ export default function Blog() {
               className="group bg-vc-cream/40 rounded-2xl p-8 border border-vc-cream hover:shadow-lg transition-shadow focus-visible:ring-4 focus-visible:ring-vc-orange"
             >
               <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-vc-blue/10 group-hover:bg-vc-blue/20 transition-colors">
-                <BookOpen className="w-6 h-6 text-vc-blue" aria-hidden="true" />
+                <BookOpen className="w-6 h-6 text-vc-orange" aria-hidden="true" />
               </div>
               <h3 className="mt-5 font-semibold text-xl text-vc-blue-dark leading-snug">
                 {post.title}

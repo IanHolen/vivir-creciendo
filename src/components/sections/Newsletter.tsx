@@ -26,7 +26,7 @@ export default function Newsletter() {
   return (
     <section className="bg-white py-24 md:py-32 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto text-center">
-        <h2 className="font-[var(--font-display)] text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
+        <h2 className="font-(family-name:--font-display) text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
           {newsletterContent.title}
         </h2>
         <p className="mt-3 text-lg text-vc-blue-dark/70">
@@ -90,7 +90,7 @@ export default function Newsletter() {
             <button
               type="submit"
               disabled={formState === "sending" || !consent}
-              className="w-full min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange disabled:opacity-60"
+              className="w-full min-h-[56px] px-8 py-4 bg-vc-blue hover:bg-vc-blue-dark text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange disabled:opacity-60"
             >
               {formState === "sending" ? "Enviando..." : "SUSCRIBIRME"}
             </button>

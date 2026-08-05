@@ -36,7 +36,7 @@ export default async function CoursePage({
             <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-2xl bg-white/20 mb-6">
               <GraduationCap className="w-8 h-8 text-white" aria-hidden="true" />
             </div>
-            <h1 className="font-[var(--font-display)] text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tight">
+            <h1 className="font-(family-name:--font-display) text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tight">
               {course.title}
             </h1>
           </div>
@@ -52,9 +52,9 @@ export default async function CoursePage({
         </section>
 
         {/* Schedule details */}
-        <section className="bg-vc-cream py-16 md:py-24 px-4 sm:px-6 lg:px-8">
+        <section className="bg-white border-t border-vc-cream py-16 md:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
-            <h2 className="font-[var(--font-display)] text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
+            <h2 className="font-(family-name:--font-display) text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
               DETALLES DEL TALLER
             </h2>
             <div className="mt-8 space-y-5">
@@ -86,7 +86,7 @@ export default async function CoursePage({
         {/* Instructor */}
         <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
-            <h2 className="font-[var(--font-display)] text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
+            <h2 className="font-(family-name:--font-display) text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
               INSTRUCTOR
             </h2>
             <div className="mt-8 flex flex-col sm:flex-row items-center sm:items-start gap-6">
@@ -106,12 +106,12 @@ export default async function CoursePage({
         </section>
 
         {/* Price + CTA */}
-        <section className="bg-vc-cream py-16 md:py-24 px-4 sm:px-6 lg:px-8">
+        <section className="bg-white border-t border-vc-cream py-16 md:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-xl mx-auto text-center">
             <p className="text-vc-blue-dark/50 text-lg mb-4">{course.price}</p>
             <a
               href="/#contacto"
-              className="inline-flex items-center justify-center min-h-[56px] px-10 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange shadow-lg"
+              className="inline-flex items-center justify-center min-h-[56px] px-10 py-4 bg-vc-blue hover:bg-vc-blue-dark text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange shadow-lg"
             >
               QUIERO INSCRIBIRME
             </a>

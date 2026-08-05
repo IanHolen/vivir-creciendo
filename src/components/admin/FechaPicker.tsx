@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Plus, X, CalendarDays } from "lucide-react";
+import { inputClass, labelClass } from "@/components/admin/ui";
 
 const MESES = [
   "enero", "febrero", "marzo", "abril", "mayo", "junio",
@@ -11,9 +12,6 @@ const DIAS = [
   "domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado",
 ];
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
-
-const inputClass =
-  "w-full min-h-[52px] px-4 py-3 text-lg rounded-xl border-2 border-vc-cream focus:border-vc-orange focus:outline-none focus-visible:ring-4 focus-visible:ring-vc-orange/40 text-vc-blue-dark bg-white";
 
 /**
  * Formatea fechas ISO (YYYY-MM-DD) a texto en español, agrupando por mes.
@@ -58,7 +56,7 @@ export default function FechaPicker({ defaultValue }: { defaultValue?: string | 
 
   return (
     <div>
-      <label className="block text-base font-medium text-vc-blue-dark">
+      <label className={labelClass}>
         Fecha(s) de la actividad
         {/* Fuente de verdad (texto libre, editable). El calendario la rellena. */}
         <input

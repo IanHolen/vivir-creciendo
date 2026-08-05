@@ -22,10 +22,13 @@ const workSans = Work_Sans({
   display: "swap",
 });
 
+// SEO — Parte XI del doc. El title decía "+60" mientras el hero decía "+65";
+// la audiencia va unificada en +65 en toda la página.
 export const metadata: Metadata = {
-  title: "Vivir Creciendo — Comunidad +60",
+  title:
+    "Vivir Creciendo — La comunidad online +65 en español | Crece, conecta, pertenece",
   description:
-    "Comunidad online en español para personas +60. Conversamos, aprendemos y compartimos experiencias. Membresías mensuales con actividades en vivo.",
+    "Comunidad online en español para personas de 65 años en adelante. Actividades semanales en vivo: cine, grupos de escucha, salud y cultura. Primera actividad gratis, sin compromiso.",
 };
 
 export default function RootLayout({

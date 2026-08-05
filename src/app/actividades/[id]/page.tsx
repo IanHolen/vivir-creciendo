@@ -6,6 +6,7 @@ import {
   ArrowLeft,
   CalendarDays,
   Clock,
+  Repeat,
   Hourglass,
   Monitor,
   User,
@@ -86,6 +87,7 @@ export default async function ActivityDetailPage({
   const hasFicha =
     activity.fecha ||
     activity.hora ||
+    activity.frecuencia ||
     activity.duracion ||
     activity.modalidad ||
     facilitador ||
@@ -121,7 +123,7 @@ export default async function ActivityDetailPage({
                 </span>
               )}
             </div>
-            <h1 className="font-[var(--font-display)] text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tight">
+            <h1 className="font-(family-name:--font-display) text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tight">
               {activity.title}
             </h1>
           </div>
@@ -148,6 +150,11 @@ export default async function ActivityDetailPage({
               <dl className="grid grid-cols-1 sm:grid-cols-2 gap-6 rounded-3xl bg-vc-cream/40 border border-vc-cream p-8 md:p-10">
                 <FichaRow icon={CalendarDays} label="Fecha" value={activity.fecha} />
                 <FichaRow icon={Clock} label="Horario" value={activity.hora} />
+                <FichaRow
+                  icon={Repeat}
+                  label="Frecuencia"
+                  value={activity.frecuencia}
+                />
                 <FichaRow icon={Hourglass} label="Duración" value={activity.duracion} />
                 <FichaRow
                   icon={Monitor}
@@ -185,7 +192,7 @@ export default async function ActivityDetailPage({
                   </p>
                   <a
                     href="/login"
-                    className="mt-6 inline-flex items-center justify-center gap-2 min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange shadow-lg"
+                    className="mt-6 inline-flex items-center justify-center gap-2 min-h-[56px] px-8 py-4 bg-vc-blue hover:bg-vc-blue-dark text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange shadow-lg"
                   >
                     <LogIn className="w-5 h-5" aria-hidden="true" />
                     Iniciar sesión
@@ -200,7 +207,7 @@ export default async function ActivityDetailPage({
         {beneficios.length > 0 && (
           <section className="pb-16 md:pb-20 px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto">
-              <h2 className="font-[var(--font-display)] text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
+              <h2 className="font-(family-name:--font-display) text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
                 Qué incluye
               </h2>
               <ul className="mt-6 space-y-3">
@@ -221,7 +228,7 @@ export default async function ActivityDetailPage({
         {activity.faq && (
           <section className="pb-16 md:pb-20 px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto">
-              <h2 className="flex items-center gap-2 font-[var(--font-display)] text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
+              <h2 className="flex items-center gap-2 font-(family-name:--font-display) text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
                 <HelpCircle className="w-7 h-7 text-vc-orange" aria-hidden="true" />
                 Preguntas frecuentes
               </h2>
@@ -236,7 +243,7 @@ export default async function ActivityDetailPage({
         {activity.enlace_inscripcion && (
           <section className="pb-16 md:pb-20 px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto rounded-3xl bg-vc-blue-dark text-white p-8 md:p-10 text-center">
-              <h2 className="font-[var(--font-display)] text-2xl md:text-3xl font-black uppercase tracking-tight">
+              <h2 className="font-(family-name:--font-display) text-2xl md:text-3xl font-black uppercase tracking-tight">
                 ¿Te gustaría participar?
               </h2>
               <p className="mt-3 text-lg text-white/80">

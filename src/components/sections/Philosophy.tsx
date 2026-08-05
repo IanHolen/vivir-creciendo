@@ -2,7 +2,7 @@ import { philosophy } from "@/lib/content";
 
 export default function Philosophy() {
   return (
-    <section className="bg-vc-cream py-20 md:py-24 px-4 sm:px-6 lg:px-8">
+    <section className="bg-white border-t border-vc-cream py-20 md:py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto text-center">
         <blockquote className="text-2xl md:text-3xl font-medium text-vc-blue-dark leading-relaxed italic">
           &ldquo;{philosophy.quote}&rdquo;

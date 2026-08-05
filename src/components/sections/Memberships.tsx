@@ -1,116 +1,125 @@
-import { Check, Gift, Plus } from "lucide-react";
-import { membershipTiers } from "@/lib/content";
+import { Check, ArrowRight, ShieldCheck } from "lucide-react";
+import {
+  membershipPlans,
+  membershipsTitle,
+  membershipsSubtitle,
+  garantia,
+} from "@/lib/content";
 
-export default function Memberships({
-  isLoggedIn = false,
-}: {
-  isLoggedIn?: boolean;
-}) {
+/**
+ * Sección 09 — Membresías.
+ *
+ * Dos cambios de fondo respecto de la versión anterior:
+ *
+ * 1. UNA SOLA MEMBRESÍA. Los tres planes (Gratis / Básica / Plus) se
+ *    colapsaron en Gratuita + Membresía.
+ * 2. PRECIOS SIEMPRE VISIBLES (Error #1 del doc, el más grave). Antes el
+ *    precio decía "Precio por confirmar" y encima solo se renderizaba si el
+ *    visitante estaba logueado — justo al revés de lo que hace falta: quien
+ *    todavía no se registró es precisamente quien necesita ver el número
+ *    para decidir. Este componente ya no depende del estado de sesión.
+ */
+export default function Memberships() {
   return (
+    // Sección destacada, igual que testimonios: tinte suave del azul de marca
+    // (el doc pide "teal claro" para las secciones de membresías y testimonios).
     <section
       id="membresias"
-      className="scroll-mt-20 md:scroll-mt-24 bg-vc-cream noise-overlay py-24 md:py-32 px-4 sm:px-6 lg:px-8"
+      className="scroll-mt-20 md:scroll-mt-24 bg-vc-blue-soft py-20 md:py-28 px-4 sm:px-6 lg:px-8"
     >
-      <div className="relative z-10 max-w-6xl mx-auto">
-        <h2 className="font-[var(--font-display)] text-3xl md:text-4xl lg:text-5xl font-black text-vc-blue-dark text-center uppercase tracking-tight">
-          NUESTRAS MEMBRESÍAS
+      <div className="relative z-10 max-w-5xl mx-auto">
+        <h2 className="font-(family-name:--font-display) text-3xl md:text-4xl font-black text-vc-blue text-center uppercase tracking-tight">
+          {membershipsTitle}
         </h2>
-        <p className="mt-4 text-center text-lg md:text-xl text-vc-blue-dark/70 max-w-2xl mx-auto leading-relaxed">
-          {isLoggedIn
-            ? "Tu comunidad, en el plan que elijas. Mira todo lo que incluye cada membresía."
-            : "Elige cuánto quieres acompañarte de la comunidad. Empieza por lo gratuito y suma actividades cuando tengas ganas."}
+        <p className="mt-4 text-center text-lg md:text-xl text-vc-ink/80 max-w-2xl mx-auto leading-relaxed">
+          {membershipsSubtitle}
         </p>
 
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-          {membershipTiers.map((tier) => (
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+          {membershipPlans.map((plan) => (
             <div
-              key={tier.name}
-              className={`relative bg-white rounded-2xl shadow-lg p-8 flex flex-col ${
-                tier.featured ? "ring-2 ring-vc-orange md:-translate-y-2" : ""
+              key={plan.name}
+              // Las cards ya no se recortan contra un fondo crema: sobre
+              // blanco necesitan borde propio, no solo sombra.
+              className={`relative bg-white rounded-2xl p-8 flex flex-col ${
+                plan.featured
+                  ? "shadow-xl ring-2 ring-vc-orange md:-translate-y-2"
+                  : "shadow-lg border border-vc-cream"
               }`}
             >
-              {tier.badge && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-vc-orange text-white text-xs font-semibold px-4 py-1 rounded-full uppercase tracking-wide">
-                  {tier.badge}
-                </span>
-              )}
+              <h3 className="font-(family-name:--font-display) text-2xl font-black uppercase tracking-tight text-vc-blue-dark">
+                {plan.name}
+              </h3>
 
-              <div className="flex items-center gap-3 mb-3">
-                <div
-                  className={`w-11 h-11 flex items-center justify-center rounded-full text-white ${
-                    tier.kind === "gratis" ? "bg-vc-blue" : "bg-vc-orange"
-                  }`}
-                >
-                  {tier.kind === "gratis" ? (
-                    <Gift className="w-6 h-6" aria-hidden="true" />
-                  ) : (
-                    <Plus className="w-6 h-6" aria-hidden="true" />
-                  )}
-                </div>
-                <h3 className="font-[var(--font-display)] text-2xl font-black uppercase tracking-tight text-vc-blue-dark">
-                  {tier.name}
-                </h3>
-              </div>
+              {/* El precio es lo primero después del nombre — no se esconde
+                  al final de la tarjeta ni detrás de un "escríbenos". */}
+              <p className="mt-4 font-(family-name:--font-display) text-4xl font-black text-vc-blue-dark">
+                {plan.price}
+              </p>
+              <p className="mt-1 text-base text-vc-ink/70">{plan.priceNote}</p>
 
-              <p className="font-[var(--font-subtitle)] text-base italic text-vc-blue-dark/80 mb-4">
-                {tier.tagline}
+              <p className="mt-5 font-(family-name:--font-subtitle) text-lg italic text-vc-ink/90">
+                {plan.tagline}
               </p>
 
-              {isLoggedIn && (
-                <p className="text-base text-vc-blue-dark/70 leading-relaxed mb-6">
-                  {tier.fullDescription}
-                </p>
-              )}
-
-              <ul className="space-y-3 mb-6 flex-1">
-                {tier.activities.map((item) => (
+              <ul className="mt-6 space-y-4 flex-1">
+                {plan.features.map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <Check
-                      className="w-5 h-5 text-vc-orange flex-shrink-0 mt-0.5"
+                      className="w-5 h-5 text-vc-orange-dark shrink-0 mt-1"
                       aria-hidden="true"
                     />
-                    <span className="text-vc-blue-dark/90 text-lg leading-snug">
+                    <span className="text-lg text-vc-ink/90 leading-snug">
                       {item}
                     </span>
                   </li>
                 ))}
-                {tier.extras.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-vc-blue-dark/60"
-                  >
-                    <Plus
-                      className="w-5 h-5 text-vc-blue flex-shrink-0 mt-0.5"
-                      aria-hidden="true"
-                    />
-                    <span className="text-base leading-snug">{item}</span>
-                  </li>
-                ))}
               </ul>
 
-              {isLoggedIn && (
-                <p className="mt-auto pt-2 mb-3 text-center text-lg font-semibold text-vc-blue-dark">
-                  {tier.priceLabel}
+              {plan.reassurance && (
+                <p className="mt-6 text-base font-medium text-vc-ink/70">
+                  {plan.reassurance}
                 </p>
               )}
 
               <a
-                href="#contacto"
-                className={`${isLoggedIn ? "" : "mt-auto"} w-full inline-flex items-center justify-center min-h-[56px] px-6 py-4 font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange ${
-                  tier.kind === "gratis"
+                href={plan.ctaHref}
+                className={`mt-6 w-full inline-flex items-center justify-center gap-2 min-h-[56px] px-6 py-4 font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange/50 ${
+                  plan.kind === "gratis"
                     ? "border-2 border-vc-blue text-vc-blue hover:bg-vc-blue hover:text-white"
-                    : "bg-vc-orange hover:bg-vc-orange-light text-white"
+                    : "bg-vc-blue hover:bg-vc-blue-dark text-white shadow-lg"
                 }`}
               >
-                {tier.kind === "gratis" ? "Quiero probar gratis" : "Quiero sumarme"}
+                {plan.cta}
+                <ArrowRight className="w-5 h-5" aria-hidden="true" />
               </a>
             </div>
           ))}
         </div>
 
-        <p className="mt-8 text-center text-base text-vc-blue-dark/60">
-          Escríbenos y te contamos los detalles. Sin apuros.
-        </p>
+        {/* Garantía — va justo debajo de las membresías porque su trabajo es
+            desactivar el riesgo percibido en el momento exacto en que el
+            visitante está mirando el precio. */}
+        <div className="mt-12 max-w-3xl mx-auto bg-white rounded-2xl p-8 border border-vc-blue/15">
+          <div className="flex items-start gap-4">
+            <ShieldCheck
+              className="w-8 h-8 text-vc-orange shrink-0"
+              strokeWidth={1.5}
+              aria-hidden="true"
+            />
+            <div>
+              <h3 className="font-semibold text-xl text-vc-blue-dark">
+                {garantia.title}
+              </h3>
+              <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed">
+                {garantia.text}
+              </p>
+              <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed">
+                {garantia.closing}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

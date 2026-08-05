@@ -4,6 +4,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Tailwind v4 escanea TODO el repo buscando clases, incluida la carpeta docs/.
+   Una clase citada dentro de un .md se compila igual que si estuviera en un
+   componente — y un ejemplo con puntos suspensivos genera CSS inválido que
+   rompe el dev server entero. La documentación no es código fuente. */
+@source not "../../docs";
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -11,17 +17,59 @@
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
 
-  --color-vc-blue: #274EA4;
-  --color-vc-blue-dark: #001B4A;
-  --color-vc-orange: #EB5600;
-  --color-vc-orange-light: #FF8243;
-  --color-vc-cream: #EAD2C2;
+  /* Paleta de marca — AZUL MARINO como color principal (Ian 2026-08-05).
+     Los dos azules son los del sitio real vivircreciendo.com; reemplazan a los
+     de la última página del doc (#364E97 / #24356A), que eran más claros y
+     obligaban a apoyar toda la jerarquía en el naranja.
+
+     JERARQUÍA (este es el cambio de fondo, no solo los hex):
+       blanco  → fondo dominante de la página
+       azul    → nav, secciones de corte, y TODOS los botones principales
+       crema   → fondo alternado de sección (hero, pilares, nosotras) +
+                 relleno de card. El doc pide alternar crema y blanco entre
+                 secciones; se usa en 3, no en 5, para no apagar la página.
+       naranja → SOLO íconos, badges y detalles. Deja de ser color de botón
+                 sobre fondo claro; sigue siendo el acento sobre fondo azul
+                 (CTA del nav, CTA final), donde es lo único que resalta.
+
+     REGLA DE ÍCONOS (Ian 2026-08-05): todo ícono decorativo del cuerpo de la
+     página va en naranja. El azul se reserva para texto, títulos, botones y
+     superficies. Un ícono azul sobre chip crema se leía como otro título más;
+     en naranja hace de puntuación visual, que es su trabajo.
+
+     De paso se cae el problema de contraste que arrastraba el doc: blanco
+     sobre #142B71 da 13:1, muy por encima del 4.5:1 de WCAG AA, mientras que
+     el blanco sobre naranja apenas llegaba al umbral de texto grande. */
+  --color-vc-blue: #142B71; /* azul marino marca — nav, H2, botones, links */
+  --color-vc-blue-dark: #052D75; /* azul profundo — H1, hover de botón */
+  --color-vc-ink: #232323; /* "negro claro" — TODO el texto de cuerpo */
+  --color-vc-orange: #D85A35; /* naranja marca — íconos, badges, CTA sobre azul */
+  --color-vc-orange-light: #E4764F; /* hover del CTA naranja */
+  /* Naranja oscurecido para TEXTO naranja sobre fondo claro: #D85A35 sobre
+     blanco da 3.86:1, insuficiente para texto normal (WCAG AA pide 4.5:1).
+     Sobre fondo naranja el texto blanco solo se usa a 18px+ semibold, donde
+     aplica el umbral de texto grande (3:1). */
+  --color-vc-orange-dark: #B8441F;
+  --color-vc-cream: #F7F3EE; /* crema — fondo alternado de secciones (doc) */
+  /* Tinte muy suave del azul de marca. Es la traducción del "teal claro
+     #EDF5F3" que el doc reserva para las secciones DESTACADAS (testimonios y
+     membresías): mismo rol, pero derivado del azul, que es el color principal
+     de la marca. Sin él, esas dos secciones tendrían que compartir el crema
+     con Nosotras y quedarían pegadas. */
+  --color-vc-blue-soft: #EEF2FA;
   --color-vc-black: #000000;
   --color-vc-white: #FFFFFF;
 
-  --font-display: "Archivo Black", system-ui, sans-serif;
-  --font-subtitle: "Mada", system-ui, sans-serif;
-  --font-body: "Work Sans", system-ui, sans-serif;
+  /* --font-display / --font-subtitle / --font-body los define next/font en
+     <html> (layout.tsx). NO redeclararlos acá: la familia real que carga
+     next/font es un nombre generado (__Archivo_Black_xxx), así que fijar el
+     literal "Archivo Black" en :root compite con esa definición y, si gana,
+     la fuente cae a system-ui porque ese nombre nunca se registra.
+
+     Se usan desde las clases `font-(family-name:--font-display)`. Ojo: la
+     sintaxis vieja `font-[var(--font-display)]` es ambigua en Tailwind v4 y
+     compila a `font-weight`, no a `font-family` — por eso los títulos nunca
+     renderizaron en Archivo Black. */
 
   --color-ring: var(--ring);
   --color-input: var(--input);
@@ -50,23 +98,23 @@
 
 :root {
   --background: #FFFFFF;
-  --foreground: #001B4A;
+  --foreground: #232323;
   --card: #FFFFFF;
-  --card-foreground: #001B4A;
+  --card-foreground: #232323;
   --popover: #FFFFFF;
-  --popover-foreground: #001B4A;
-  --primary: #274EA4;
+  --popover-foreground: #232323;
+  --primary: #142B71;
   --primary-foreground: #FFFFFF;
-  --secondary: #EAD2C2;
-  --secondary-foreground: #001B4A;
-  --muted: #F5F5F5;
-  --muted-foreground: #555555;
-  --accent: #EB5600;
+  --secondary: #F7F3EE;
+  --secondary-foreground: #232323;
+  --muted: #F2EFEA;
+  --muted-foreground: #55534F;
+  --accent: #D85A35;
   --accent-foreground: #FFFFFF;
   --destructive: #DC2626;
-  --border: #E5E7EB;
-  --input: #E5E7EB;
-  --ring: #EB5600;
+  --border: #E3DDD4;
+  --input: #E3DDD4;
+  --ring: #D85A35;
   --radius: 0.625rem;
 }
 

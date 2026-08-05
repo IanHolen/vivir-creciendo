@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import { Clock } from "lucide-react";
-
-const inputClass =
-  "w-full min-h-[52px] px-4 py-3 text-lg rounded-xl border-2 border-vc-cream focus:border-vc-orange focus:outline-none focus-visible:ring-4 focus-visible:ring-vc-orange/40 text-vc-blue-dark bg-white";
+import { inputClass, labelClass } from "@/components/admin/ui";
 
 export default function HoraPicker({ defaultValue }: { defaultValue?: string | null }) {
   const [text, setText] = useState(defaultValue ?? "");
@@ -20,7 +18,7 @@ export default function HoraPicker({ defaultValue }: { defaultValue?: string | n
 
   return (
     <div>
-      <label className="block text-base font-medium text-vc-blue-dark">
+      <label className={labelClass}>
         Horario
         {/* Fuente de verdad (texto libre): puedes agregar otras zonas a mano. */}
         <input

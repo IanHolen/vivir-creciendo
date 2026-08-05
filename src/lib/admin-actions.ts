@@ -2,12 +2,15 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/admin-auth";
+import { normalizeIcon, normalizePlan } from "@/lib/activities";
 
 /**
  * Mutaciones del panel admin sobre public.activities (contrato back f661857c).
- * La RLS exige is_admin; estas acciones corren con la sesión del usuario, así
- * que un no-admin recibe error de RLS aunque llegue a llamarlas.
+ *
+ * Doble cerradura: la RLS de la base exige is_admin, y además cada acción llama
+ * a requireAdmin() antes de tocar nada — las server actions son alcanzables por
+ * POST directo, sin pasar por la UI.
  */
 
 /** Texto libre del form: recortado, y null si quedó vacío. */
@@ -34,6 +37,10 @@ function parseFields(formData: FormData) {
     hora: text(formData, "hora"),
     modalidad: text(formData, "modalidad"),
     duracion: text(formData, "duracion"),
+    // Los dos campos que pinta la card de la portada. `icono` se normaliza
+    // para que nunca entre a la base un valor que la landing no sepa dibujar.
+    frecuencia: text(formData, "frecuencia"),
+    icono: normalizeIcon(text(formData, "icono")),
     facilitador: text(formData, "facilitador"),
     facilitador_rol: text(formData, "facilitador_rol"),
     publico_objetivo: text(formData, "publico_objetivo"),
@@ -42,12 +49,23 @@ function parseFields(formData: FormData) {
     beneficios: text(formData, "beneficios"),
     enlace_inscripcion: text(formData, "enlace_inscripcion"),
     faq: text(formData, "faq"),
-    plan: text(formData, "plan"),
+    // Normalizado a la membresía única: guardar siempre el valor canónico va
+    // limpiando las filas viejas con "basica"/"plus" a medida que se editan.
+    plan: normalizePlan(text(formData, "plan")),
   };
 }
 
 const ACTIVITY_BUCKET = "activity-images";
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
+
+type Supabase = Awaited<ReturnType<typeof requireAdmin>>["supabase"];
+
+/** Cierra la acción si quien la invoca no es admin (POST directo incluido). */
+async function adminClient(): Promise<Supabase> {
+  const { supabase, isAdmin } = await requireAdmin();
+  if (!isAdmin) redirectError("No tienes permisos de administrador.");
+  return supabase;
+}
 
 /**
  * Sube la imagen de una actividad al bucket activity-images (contrato back
@@ -55,7 +73,7 @@ const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
  * vía getPublicUrl. Devuelve la URL pública o lanza redirectError si falla.
  */
 async function uploadActivityImage(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: Supabase,
   activityId: string,
   file: File
 ): Promise<string> {
@@ -84,12 +102,12 @@ function getImageFile(formData: FormData): File | null {
 }
 
 function revalidate() {
-  revalidatePath("/admin");
+  revalidatePath("/admin", "layout");
   revalidatePath("/");
 }
 
 export async function createActivity(formData: FormData) {
-  const supabase = await createClient();
+  const supabase = await adminClient();
   const { data, error } = await supabase
     .from("activities")
     .insert(parseFields(formData))
@@ -109,12 +127,17 @@ export async function createActivity(formData: FormData) {
     if (imgError) return redirectError(imgError.message);
   }
   revalidate();
+  // A la ficha recién creada, no al listado: casi siempre falta algún dato.
+  redirect(
+    `/admin/actividades/${data.id}?ok=` +
+      encodeURIComponent("Actividad creada. Revisa que no falte nada.")
+  );
 }
 
 export async function updateActivity(formData: FormData) {
   const id = String(formData.get("id") ?? "");
   if (!id) return;
-  const supabase = await createClient();
+  const supabase = await adminClient();
 
   // Solo sobre-escribe image_url si el admin subió un archivo nuevo; de lo
   // contrario conserva la imagen actual.
@@ -124,25 +147,133 @@ export async function updateActivity(formData: FormData) {
     fields.image_url = await uploadActivityImage(supabase, id, file);
   }
 
-  const { error } = await supabase
-    .from("activities")
-    .update(fields)
-    .eq("id", id);
+  const { error } = await supabase.from("activities").update(fields).eq("id", id);
   if (error) {
     return redirectError(error.message);
   }
   revalidate();
+  redirect(
+    `/admin/actividades/${id}?ok=` + encodeURIComponent("Cambios guardados.")
+  );
 }
 
 export async function deleteActivity(formData: FormData) {
   const id = String(formData.get("id") ?? "");
   if (!id) return;
-  const supabase = await createClient();
+  const supabase = await adminClient();
   const { error } = await supabase.from("activities").delete().eq("id", id);
   if (error) {
     return redirectError(error.message);
   }
   revalidate();
+  redirect("/admin?ok=" + encodeURIComponent("Actividad eliminada."));
+}
+
+/**
+ * Mostrar / ocultar una actividad desde el listado, sin abrir el formulario.
+ * `next` viene del form para no depender de leer el estado actual.
+ */
+export async function toggleActivityActive(formData: FormData) {
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+  const next = formData.get("next") === "true";
+  const supabase = await adminClient();
+  const { error } = await supabase
+    .from("activities")
+    .update({ is_active: next })
+    .eq("id", id);
+  if (error) return redirectError(error.message);
+  revalidate();
+}
+
+/**
+ * Sube o baja una actividad una posición en el listado.
+ *
+ * En vez de intercambiar dos `sort_order` (que se rompe con empates y con el 0
+ * por defecto que traen las filas viejas), reescribe el orden completo como
+ * 0,1,2,… sobre el mismo criterio que usa la UI. Es idempotente y deja la
+ * columna en un estado sano después del primer uso.
+ */
+export async function moveActivity(formData: FormData) {
+  const id = String(formData.get("id") ?? "");
+  const dir = formData.get("dir") === "up" ? -1 : 1;
+  if (!id) return;
+
+  const supabase = await adminClient();
+  const { data, error } = await supabase
+    .from("activities")
+    .select("id, sort_order, title");
+  if (error || !data) return redirectError(error?.message ?? "No se pudo reordenar.");
+
+  const ordered = [...data].sort(compareForOrder);
+  const i = ordered.findIndex((r) => r.id === id);
+  const j = i + dir;
+  if (i === -1 || j < 0 || j >= ordered.length) return; // ya estaba en el borde
+
+  [ordered[i], ordered[j]] = [ordered[j], ordered[i]];
+
+  for (const [index, row] of ordered.entries()) {
+    if (row.sort_order === index) continue;
+    const { error: upErr } = await supabase
+      .from("activities")
+      .update({ sort_order: index })
+      .eq("id", row.id);
+    if (upErr) return redirectError(upErr.message);
+  }
+  revalidate();
+}
+
+/**
+ * Reordena de golpe: recibe los ids en el orden final y reescribe `sort_order`
+ * como 0,1,2,… La usa el arrastrar-y-soltar del listado.
+ *
+ * Un solo viaje en vez de encadenar `moveActivity` una posición por vez: mover
+ * la última actividad al primer puesto son N-1 llamadas con `moveActivity`, y
+ * cada una revalida y reordena la lista entera.
+ *
+ * Los ids que falten en la lista (una actividad creada en otra pestaña
+ * mientras esta se arrastraba) se conservan al final en vez de quedarse con un
+ * `sort_order` viejo que los mezclaría de nuevo.
+ */
+export async function reorderActivities(ids: string[]) {
+  if (!Array.isArray(ids) || ids.length === 0) return;
+
+  const supabase = await adminClient();
+  const { data, error } = await supabase
+    .from("activities")
+    .select("id, sort_order, title");
+  if (error || !data) {
+    return redirectError(error?.message ?? "No se pudo reordenar.");
+  }
+
+  const wanted = ids.filter((id) => data.some((r) => r.id === id));
+  const rest = [...data]
+    .sort(compareForOrder)
+    .map((r) => r.id)
+    .filter((id) => !wanted.includes(id));
+  const ordered = [...wanted, ...rest];
+
+  for (const [index, id] of ordered.entries()) {
+    const row = data.find((r) => r.id === id);
+    if (row?.sort_order === index) continue;
+    const { error: upErr } = await supabase
+      .from("activities")
+      .update({ sort_order: index })
+      .eq("id", id);
+    if (upErr) return redirectError(upErr.message);
+  }
+  revalidate();
+}
+
+/** Mismo criterio de orden que el listado del panel. */
+function compareForOrder(
+  a: { sort_order: number | null; title: string },
+  b: { sort_order: number | null; title: string }
+) {
+  const sa = a.sort_order ?? Number.MAX_SAFE_INTEGER;
+  const sb = b.sort_order ?? Number.MAX_SAFE_INTEGER;
+  if (sa !== sb) return sa - sb;
+  return a.title.localeCompare(b.title, "es");
 }
 
 function redirectError(msg: string): never {
@@ -158,10 +289,10 @@ export async function adminResetPassword(formData: FormData) {
   const target_email = String(formData.get("target_email") ?? "").trim();
   const new_password = String(formData.get("new_password") ?? "");
   if (new_password.length < 8) {
-    return redirectError("La contraseña debe tener al menos 8 caracteres.");
+    return redirectEquipoError("La contraseña debe tener al menos 8 caracteres.");
   }
 
-  const supabase = await createClient();
+  const supabase = await adminClient();
   const { data, error } = await supabase.functions.invoke("admin-set-password", {
     body: { target_email, new_password },
   });
@@ -176,10 +307,17 @@ export async function adminResetPassword(formData: FormData) {
         // ignore
       }
     }
-    return redirectError(adminPwErrorMessage(code, target_email));
+    return redirectEquipoError(adminPwErrorMessage(code, target_email));
   }
 
-  redirect("/admin?ok=" + encodeURIComponent(`Contraseña actualizada para ${target_email}.`));
+  redirect(
+    "/admin/equipo?ok=" +
+      encodeURIComponent(`Contraseña actualizada para ${target_email}.`)
+  );
+}
+
+function redirectEquipoError(msg: string): never {
+  redirect("/admin/equipo?error=" + encodeURIComponent(msg));
 }
 
 function adminPwErrorMessage(code: string | undefined, email: string): string {
@@ -222,16 +360,24 @@ export async function setAdmin(formData: FormData) {
   const isAdmin = formData.get("is_admin") === "true";
   if (!email) return;
 
-  const supabase = await createClient();
+  const supabase = await adminClient();
   const { data, error } = await supabase.rpc("set_admin", {
     p_email: email,
     p_is_admin: isAdmin,
   });
 
-  if (error) return redirectError(error.message);
+  if (error) return redirectEquipoError(error.message);
   if (data && data.ok === false) {
-    return redirectError(adminErrorMessage(data.error, email));
+    return redirectEquipoError(adminErrorMessage(data.error, email));
   }
 
-  revalidatePath("/admin");
+  revalidatePath("/admin", "layout");
+  redirect(
+    "/admin/equipo?ok=" +
+      encodeURIComponent(
+        isAdmin
+          ? `${email} ya es administrador.`
+          : `Se le quitó el acceso de administrador a ${email}.`
+      )
+  );
 }

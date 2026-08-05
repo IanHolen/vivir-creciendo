@@ -13,68 +13,81 @@ import { teamMembers, expertAreasTitle, expertAreas } from "@/lib/content";
 // `expertAreas` en content.ts).
 const EXPERT_AREA_ICONS = [UsersRound, Laptop, HeartPulse, Flower2, TrendingUp];
 
+/**
+ * Sección 08 — Nosotras.
+ *
+ * Las dos bios están reescritas (Error #5 del doc): la de Alejandra hablaba
+ * de su negocio personal de nutrición ("recuperar energía", "sin dietas
+ * rígidas") y no de Vivir Creciendo. Ambas cierran ahora con el mismo párrafo
+ * sobre por qué crearon la comunidad.
+ */
 export default function Nosotros() {
   const cofounders = teamMembers.filter((m) => m.cofounder);
 
   return (
     <section
-      id="nosotros"
-      className="scroll-mt-20 md:scroll-mt-24 bg-white py-24 md:py-32 px-4 sm:px-6 lg:px-8"
+      id="nosotras"
+      className="scroll-mt-20 md:scroll-mt-24 bg-vc-cream py-20 md:py-28 px-4 sm:px-6 lg:px-8"
     >
-      <div className="max-w-7xl mx-auto">
-        <h2 className="font-[var(--font-display)] text-3xl md:text-4xl lg:text-5xl font-black text-vc-blue-dark text-center uppercase tracking-tight">
+      <div className="max-w-6xl mx-auto">
+        <h2 className="font-(family-name:--font-display) text-3xl md:text-4xl font-black text-vc-blue text-center uppercase tracking-tight">
           NOSOTRAS
         </h2>
-        <p className="mt-4 text-center text-xl text-vc-blue-dark/70 max-w-2xl mx-auto">
+        <p className="mt-4 text-center text-lg md:text-xl text-vc-ink/80 max-w-2xl mx-auto">
           Alejandra y Nurit, cofundadoras de Vivir Creciendo.
         </p>
 
-        {/* Cofounders — Ale + Nurit */}
-        <div className="mt-12 md:mt-16 flex flex-wrap justify-center gap-8">
+        <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
           {cofounders.map((member) => (
             <div
               key={member.name}
-              className="bg-vc-cream/50 rounded-2xl p-8 max-w-md w-full text-center border border-vc-cream"
+              className="bg-white rounded-2xl p-8 shadow-sm border border-vc-cream"
             >
-              <div className="w-28 h-28 rounded-full mx-auto bg-vc-cream flex items-center justify-center overflow-hidden">
-                {member.image ? (
-                  <Image
-                    src={member.image}
-                    alt={`Foto de ${member.name}`}
-                    width={112}
-                    height={112}
-                    className="object-cover w-full h-full"
-                  />
-                ) : (
-                  <User className="w-12 h-12 text-vc-blue/40" aria-hidden="true" />
-                )}
-              </div>
-              <h3 className="mt-5 font-semibold text-2xl text-vc-blue-dark">
-                {member.name}
-              </h3>
-              {member.bio ? (
-                <p className="mt-4 text-lg text-vc-blue-dark/80 leading-relaxed text-left">
-                  {member.bio}
-                </p>
-              ) : (
-                <>
-                  <p className="text-vc-blue text-lg">{member.role}</p>
-                  {member.quote && (
-                    <blockquote className="mt-4 italic text-lg text-vc-blue-dark/70 leading-relaxed">
-                      &ldquo;{member.quote}&rdquo;
-                    </blockquote>
+              <div className="flex flex-col items-center text-center">
+                <div className="w-32 h-32 rounded-full bg-vc-cream flex items-center justify-center overflow-hidden">
+                  {member.image ? (
+                    <Image
+                      src={member.image}
+                      alt={`Foto de ${member.name}`}
+                      width={128}
+                      height={128}
+                      className={`object-cover w-full h-full ${member.imagePosition ?? ""}`}
+                    />
+                  ) : (
+                    <User
+                      className="w-12 h-12 text-vc-orange/50"
+                      aria-hidden="true"
+                    />
                   )}
-                </>
+                </div>
+                <h3 className="mt-5 font-semibold text-2xl text-vc-blue-dark">
+                  {member.name}
+                </h3>
+                <p className="mt-1 text-base text-vc-blue">{member.role}</p>
+              </div>
+
+              {/* Las bios vienen en párrafos separados por línea en blanco.
+                  Texto justificado (pedido de Ian): `hyphens-auto` es
+                  necesario acá — sin partición de palabras, justificar en
+                  español abre "ríos" de espacio entre palabras, y en columna
+                  angosta se nota mucho. El <html lang="es"> del layout es lo
+                  que habilita el diccionario de guionado. */}
+              {member.bio && (
+                <div className="mt-6 space-y-4 text-justify hyphens-auto">
+                  {member.bio.split("\n\n").map((p, i) => (
+                    <p key={i} className="text-lg text-vc-ink/80 leading-relaxed">
+                      {p}
+                    </p>
+                  ))}
+                </div>
               )}
             </div>
           ))}
         </div>
 
-        {/* Especialistas — "Nos nutrimos con expertos especialistas en"
-            (Ian 2026-06-28): reemplaza la grilla de avatares por 5 categorías
-            con ícono. Apila en mobile, 5 en una fila en desktop. */}
+        {/* Especialistas — 5 categorías con ícono. */}
         <div className="mt-16 md:mt-20">
-          <h3 className="font-[var(--font-display)] text-2xl md:text-3xl lg:text-4xl font-black text-vc-blue-dark text-center uppercase tracking-tight max-w-4xl mx-auto">
+          <h3 className="font-(family-name:--font-display) text-2xl md:text-3xl font-black text-vc-blue-dark text-center uppercase tracking-tight max-w-4xl mx-auto">
             {expertAreasTitle}
           </h3>
           <ul className="mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
@@ -83,12 +96,16 @@ export default function Nosotros() {
               return (
                 <li
                   key={area}
-                  className="bg-vc-cream/40 rounded-2xl p-6 border border-vc-cream flex flex-col items-center text-center"
+                  className="bg-white rounded-2xl p-6 border border-vc-cream flex flex-col items-center text-center"
                 >
-                  <span className="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-4 shadow-sm">
-                    <Icon className="w-8 h-8 text-vc-orange" aria-hidden="true" />
+                  <span className="w-16 h-16 rounded-full bg-vc-orange/10 flex items-center justify-center mb-4">
+                    <Icon
+                      className="w-8 h-8 text-vc-orange"
+                      strokeWidth={1.5}
+                      aria-hidden="true"
+                    />
                   </span>
-                  <p className="font-semibold text-lg text-vc-blue-dark leading-snug">
+                  <p className="font-semibold text-lg text-vc-ink leading-snug">
                     {area}
                   </p>
                 </li>

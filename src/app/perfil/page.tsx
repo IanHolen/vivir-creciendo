@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { updateMyProfile } from "@/lib/profile-actions";
-import { siteConfig } from "@/lib/content";
+import { whatsappHref } from "@/lib/content";
 
 export const metadata = {
   title: "Mi perfil — Vivir Creciendo",
@@ -73,13 +73,15 @@ export default async function PerfilPage({
   const displayName =
     profile?.full_name ?? user.email?.split("@")[0] ?? "amig@";
   const memberSince = formatDate(profile?.created_at ?? null);
-  const whatsappDigits = siteConfig.whatsapp.replace(/\D/g, "");
+  // null mientras no haya número dedicado de la comunidad; el botón de
+  // WhatsApp se oculta en vez de apuntar a un link roto.
+  const wa = whatsappHref();
 
   return (
     <main className="min-h-screen bg-vc-cream noise-overlay px-4 sm:px-6 lg:px-8 py-12 md:py-16">
       <div className="relative z-10 max-w-2xl mx-auto">
         <div className="flex items-center justify-between gap-4">
-          <h1 className="font-[var(--font-display)] text-3xl md:text-4xl font-black text-vc-blue-dark uppercase tracking-tight">
+          <h1 className="font-(family-name:--font-display) text-3xl md:text-4xl font-black text-vc-blue-dark uppercase tracking-tight">
             Mi perfil
           </h1>
           <Link
@@ -112,7 +114,7 @@ export default async function PerfilPage({
 
         {/* Datos de la cuenta */}
         <section className="mt-8 bg-white rounded-2xl shadow-sm p-6 md:p-8 border border-vc-cream">
-          <h2 className="font-[var(--font-display)] text-2xl font-black text-vc-blue-dark uppercase tracking-tight">
+          <h2 className="font-(family-name:--font-display) text-2xl font-black text-vc-blue-dark uppercase tracking-tight">
             Tus datos
           </h2>
 
@@ -161,7 +163,7 @@ export default async function PerfilPage({
 
         {/* Membresía */}
         <section className="mt-8 bg-white rounded-2xl shadow-sm p-6 md:p-8 border border-vc-cream">
-          <h2 className="font-[var(--font-display)] text-2xl font-black text-vc-blue-dark uppercase tracking-tight">
+          <h2 className="font-(family-name:--font-display) text-2xl font-black text-vc-blue-dark uppercase tracking-tight">
             Tu membresía
           </h2>
 
@@ -221,14 +223,16 @@ export default async function PerfilPage({
             paso a paso.
           </p>
           <div className="mt-4 flex flex-col sm:flex-row gap-3">
-            <a
-              href={`https://wa.me/${whatsappDigits}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center min-h-[56px] px-6 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
-            >
-              Cambiar mi plan por WhatsApp
-            </a>
+            {wa && (
+              <a
+                href={wa}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center min-h-[56px] px-6 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
+              >
+                Cambiar mi plan por WhatsApp
+              </a>
+            )}
             <Link
               href="/contacto"
               className="inline-flex items-center justify-center min-h-[56px] px-6 py-4 border-2 border-vc-blue text-vc-blue-dark hover:bg-vc-blue/5 font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
@@ -241,7 +245,7 @@ export default async function PerfilPage({
         {/* Sección admin: editar Actividades desde el perfil */}
         {profile?.is_admin && (
           <section className="mt-8 bg-white rounded-2xl shadow-sm p-6 md:p-8 border-2 border-vc-blue/30">
-            <h2 className="font-[var(--font-display)] text-2xl font-black text-vc-blue-dark uppercase tracking-tight">
+            <h2 className="font-(family-name:--font-display) text-2xl font-black text-vc-blue-dark uppercase tracking-tight">
               Administración
             </h2>
             <p className="mt-2 text-lg text-vc-blue-dark/70 leading-relaxed">

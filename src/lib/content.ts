@@ -1,8 +1,18 @@
 export const siteConfig = {
   name: "Vivir Creciendo",
-  tagline: "Comunidad +60",
+  // Audiencia unificada en +65 en TODA la página (Error #2 del doc): antes
+  // convivían "+60" (title, nav, footer) y "+65" (hero). No reintroducir +60.
+  tagline: "Comunidad +65",
+  // Tagline de marca para logo, redes y materiales (Parte III del doc).
+  brandTagline: "Una comunidad de pertenencia en crecimiento",
   email: "contacto@vivircreciendo.com",
-  whatsapp: "+52 1 55 0000 0000", // PLACEHOLDER
+  // PENDIENTE fundadoras: número dedicado a la comunidad (no el personal de
+  // ninguna de las dos). Mientras sea null, los bloques de WhatsApp no se
+  // renderizan — es preferible a un link roto (el doc marca los links rotos
+  // como bloqueante para publicar).
+  whatsapp: null as string | null,
+  // Mensaje pre-rellenado del link de WhatsApp (Parte XI del doc).
+  whatsappPrefill: "Hola, quiero saber más sobre Vivir Creciendo",
   social: {
     facebook: "https://facebook.com/vivircreciendo",
     instagram: "https://instagram.com/vivir_creciendo",
@@ -10,82 +20,94 @@ export const siteConfig = {
   },
 };
 
+/** Link de WhatsApp con mensaje pre-rellenado, o null si aún no hay número. */
+export function whatsappHref(): string | null {
+  if (!siteConfig.whatsapp) return null;
+  const numero = siteConfig.whatsapp.replace(/\D/g, "");
+  if (!numero) return null;
+  return `https://wa.me/${numero}?text=${encodeURIComponent(
+    siteConfig.whatsappPrefill
+  )}`;
+}
+
+// Nav según Sección 00 del doc: tres links + un botón CTA diferenciado.
 export const navLinks = [
-  { label: "Quiénes somos", href: "#quienes-somos" },
-  { label: "Nosotros", href: "#nosotros" },
   { label: "Actividades", href: "#actividades" },
   { label: "Membresías", href: "#membresias" },
+  { label: "Quiénes somos", href: "#nosotras" },
 ];
 
+/** CTA del nav — visualmente distinto a los links (naranja, sticky). */
+export const navCta = { label: "Prueba gratis", href: "#contacto" };
+
+// Sección 01 — Hero. UN SOLO CTA (Error #4 del doc, Ley de Hick): los tres
+// botones que competían acá se redujeron a "Quiero mi actividad gratuita".
 export const heroContent = {
   title:
-    "Una Comunidad global +65 para nutrir la mente, ampliar vínculos y renovar el sentido.",
-  // Texto destacado debajo del título (Ian 2026-06-28).
-  subtitle: "100% online, en español.",
-  // Intro corta y cálida (1 línea, KISS 60+) — la que se muestra en el hero.
-  description:
-    "Una comunidad online en español para seguir creciendo, conversando y compartiendo después de los 65.",
-  // Versión larga preservada para reusar (era el `description` anterior).
-  descriptionLong:
-    "Somos una comunidad online en español para personas mayores de 65 años. Conversamos, aprendemos y compartimos experiencias. Porque la vida no se detiene a los 65.",
-  ctaPrimary: "Conoce nuestras membresías",
-  ctaSecondary: "Conoce nuestras actividades",
-};
-
-// Bloque que reemplaza la sección "Nuestras Actividades" en la landing
-// (Ian 2026-06-28). Título, texto y botón en un solo lugar para editar fácil.
-export const comunidadVentana = {
-  // NOTA: la "o" del título está en revisión por Ian. Editar libremente aquí.
-  title: "Una Ventana a nuestra Comunidad o a Vivir Creciendo",
-  text: "Te invitamos a participar de una actividad gratuita cada mes para que experimentes el espíritu de Vivir Creciendo: conversaciones con sentido, aprendizaje continuo y relaciones auténticas. Conócenos desde dentro y descubre todo lo que puede aportar esta comunidad a tu vida.",
-  ctaLabel: "SUMAR",
-  // Destino del botón PENDIENTE de confirmar con Ian. Por defecto apunta al
-  // mismo flujo de alta que el botón de membresías (#contacto). Fácil de
-  // re-cablear cambiando solo este valor.
+    "¿Cuándo fue la última vez que al finalizar una conversación pensaste: «esto me hizo bien»?",
+  subtitle:
+    "Vivir Creciendo es la comunidad en línea en español donde personas de 65 años en adelante se encuentran semanalmente para conversar con profundidad, aprender junto a otros y sentir que pertenecen a algo real.",
+  cta: "Quiero mi actividad gratuita",
   ctaHref: "#contacto",
+  // Texto de bajo riesgo debajo del botón — reduce la fricción del alta.
+  ctaNote: "Sin tarjeta de crédito. Sin compromiso de permanencia.",
+  imageAlt:
+    "Grupo de mujeres y hombres de 65 años conversando y riendo en una sesión online de Vivir Creciendo",
 };
 
-// Bloque "¿Qué incluyen las Membresías?" (Ian 2026-06-28). Reemplaza las
-// tarjetas con precios en la sección #membresias. SIN precios (por confirmar)
-// y SIN botón propio (el CTA 'Quiero sumarme' vive en otro bloque/task).
-export const membershipIncludes = {
-  title: "¿Qué incluyen las Membresías?",
-  esencial: {
-    titulo: "Esencial",
-    items: [
-      {
-        k: "Cine y Reflexión",
-        v: "Te enviamos una película, la ves y luego conversamos juntos.",
-      },
-      {
-        k: "Caminando Juntos",
-        v: "Una Rueda de Trabajo para poner palabras a lo que estás viviendo, escuchar otras historias y descubrir la energía de la Comunidad.",
-      },
-      {
-        k: "Nutrición y Bienestar",
-        v: "Trabajamos la relación con el cuerpo desde el cuidado. Exploramos hábitos que sostienen la energía, la claridad y vitalidad.",
-      },
-      {
-        k: "Acceso a toda la biblioteca de contenidos en YouTube",
-        v: "Talleres, Entrevistas, Conversaciones con Expertos.",
-      },
-    ],
-  },
-  plus: {
-    titulo: "Plus",
-    encabezado: "Incluye todo lo de la membresía esencial, más:",
-    items: [
-      {
-        k: "Diálogos culturales",
-        v: "Tomamos disparadores culturales para generar conversaciones que nos nutren.",
-      },
-      {
-        k: "Conversación con Especialistas",
-        v: "Conversaciones con especialistas que nos invitan a pensar, sentir y ampliar nuestra manera de vivir y cuidarnos.",
-      },
-    ],
-  },
+// Sección 02 — Strip de prueba social (fondo azul marca, texto blanco).
+// El nº de miembros queda parametrizado y APAGADO hasta tener el dato real:
+// Alejandra comentó "¿Qué queremos poner aquí?" justo sobre ese número, así
+// que publicar "250" sería inventar una cifra. Cuando lo confirmen, poner
+// `memberCount: 250` y la frase aparece sola al principio del strip.
+export const socialProof = {
+  memberCount: null as number | null,
+  items: [
+    "Facilitado por expertas con 40 años de experiencia",
+    "Comunidad global en español",
+    "Actividades todas las semanas",
+  ],
 };
+
+// Sección 03 — El Momento. Sin título visible: texto puro, centrado, ancho
+// máximo acotado. El único trabajo de esta sección es que el visitante piense
+// "me están leyendo la mente".
+export const elMomento = [
+  "¿Tienes 65, 70, 80 o más y buscas un lugar donde las conversaciones tengan peso, donde cada reflexión sume, donde encuentres genuina pertenencia?",
+  "Eso es Vivir Creciendo: una comunidad pensada para acompañarte, sostenerte y escucharte. Aquí cada voz cuenta.",
+  "Un espacio donde tu experiencia de vida importa, donde cada reflexión te acerca a otros, y donde la pertenencia se siente real — porque fue pensada para ti.",
+];
+
+// Sección 05 — Cómo funciona. Tres pasos, sin apuros.
+export const comoFunciona = {
+  title: "Cómo empezar — son tres pasos, sin apuros",
+  steps: [
+    {
+      n: "01",
+      title: "Prueba una actividad gratis",
+      text: "Sin registrar tarjeta. Sin datos innecesarios. Solo tu nombre y tu email.",
+    },
+    {
+      n: "02",
+      title: "Conoce la comunidad desde adentro",
+      text: "Un encuentro en vivo por Zoom, junto a personas que piensan como tú. Habrás aprendido algo nuevo, habrás encontrado algo que importa, y habrás conocido a alguien que transformará tu vida.",
+    },
+    {
+      n: "03",
+      title: "Elige quedarte si así lo deseas",
+      text: "Si al terminar la actividad piensas «esto es para mí» — y confiamos en que así será — eliges integrarte a la comunidad. ¡Bienvenido!",
+    },
+  ],
+};
+
+// Sección 07 — Actividades.
+//
+// Acá vivía `actividades`: las cuatro cards escritas a mano. Se eliminaron
+// porque eran una segunda copia de lo que ya estaba en Supabase — las mismas
+// actividades cargadas dos veces, y ninguna de las dos enlazaba a la otra. El
+// grid de la portada ahora lee `getActivities()` (ver Actividades.tsx) y se
+// edita desde /admin. De este archivo solo queda el título.
+export const actividadesTitle = "Nuestras actividades";
 
 // Sección "Nos nutrimos con expertos especialistas en" (Ian 2026-06-28).
 // Reemplaza la grilla de colaboradores/avatares por 5 categorías con ícono.
@@ -99,24 +121,11 @@ export const expertAreas = [
   "Finanzas y habilidades prácticas para la vida diaria",
 ];
 
-export const quienesSomos = {
-  title: "QUIÉNES SOMOS",
-  lead: "Una comunidad para vivir esta etapa con propósito y conexión.",
-  paragraphs: [
-    "Vivir Creciendo es una comunidad online diseñada para personas mayores de 65 años que desean vivir esta etapa de la vida con propósito, conexión y crecimiento continuo.",
-    "Creemos que envejecer no significa detenerse, sino abrir nuevas posibilidades de aprendizaje, reflexión, vínculo y participación.",
-    "Ofrecemos experiencias semanales que combinan conversaciones con expertos, reflexión sobre películas y temas culturales, talleres de aprendizaje, espacios de intercambio y grupos de pares que estimulan la mente, fortalecen los vínculos y enriquecen la vida cotidiana.",
-    "Nuestra propuesta busca acompañar a las personas a cultivar relaciones humanas profundas, desarrollar confianza, mantener la curiosidad viva y seguir construyendo un rol protagonista en su propia historia de vida.",
-    "Vivir Creciendo es una comunidad virtual, participativa y cercana, donde cada persona puede sentirse escuchada, acompañada y parte de algo significativo.",
-    "Sin importar dónde viva o las limitaciones físicas que pueda tener, cada integrante puede acceder desde la comodidad de su hogar a encuentros que promueven bienestar emocional, conexión humana, creatividad y sentido de comunidad.",
-    "Nos une la convicción de que siempre es posible seguir creciendo.",
-  ],
-  highlights: [
-    "Nunca es tarde para aprender, compartir y transformarse.",
-    "Más que actividades online, construimos comunidad.",
-    "Un espacio para seguir pensando, sintiendo y creando junto a otros.",
-  ],
-};
+// NOTA: el bloque `quienesSomos` (7 párrafos que vivían dentro del Hero) se
+// retiró al reestructurar la landing. Su trabajo lo hacen ahora dos secciones
+// con un único objetivo cada una: `elMomento` (resonancia emocional) y
+// `pillars` (qué es Vivir Creciendo, en 3 columnas). El Hero quedó liberado
+// para hacer una sola cosa: headline + un CTA.
 
 export const emotionalQuestions = [
   "¿Sientes que esta etapa pide algo distinto, pero no sabes qué?",
@@ -124,24 +133,27 @@ export const emotionalQuestions = [
   "¿Buscas un espacio para seguir aprendiendo, sin sentirte fuera de lugar?",
 ];
 
+// Sección 04 — Qué es Vivir Creciendo. Tres columnas con ícono outline.
+export const pillarsIntro = "Vínculos reales. Mente activa. Protagonismo genuino.";
+export const pillarsTitle = "Qué es Vivir Creciendo";
 export const pillars = [
   {
+    icon: "MessagesSquare" as const,
+    title: "VÍNCULOS REALES",
+    description:
+      "Un lugar donde escuchar y ser escuchado amplía tu mirada y te acerca a formas de pensar que quizás no habías considerado. Cada conversación enriquece, cada perspectiva suma y, poco a poco, se crean vínculos auténticos que sostienen.",
+  },
+  {
+    icon: "Lightbulb" as const,
+    title: "MENTE ACTIVA",
+    description:
+      "Cine + reflexión, charlas con expertos y temas que invitan a pensar diferente. Cada semana una nueva propuesta para ampliar la mirada, aprender y seguir descubriendo, junto a personas con la misma curiosidad por seguir creciendo.",
+  },
+  {
     icon: "Users" as const,
-    title: "COMUNIDAD",
+    title: "PROTAGONISMO",
     description:
-      "Un grupo que escucha, acompaña y crece contigo. Nadie escribe su historia en soledad.",
-  },
-  {
-    icon: "BookOpen" as const,
-    title: "APRENDIZAJE",
-    description:
-      "Talleres, conversaciones y reflexiones para seguir descubriendo. La edad no es un límite, es una oportunidad.",
-  },
-  {
-    icon: "Heart" as const,
-    title: "ACOMPAÑAMIENTO",
-    description:
-      "Espacios cálidos, sin juicios, donde tu voz importa.",
+      "Un espacio participativo donde tu voz tiene un lugar. Tu historia, tu experiencia y tu mirada se comparten, se valoran y enriquecen esta comunidad. Porque nadie llega con tu misma historia, y justamente ahí reside su mayor riqueza.",
   },
 ];
 
@@ -185,7 +197,7 @@ export const memberships: Membership[] = [
     facilitatorBio:
       "Psicoterapeuta con más de 30 años de experiencia. Cofundadora de Vivir Creciendo.",
     closingQuote: "Comunidad, humor y emoción.",
-    price: "PLACEHOLDER USD/mes",
+    price: "Incluida en la Membresía — $27 USD/mes",
     faqs: [
       {
         question: "¿Qué tipo de películas seleccionan?",
@@ -227,7 +239,7 @@ export const memberships: Membership[] = [
     facilitatorBio:
       "Psicoterapeuta con más de 30 años de experiencia. Cofundadora de Vivir Creciendo. Formada en Terapia Comunitaria Integrativa.",
     closingQuote: "Ninguna de nuestras historias se escribe en soledad.",
-    price: "PLACEHOLDER USD/mes",
+    price: "Incluida en la Membresía — $27 USD/mes",
     faqs: [
       {
         question: "¿Qué es una Rueda de Trabajo Comunitario?",
@@ -269,7 +281,7 @@ export const memberships: Membership[] = [
       "Coach de Bienestar y Nutrición Integrativa. Cofundadora de Vivir Creciendo. Transformó su propia vida a los 55 años.",
     closingQuote:
       "Yo viví 50 años engañada. A mis 55 viví una experiencia transformadora.",
-    price: "PLACEHOLDER USD/mes",
+    price: "Incluida en la Membresía — $27 USD/mes",
     faqs: [
       {
         question: "¿Necesito seguir una dieta?",
@@ -290,63 +302,79 @@ export const memberships: Membership[] = [
   },
 ];
 
-export interface MembershipTier {
+/**
+ * Sección 09 — Membresías. UNA SOLA MEMBRESÍA (decisión de fondo del doc
+ * "Vivir Creciendo — una sola membresía"): los tres planes anteriores
+ * (Gratis / Básica / Plus) se colapsan en Gratuita + Membresía.
+ *
+ * Los precios van SIEMPRE visibles, sin sesión (Error #1 del doc, el más
+ * grave): antes decían "Precio por confirmar" y solo se mostraban a usuarios
+ * logueados, que es exactamente al revés de lo que necesita la conversión.
+ */
+export interface MembershipPlan {
   name: string;
   kind: "gratis" | "paga";
+  /** Precio visible siempre. */
+  price: string;
+  /** Segunda línea de precio (anual, aclaración de riesgo). */
+  priceNote: string;
   tagline: string;
-  activities: string[];
-  extras: string[];
-  badge?: string;
+  features: string[];
+  /** Micro-copy de bajo riesgo bajo la lista. */
+  reassurance?: string;
+  cta: string;
+  ctaHref: string;
   featured?: boolean;
-  // Vista logueada — contenido completo
-  priceLabel: string; // PLACEHOLDER: precios pendientes de Ian
-  fullDescription: string;
 }
 
-export const membershipTiers: MembershipTier[] = [
+export const membershipsTitle = "Nuestras membresías";
+export const membershipsSubtitle =
+  "Empieza por la actividad gratuita. Si el espacio es para ti, te sumas — y si no, no pasa nada.";
+
+export const membershipPlans: MembershipPlan[] = [
   {
-    name: "Gratis",
+    name: "Gratuita",
     kind: "gratis",
-    tagline: "Una actividad gratuita para conocernos, sin compromiso.",
-    activities: ["1 actividad gratuita al mes"],
-    extras: [],
-    priceLabel: "Sin costo",
-    fullDescription:
-      "Una puerta de entrada a la comunidad: participá de una actividad gratuita al mes y viví en primera persona cómo conversamos, aprendemos y nos acompañamos. Ideal para conocernos antes de dar el siguiente paso.",
+    price: "$0",
+    // PENDIENTE fundadoras: el doc marca este plan como "todavía no definido,
+    // conversar con Ariel". El copy queda publicable tal cual; si cambian las
+    // condiciones, se edita solo este objeto.
+    priceNote: "Sin tarjeta de crédito, sin compromiso.",
+    tagline: "Una actividad por mes para conocernos desde adentro.",
+    features: [
+      "1 actividad online en vivo por mes",
+      "Acceso a una actividad para conocernos",
+      "Sin datos de tarjeta ni compromiso de permanencia",
+    ],
+    cta: "Quiero probar gratis",
+    ctaHref: "#contacto",
   },
   {
-    name: "Básica",
+    name: "Membresía",
     kind: "paga",
-    tagline: "Tres espacios para conversar, reflexionar y cuidarte.",
-    activities: [
-      "Cine reflexión",
-      "Caminemos juntos",
-      "Salud y bienestar",
+    price: "$27 USD/mes",
+    priceNote: "o $270/año (2 meses gratis)",
+    tagline: "Las conversaciones que nutren, semana a semana.",
+    features: [
+      "Cine + Reflexión: te enviamos la película, la ves y reflexionamos juntos",
+      "Círculo de escucha: rueda grupal para poner palabras a lo que estás viviendo",
+      "Salud y bienestar: exploramos la nutrición desde una mirada integral para cultivar salud, energía y bienestar",
+      "Descuento en actividades especiales",
     ],
-    extras: ["Incluye la actividad gratuita", "Acceso a YouTube"],
-    priceLabel: "Precio por confirmar",
-    fullDescription:
-      "Acceso mensual a nuestras tres actividades fundamentales — Cine reflexión, Caminemos juntos y Salud y bienestar — más la actividad gratuita y el acceso a nuestro canal de YouTube. Una rutina semanal de encuentros que estimulan la mente, cuidan el cuerpo y fortalecen los vínculos.",
-  },
-  {
-    name: "Plus",
-    kind: "paga",
-    tagline: "La experiencia completa de la comunidad.",
-    activities: [
-      "Cine reflexión",
-      "Caminemos juntos",
-      "Salud y bienestar",
-      "Círculo cultural",
-      "1 plática con foro",
-    ],
-    extras: ["Incluye la actividad gratuita", "Acceso a YouTube"],
-    badge: "Más completa",
+    reassurance: "Sin compromisos de permanencia. Cancelas cuando quieras.",
+    cta: "Quiero sumarme",
+    ctaHref: "#contacto",
     featured: true,
-    priceLabel: "Precio por confirmar",
-    fullDescription:
-      "La membresía más completa: todo lo de Básica más el Círculo cultural y una plática mensual con foro de intercambio. Cinco actividades pensadas para quienes quieren vivir la comunidad a pleno, con más espacios de aprendizaje, cultura y conversación profunda.",
   },
 ];
+
+/** Garantía de satisfacción — va debajo de las membresías (Parte XI del doc). */
+export const garantia = {
+  title: "Nuestra garantía",
+  text: "Si participas de tu primera actividad paga y sientes que no era lo que esperabas, te devolvemos el dinero sin preguntas. Solo escríbenos en los 7 días siguientes a tu primera sesión.",
+  closing:
+    "Porque estamos seguros de que vas a querer quedarte — pero necesitamos que tú también lo estés.",
+};
 
 // Vista logueada — las 5 actividades completas del programa (contenido full)
 export interface FullActivity {
@@ -488,25 +516,34 @@ export interface TeamMember {
    *  en lugar del role/quote en la sección NOSOTRAS de la landing. */
   bio?: string | null;
   image: string | null;
+  /**
+   * Encuadre del recorte circular. Las fotos verticales necesitan
+   * `object-top` para que la cara no quede cortada por arriba; las cuadradas
+   * se ven bien con el centro por defecto.
+   */
+  imagePosition?: string;
   cofounder: boolean;
 }
 
 export const teamMembers: TeamMember[] = [
+  // Bio reescrita (Error #5 del doc): la anterior hablaba de "recuperar
+  // energía" y "sin dietas rígidas" — o sea, del negocio personal de
+  // nutrición de Alejandra, no de Vivir Creciendo. La nueva entra por la
+  // experiencia propia de llegar a los 65 y aterriza en el proyecto.
   {
     name: "Alejandra Furman-Paz",
-    role: "Coach de Bienestar y Nutrición Integrativa. Cofundadora.",
-    quote:
-      "Te voy a decir algo: yo viví 50 años engañada. A mis 55 viví una experiencia transformadora para mi cuerpo y mente.",
-    bio: "Soy Coach de Nutrición Integrativa, me especializo en acompañar a personas en el proceso de vivir con nutrición y bienestar. Combino mi experiencia con ciencia y calidez humana, para ayudarte a recuperar energía y vitalidad, sin dietas rígidas ni promesas vacías.",
-    image: null, // PLACEHOLDER: foto aún no publicada (Ian 2026-06-28) — mantener icono
+    role: "Cofundadora de Vivir Creciendo | Coach de Salud en Nutrición Integrativa",
+    quote: null,
+    bio: "Cuando llegué a los 65 entendí que el bienestar es mucho más que cuidar el cuerpo. También necesitamos espacios donde seguir aprendiendo, compartiendo y sintiendo que pertenecemos.\n\nComo Coach de Salud en Nutrición Integrativa, llevo años acompañando a personas a construir una relación más consciente con su alimentación, su energía y su bienestar, respetando que cada historia y cada etapa de la vida son únicas.\n\nJunto con Nurit creamos Vivir Creciendo porque soñábamos con una comunidad en español donde las personas pudieran seguir aprendiendo, compartiendo y construyendo vínculos genuinos. Un lugar donde crecer no termina con la edad: simplemente cambia de forma.",
+    image: "/images/alejandra.jpg", // foto real (Ian 2026-08-04)
+    imagePosition: "object-top", // vertical 1126x1600 — centrada cortaría la cara
     cofounder: true,
   },
   {
     name: "Nurit Mileris-Zylbersztejn",
-    role: "Psicoterapeuta con más de 30 años de experiencia. Cofundadora.",
-    quote:
-      "Vivir Creciendo es una comunidad que sostiene, que transforma, que legitima.",
-    bio: "Soy Nurit Mileris-Zylbersztejn psicoterapeuta, docente y creadora de espacios de encuentro y reflexión, con más de 40 años de experiencia. Desde una mirada narrativa, colaborativa y coaching existencial, acompaño a las personas a construir historias de esperanza, crecimiento y nuevas posibilidades a lo largo de la vida.",
+    role: "Cofundadora de Vivir Creciendo | Psicoterapeuta, docente y facilitadora de comunidades",
+    quote: null,
+    bio: "Hace casi cuarenta años acompaño a personas, parejas, familias y grupos en procesos de cambio. En ese recorrido comprendí que muchas de las transformaciones más profundas ocurren cuando encontramos espacios donde somos escuchados, reconocidos y dejamos de sentirnos solos.\n\nMi trabajo integra la psicoterapia, la docencia y el trabajo con grupos desde una mirada narrativa, colaborativa y existencial, siempre con la convicción de que el diálogo puede abrir nuevas posibilidades para vivir.\n\nJunto con Ale creamos Vivir Creciendo porque soñábamos con una comunidad en español donde las personas pudieran seguir aprendiendo, compartiendo y construyendo vínculos genuinos. Un espacio donde crecer no termina con la edad: simplemente cambia de forma.",
     image: "/images/nurit.png", // foto real (Ian 2026-06-28)
     cofounder: true,
   },
@@ -607,55 +644,95 @@ export const pastActivities: Activity[] = [
   // PLACEHOLDER: agregar más actividades pasadas
 ];
 
-export const testimonials = [
+/**
+ * Sección 06 — Prueba social (Error #3 del doc: la landing no tenía ninguna).
+ *
+ * PENDIENTE fundadoras: grabar 2-3 testimonios en video de 30 segundos
+ * (nombre + ciudad + qué cambió en su vida). Mientras tanto se publican solo
+ * voces reales, cada una con su procedencia explícita — un testimonio de
+ * miembro y dos citas del Congreso. NO inventar testimonios ni atribuir a
+ * "miembros" frases que no lo son: para este target, una prueba social falsa
+ * que se nota cuesta más que la ausencia de prueba social.
+ */
+export const testimonialsTitle = "Voces de la comunidad";
+
+export interface Testimonial {
+  quote: string;
+  name: string;
+  /** Procedencia literal — se muestra tal cual bajo el nombre. */
+  context: string;
+  /** true = miembro de Vivir Creciendo; false = cita de otro ámbito. */
+  esMiembro: boolean;
+}
+
+export const testimonials: Testimonial[] = [
   {
     quote:
       "En Vivir Creciendo encontré un grupo tan contenedor, tan agradable que espero con gusto los miércoles para reunirnos.",
     name: "Virginia Estela Cohan",
-    age: 82,
-    country: "México",
+    context: "82 años · México · miembro de la comunidad",
+    esMiembro: true,
+  },
+  {
+    quote: "Ya no pongan a los viejos a jugar lotería, enséñenles a bailar.",
+    name: "Participante",
+    context: "Congreso Latinoamericano de Prácticas Narrativas",
+    esMiembro: false,
   },
   {
     quote:
-      "Ya no pongan a los viejos a jugar lotería, enséñenles a bailar",
+      "Elijo creer que mi vejez será como un papel por escribir, por explorar y honrar.",
     name: "Participante",
-    age: null,
-    country: "Congreso Latinoamericano de Prácticas Narrativas",
-  },
-  {
-    quote:
-      "Elijo creer que mi vejez será como un papel por escribir, por explorar y honrar",
-    name: "Participante",
-    age: null,
-    country: "Congreso Latinoamericano de Prácticas Narrativas",
+    context: "Congreso Latinoamericano de Prácticas Narrativas",
+    esMiembro: false,
   },
 ];
 
+/**
+ * Sección 10 — FAQ (Parte IX del doc). Cada pregunta ataca una objeción
+ * silenciosa concreta del target de 65+: miedo a la tecnología, miedo a
+ * quedar atrapado, soledad geográfica, horarios, presión a hablar, datos
+ * personales y "¿y si no me convence?".
+ */
+export const faqsTitle = "Preguntas frecuentes";
 export const faqs = [
   {
-    question: "¿Necesito saber usar tecnología para participar?",
+    question: "¿Necesito saber mucho de tecnología para participar?",
     answer:
-      "No te preocupes. Te guiamos paso a paso. Solo necesitas un celular o computadora con internet. Te enviamos instrucciones claras por WhatsApp y correo.",
+      "No. Si sabes abrir un link, ya sabes todo lo que necesitas. Nuestras actividades se hacen por Zoom — una plataforma que cualquier dispositivo soporta. Antes de tu primera sesión, te enviamos una guía paso a paso de cómo entrar. Y si algo no funciona, escríbenos y te ayudamos en tiempo real. Nadie se queda afuera por una cuestión técnica.",
   },
   {
-    question: "¿Cómo puedo cancelar mi membresía?",
+    question: "¿Cuánto dura el compromiso? ¿Puedo cancelar?",
     answer:
-      "Puedes cancelar en cualquier momento escribiéndonos por WhatsApp o correo electrónico. No hay permanencia mínima ni penalizaciones.",
+      "No hay compromiso de permanencia. Puedes cancelar en cualquier momento desde tu cuenta, sin llamados ni burocracia. Si eliges el plan anual y decides cancelar, te devolvemos el proporcional de lo no usado. Queremos que estés porque quieres estar — no porque es complicado irse.",
   },
   {
-    question: "¿Cuáles son los métodos de pago disponibles?",
+    question: "¿Hay personas de mi país o de mi contexto en la comunidad?",
     answer:
-      "Aceptamos tarjetas de crédito y débito internacionales. Próximamente habilitaremos pagos por Mercado Pago para mayor comodidad en Latinoamérica.",
+      "Vivir Creciendo es una comunidad hispanohablante global. Tenemos miembros de varios países. La diversidad de contextos hace las conversaciones más ricas — es uno de los activos más valorados por nuestros miembros. Y el español compartido crea un terreno común inmediato.",
   },
   {
-    question: "¿Las clases quedan grabadas?",
+    question: "¿En qué horarios son las actividades? ¿Puedo ver las grabaciones después?",
     answer:
-      "Las Master Class y clases de Salud y Bienestar quedan grabadas. Las ruedas de Caminando Juntos son en vivo para mantener la intimidad del espacio.",
+      // PENDIENTE fundadoras: el doc pide (a) link al calendario de horarios y
+      // (b) el plazo durante el cual quedan disponibles las grabaciones. El
+      // texto está redactado para que ambos datos entren sin reescribirlo.
+      "Las actividades en vivo se realizan en horarios que buscan ser accesibles para varios husos horarios del mundo hispanohablante. Algunas sesiones quedan grabadas y disponibles para miembros; otras, en cambio, no se graban para resguardar la privacidad de quienes participan. Si quieres el detalle de horarios, escríbenos y te lo enviamos.",
   },
   {
-    question: "¿Tienen invitados especiales?",
+    question: "¿Tengo que participar activamente o puedo solo escuchar?",
     answer:
-      "Sí, periódicamente invitamos a expertos. Los miembros reciben descuento exclusivo. Los no-miembros pueden acceder pagando aparte.",
+      "Puedes participar tanto como quieras. Hay sesiones donde la cámara puede estar apagada, hay momentos de escucha y momentos de expresión. La única regla es el respeto mutuo. Nadie es presionado a hablar — aunque la mayoría termina queriendo hacerlo.",
+  },
+  {
+    question: "¿Mis datos están seguros? ¿Qué hacen con mi información?",
+    answer:
+      "Tus datos personales (nombre, email, información de pago) son usados exclusivamente para gestionar tu membresía y comunicarte actividades. No los vendemos, no los cedemos a terceros, no los usamos para publicidad. Puedes ver nuestra Política de Privacidad completa en el pie de esta página.",
+  },
+  {
+    question: "¿Qué pasa si la primera sesión no me convence?",
+    answer:
+      "La primera sesión es gratis y sin compromiso — precisamente para que puedas sentir si el espacio es para ti. Si no te convence, no pasa nada. No hay llamado de seguimiento ni presión para suscribirte. Queremos que el «sí» venga de adentro — no de una campaña de marketing.",
   },
 ];
 
@@ -689,25 +766,27 @@ export const newsletterContent = {
   hasNameField: true,
 };
 
+// Sección 11 — CTA final. Última oportunidad de conversión: mismo botón que
+// el hero (un solo verbo en toda la página) sobre fondo azul marca.
 export const finalCta = {
-  title: "¿LISTO PARA VIVIR CRECIENDO?",
-  description:
-    "Únete a una comunidad que te escucha, te acompaña y celebra cada etapa de tu vida. Tu historia merece ser compartida.",
-  button: "VER MEMBRESÍAS",
+  title: "Tu próxima conversación importante empieza acá.",
+  description: "Súmate sin compromiso. La primera actividad es gratis.",
+  button: "Quiero mi actividad gratuita",
+  note: "Sin tarjeta de crédito. Sin compromiso de permanencia. Cancelas cuando quieras.",
 };
 
-// Sección "Soporte humano" (Ian 2026-06-28). Email y WhatsApp con PLACEHOLDERS
-// hasta que Ian pase los datos reales. Reemplazar solo estos valores:
-//   emailHref  → mailto:correo-real
-//   whatsappHref → https://wa.me/numero-real
+// Soporte humano — el email ya es real; el WhatsApp se renderiza solo si
+// `siteConfig.whatsapp` tiene número (ver `whatsappHref()`).
 export const soporte = {
-  titulo: "Soporte humano",
-  emailLabel: "Por email",
-  emailHref: "mailto:#", // PENDIENTE Ian
-  whatsappLabel: "WhatsApp",
-  whatsappText: "unirse a la comunidad",
-  whatsappHref: "https://wa.me/#", // PENDIENTE Ian
+  titulo: "¿Prefieres escribirnos antes?",
+  emailLabel: "Escríbenos por email",
+  whatsappLabel: "Escríbenos por WhatsApp",
 };
 
-export const footerText =
-  "Vivir Creciendo Comunidad +60 © 2026. Hecho con cariño en México, Uruguay y para todo el mundo de habla hispana.";
+// Sección 12 — Footer.
+export const footerContent = {
+  tagline: "La comunidad donde se sigue siendo.",
+  navTitle: "Navegación",
+  contactTitle: "Contacto",
+  legal: "© 2026 Vivir Creciendo. Todos los derechos reservados.",
+};

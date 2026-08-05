@@ -1,59 +1,78 @@
 import Image from "next/image";
-import { heroContent, quienesSomos } from "@/lib/content";
+import { ArrowRight } from "lucide-react";
+import { heroContent } from "@/lib/content";
 
+/**
+ * Sección 01 — Hero.
+ *
+ * UN SOLO CTA (Error #4 del doc, Ley de Hick). Antes convivían aquí tres
+ * botones que competían entre sí ("Conoce nuestras membresías", "Conoce
+ * nuestras actividades", "Conoce más sobre Nosotros"); a más opciones, más
+ * tiempo de decisión y más probabilidad de no elegir ninguna.
+ *
+ * El texto largo de "Quiénes somos" que vivía dentro del hero se movió a sus
+ * propias secciones (El Momento y Qué es Vivir Creciendo): cada sección tiene
+ * un solo trabajo, nunca dos.
+ */
 export default function Hero() {
-  const paragraphs = quienesSomos.paragraphs;
-  const bodyParagraphs = paragraphs.slice(0, -1);
-  const closingParagraph = paragraphs[paragraphs.length - 1];
-
   return (
-    <section
-      id="quienes-somos"
-      className="scroll-mt-20 md:scroll-mt-24 bg-vc-cream noise-overlay py-24 md:py-32 px-4 sm:px-6 lg:px-8"
-    >
+    // Fondo crema (#F7F3EE), como pide el doc para el hero. Abre la
+    // alternancia crema / blanco que ordena el resto de la página.
+    <section className="bg-vc-cream py-16 md:py-24 px-4 sm:px-6 lg:px-8">
       <div className="relative z-10 max-w-6xl mx-auto">
-        {/* Bloque superior: 2 columnas en desktop (texto izq · imagen der),
-            stack compacto en mobile (texto → imagen). Composición intencional
-            para equilibrar el peso visual y no dejar la foto flotando sola. */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center">
-          {/* Texto: título + subtítulo + intro corta y cálida (KISS 60+) */}
-          <div className="text-center lg:text-left max-w-2xl mx-auto lg:mx-0">
-            <h1 className="font-[var(--font-display)] text-4xl md:text-5xl lg:text-6xl font-black text-vc-blue-dark tracking-tight">
+        {/* Desktop: texto 60% · imagen 40%. Mobile: imagen arriba, texto
+            abajo (el orden que pide el doc para que la foto haga de gancho). */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-14 items-center">
+          <div className="order-2 lg:order-1 lg:col-span-3 text-center lg:text-left">
+            {/* Tamaños según la especificación tipográfica del doc:
+                48-56px en desktop, 32-38px en mobile. Nunca por debajo. */}
+            <h1 className="font-(family-name:--font-display) text-[2rem] md:text-[2.375rem] lg:text-5xl font-black text-vc-blue-dark tracking-tight text-balance leading-tight">
               {heroContent.title}
             </h1>
-            <p className="mt-4 font-[var(--font-subtitle)] text-xl md:text-2xl text-vc-blue italic">
+            <p className="mt-6 text-lg md:text-xl text-vc-ink leading-relaxed max-w-2xl mx-auto lg:mx-0">
               {heroContent.subtitle}
             </p>
-            <p className="mt-6 text-lg md:text-xl text-vc-blue-dark/80 leading-relaxed">
-              {heroContent.description}
-            </p>
+
+            <div className="mt-8 flex flex-col items-center lg:items-start">
+              <a
+                href={heroContent.ctaHref}
+                className="inline-flex items-center justify-center gap-2 min-h-[56px] px-8 py-4 bg-vc-blue hover:bg-vc-blue-dark text-white font-semibold text-lg md:text-xl rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange/50 shadow-lg"
+              >
+                {heroContent.cta}
+                <ArrowRight className="w-5 h-5" aria-hidden="true" />
+              </a>
+              <p className="mt-3 text-base text-vc-ink/70">
+                {heroContent.ctaNote}
+              </p>
+            </div>
           </div>
 
-          {/* Imagen: llena su columna y queda alineada a la derecha en desktop. */}
-          <div className="relative w-full max-w-md mx-auto lg:mx-0 lg:ml-auto aspect-square rounded-3xl overflow-hidden shadow-xl">
+          <div className="order-1 lg:order-2 lg:col-span-2 relative w-full max-w-md mx-auto lg:mx-0 lg:ml-auto aspect-4/3 rounded-3xl overflow-hidden shadow-xl">
             <Image
               src="/images/hero-community.jpg"
-              alt="Comunidad de adultos mayores compartiendo y aprendiendo juntos"
+              alt={heroContent.imageAlt}
               fill
               className="object-cover"
               priority
-              sizes="(max-width: 1024px) 100vw, 28rem"
+              sizes="(max-width: 1024px) 100vw, 24rem"
             />
           </div>
         </div>
 
-        {/* Video institucional — espacio reservado (Ian 2026-06-28).
-            Ian entrega el video en julio 2026: NO insertar <video> todavía,
-            solo dejar la ranura lista para reemplazar este placeholder. */}
-        <div className="mt-12 md:mt-16 max-w-4xl mx-auto">
+        {/* Video de las fundadoras — Error #6 del doc. Se graba esta semana;
+            hasta entonces queda la ranura reservada. Al recibirlo, reemplazar
+            este bloque por el <video> o el embed, manteniendo el aspect-video
+            y los subtítulos en español (obligatorio: muchos 65+ ven en
+            silencio o con volumen bajo). */}
+        <div className="mt-14 md:mt-20 max-w-4xl mx-auto">
           <div
-            className="relative aspect-video w-full rounded-3xl overflow-hidden bg-vc-blue/5 border border-vc-blue/10 flex flex-col items-center justify-center text-center px-6"
+            className="relative aspect-video w-full rounded-3xl overflow-hidden bg-white border border-vc-blue/15 flex flex-col items-center justify-center text-center px-6"
             role="img"
-            aria-label="Video próximamente"
+            aria-label="Video de las fundadoras, próximamente"
           >
-            <span className="flex items-center justify-center w-16 h-16 rounded-full bg-white/70 shadow">
+            <span className="flex items-center justify-center w-16 h-16 rounded-full bg-vc-orange/10">
               <svg
-                className="w-7 h-7 text-vc-blue translate-x-0.5"
+                className="w-7 h-7 text-vc-orange translate-x-0.5"
                 viewBox="0 0 24 24"
                 fill="currentColor"
                 aria-hidden="true"
@@ -61,54 +80,10 @@ export default function Hero() {
                 <path d="M8 5v14l11-7z" />
               </svg>
             </span>
-            <p className="mt-4 text-base md:text-lg font-medium text-vc-blue-dark/60">
-              Video próximamente
+            <p className="mt-4 text-base md:text-lg font-medium text-vc-ink/70">
+              Nurit y Alejandra te cuentan de qué se trata — video próximamente
             </p>
           </div>
-        </div>
-
-        {/* Quiénes somos — texto largo (full width), ARRIBA de los botones
-            (pedido de Ian). Una sola columna, alineado a la izquierda, ancho
-            amplio para legibilidad 60+. */}
-        <div className="mt-12 md:mt-16 max-w-5xl mx-auto space-y-4 text-left">
-          {bodyParagraphs.map((p, i) => (
-            <p
-              key={i}
-              className="text-lg md:text-xl leading-relaxed text-vc-blue-dark/80"
-            >
-              {p}
-            </p>
-          ))}
-          <p className="text-lg md:text-xl leading-relaxed font-semibold text-vc-blue-dark">
-            {closingParagraph}
-          </p>
-        </div>
-
-        <ul className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-          {quienesSomos.highlights.map((phrase) => (
-            <li
-              key={phrase}
-              className="bg-white/70 rounded-2xl p-6 text-center text-lg font-medium italic text-vc-blue-dark leading-snug border border-white/80"
-            >
-              &ldquo;{phrase}&rdquo;
-            </li>
-          ))}
-        </ul>
-
-        {/* Botones CTA — debajo del texto Quiénes somos. */}
-        <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-          <a
-            href="#membresias"
-            className="inline-flex items-center justify-center min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange shadow-lg"
-          >
-            {heroContent.ctaPrimary}
-          </a>
-          <a
-            href="#actividades"
-            className="inline-flex items-center justify-center min-h-[56px] px-8 py-4 text-vc-blue-dark font-semibold text-lg hover:text-vc-orange transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded-xl"
-          >
-            {heroContent.ctaSecondary}
-          </a>
         </div>
       </div>
     </section>

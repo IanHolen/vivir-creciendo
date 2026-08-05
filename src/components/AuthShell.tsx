@@ -31,7 +31,7 @@ export default function AuthShell({
         </div>
 
         <div className="mt-8 bg-white rounded-3xl shadow-xl p-8 md:p-10">
-          <h1 className="font-[var(--font-display)] text-3xl md:text-4xl font-black text-vc-blue-dark text-center uppercase tracking-tight">
+          <h1 className="font-(family-name:--font-display) text-3xl md:text-4xl font-black text-vc-blue-dark text-center uppercase tracking-tight">
             {title}
           </h1>
           {subtitle && (

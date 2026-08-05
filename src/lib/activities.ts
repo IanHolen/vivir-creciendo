@@ -8,32 +8,102 @@ import { createClient } from "@/lib/supabase/server";
  * sesión (el gateo lo hace la DB / RLS). No leer public.activities directo.
  */
 /**
- * Plan de membresía al que pertenece una actividad (amend chief be8d3813).
- * Se muestra como una etiqueta pequeña en la tarjeta de la landing y en el
- * detalle público. Colores de marca: gratuita=azul, básica/plus=naranja.
+ * Cómo se accede a una actividad.
+ *
+ * Reestructurado a la MEMBRESÍA ÚNICA del doc: antes había tres niveles
+ * (gratuita | basica | plus) que ya no existen en ningún lado de la web. Hoy
+ * solo hay dos formas de entrar a una actividad: gratis, o con la membresía.
+ *
+ * Las filas viejas que todavía tengan "basica"/"plus" en la columna `plan` se
+ * normalizan a "membresia" al LEER (ver PLAN_ALIASES), así que nada se rompe
+ * sin migrar la base; y como el panel guarda siempre el valor normalizado, la
+ * columna se limpia sola a medida que las fundadoras editan cada actividad.
  */
-export type ActivityPlan = "gratuita" | "basica" | "plus";
+export type ActivityPlan = "gratuita" | "membresia";
 
-export const PLAN_META: Record<ActivityPlan, { label: string; badgeClass: string }> = {
-  gratuita: { label: "Gratuita", badgeClass: "bg-vc-blue text-white" },
-  basica: { label: "Básica", badgeClass: "bg-vc-orange text-white" },
-  plus: { label: "Plus", badgeClass: "bg-vc-blue-dark text-white" },
+export const PLAN_META: Record<
+  ActivityPlan,
+  { label: string; badgeClass: string; hint: string }
+> = {
+  gratuita: {
+    label: "Gratuita",
+    badgeClass: "bg-vc-blue text-white",
+    hint: "Abierta a cualquiera, sin tarjeta.",
+  },
+  membresia: {
+    label: "Membresía",
+    badgeClass: "bg-vc-orange text-white",
+    hint: "Incluida en la membresía de $27 USD/mes.",
+  },
 };
 
-/** Normaliza el texto libre de la columna `plan` a un plan conocido (o null). */
-export function planMeta(plan: string | null | undefined) {
+/**
+ * Texto libre de la columna `plan` → plan conocido. Incluye los valores
+ * heredados del esquema de tres niveles para que las actividades ya cargadas
+ * sigan mostrando una etiqueta correcta.
+ */
+const PLAN_ALIASES: Record<string, ActivityPlan> = {
+  gratuita: "gratuita",
+  gratis: "gratuita",
+  free: "gratuita",
+  membresia: "membresia",
+  membresía: "membresia",
+  paga: "membresia",
+  basica: "membresia", // heredado
+  básica: "membresia", // heredado
+  plus: "membresia", // heredado
+};
+
+/** Normaliza la columna `plan` a un plan conocido (o null si no hay/no mapea). */
+export function normalizePlan(
+  plan: string | null | undefined
+): ActivityPlan | null {
   if (!plan) return null;
-  return PLAN_META[plan.trim().toLowerCase() as ActivityPlan] ?? null;
+  return PLAN_ALIASES[plan.trim().toLowerCase()] ?? null;
 }
 
-/** Orden de los planes para agrupar/ordenar en el landing. */
-export const PLAN_ORDER: ActivityPlan[] = ["gratuita", "basica", "plus"];
+/** Metadatos de presentación del plan de una actividad (o null si no tiene). */
+export function planMeta(plan: string | null | undefined) {
+  const key = normalizePlan(plan);
+  return key ? PLAN_META[key] : null;
+}
 
-/** Rango de orden de un plan (gratuita=0, basica=1, plus=2, sin/desconocido=último). */
+/** Orden de los planes para agrupar/ordenar. */
+export const PLAN_ORDER: ActivityPlan[] = ["gratuita", "membresia"];
+
+/** Rango de orden (gratuita=0, membresia=1, sin plan/desconocido=último). */
 export function planRank(plan: string | null | undefined): number {
-  if (!plan) return PLAN_ORDER.length;
-  const i = PLAN_ORDER.indexOf(plan.trim().toLowerCase() as ActivityPlan);
-  return i === -1 ? PLAN_ORDER.length : i;
+  const key = normalizePlan(plan);
+  if (!key) return PLAN_ORDER.length;
+  return PLAN_ORDER.indexOf(key);
+}
+
+/**
+ * Íconos que puede llevar una actividad en el grid de la portada.
+ *
+ * Data plana A PROPÓSITO: este módulo lo importan server components, server
+ * actions y el panel, y traer `lucide-react` hasta acá arrastraría el paquete
+ * de íconos a cadenas de importación que no dibujan nada. El mapeo
+ * nombre → componente vive en quien pinta (Actividades.tsx, ActivityForm.tsx).
+ */
+export const ACTIVITY_ICONS = [
+  { value: "Film", label: "Película" },
+  { value: "Footprints", label: "Caminata" },
+  { value: "HeartPulse", label: "Salud" },
+  { value: "DoorOpen", label: "Puerta abierta" },
+  { value: "Users", label: "Grupo" },
+  { value: "Sparkles", label: "Bienestar" },
+] as const;
+
+export type ActivityIcon = (typeof ACTIVITY_ICONS)[number]["value"];
+
+/** Ícono cuando la actividad no tiene uno elegido (o guarda un valor viejo). */
+export const DEFAULT_ACTIVITY_ICON: ActivityIcon = "Users";
+
+/** Texto libre de la columna `icono` → un ícono que existe en ACTIVITY_ICONS. */
+export function normalizeIcon(icono: string | null | undefined): ActivityIcon {
+  const match = ACTIVITY_ICONS.find((i) => i.value === icono);
+  return match ? match.value : DEFAULT_ACTIVITY_ICON;
 }
 
 /** Etiqueta legible de la modalidad (texto libre en DB). */
@@ -71,6 +141,11 @@ export interface Activity {
   hora?: string | null; // "10 hs CDMX / 12 hs ARG"
   modalidad?: string | null; // online | presencial | hibrido
   duracion?: string | null; // "3 sesiones en vivo de 90 min c/u"
+  // Los dos campos que hacen falta para pintar la card del grid de portada:
+  // antes vivían escritos a mano en content.ts y ahora salen de la base, así
+  // que las fundadoras pueden editarlos sin tocar código.
+  frecuencia?: string | null; // "1 vez por semana"
+  icono?: string | null; // ver ACTIVITY_ICONS / normalizeIcon
   facilitador?: string | null; // "Abigail Sosa Mendoza"
   facilitador_rol?: string | null; // credenciales / rol
   publico_objetivo?: string | null; // "Adultos mayores de 60..."
@@ -79,7 +154,7 @@ export interface Activity {
   beneficios?: string | null; // lista (una por línea)
   enlace_inscripcion?: string | null; // URL de inscripción
   faq?: string | null; // preguntas frecuentes (texto libre)
-  plan?: string | null; // gratuita | basica | plus
+  plan?: string | null; // gratuita | membresia (ver normalizePlan)
 }
 
 export async function getActivities(): Promise<Activity[]> {

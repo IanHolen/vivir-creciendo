@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { User } from "lucide-react";
 import { teamMembers } from "@/lib/content";
 
@@ -8,7 +9,7 @@ export default function Team() {
   return (
     <section id="quienes" className="bg-white py-24 md:py-32 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <h2 className="font-[var(--font-display)] text-3xl md:text-4xl lg:text-5xl font-black text-vc-blue-dark text-center uppercase tracking-tight">
+        <h2 className="font-(family-name:--font-display) text-3xl md:text-4xl lg:text-5xl font-black text-vc-blue-dark text-center uppercase tracking-tight">
           QUIÉNES TE ACOMPAÑAN
         </h2>
 
@@ -19,17 +20,40 @@ export default function Team() {
               key={member.name}
               className="bg-vc-cream/50 rounded-2xl p-8 max-w-md w-full text-center border border-vc-cream"
             >
-              <div className="w-24 h-24 rounded-full mx-auto bg-vc-cream flex items-center justify-center">
-                <User className="w-10 h-10 text-vc-blue/40" aria-hidden="true" />
+              {/* Antes mostraba siempre el ícono, aunque hubiera foto real. */}
+              <div className="w-24 h-24 rounded-full mx-auto bg-vc-cream flex items-center justify-center overflow-hidden">
+                {member.image ? (
+                  <Image
+                    src={member.image}
+                    alt={`Foto de ${member.name}`}
+                    width={96}
+                    height={96}
+                    className={`object-cover w-full h-full ${member.imagePosition ?? ""}`}
+                  />
+                ) : (
+                  <User className="w-10 h-10 text-vc-orange/50" aria-hidden="true" />
+                )}
               </div>
               <h3 className="mt-5 font-semibold text-xl text-vc-blue-dark">
                 {member.name}
               </h3>
               <p className="text-vc-blue text-base">{member.role}</p>
-              {member.quote && (
-                <blockquote className="mt-4 italic text-vc-blue-dark/70 leading-relaxed">
-                  &ldquo;{member.quote}&rdquo;
-                </blockquote>
+              {/* Las cofundadoras ya no tienen `quote`: su presentación es la
+                  bio reescrita, en párrafos. */}
+              {member.bio ? (
+                <div className="mt-4 space-y-3 text-justify hyphens-auto">
+                  {member.bio.split("\n\n").map((p, i) => (
+                    <p key={i} className="text-vc-ink/80 leading-relaxed">
+                      {p}
+                    </p>
+                  ))}
+                </div>
+              ) : (
+                member.quote && (
+                  <blockquote className="mt-4 italic text-vc-ink/70 leading-relaxed">
+                    &ldquo;{member.quote}&rdquo;
+                  </blockquote>
+                )
               )}
             </div>
           ))}
@@ -45,7 +69,7 @@ export default function Team() {
               {collaborators.map((member) => (
                 <div key={member.name} className="text-center p-4">
                   <div className="w-14 h-14 rounded-full mx-auto bg-vc-cream/60 flex items-center justify-center mb-3">
-                    <User className="w-6 h-6 text-vc-blue/30" aria-hidden="true" />
+                    <User className="w-6 h-6 text-vc-orange/40" aria-hidden="true" />
                   </div>
                   <p className="font-medium text-vc-blue-dark text-base">
                     {member.name}

@@ -6,7 +6,7 @@ export default function Courses() {
     <section id="cursos" className="bg-white py-24 md:py-32 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center">
-          <h2 className="font-[var(--font-display)] text-3xl md:text-4xl lg:text-5xl font-black text-vc-blue-dark uppercase tracking-tight">
+          <h2 className="font-(family-name:--font-display) text-3xl md:text-4xl lg:text-5xl font-black text-vc-blue-dark uppercase tracking-tight">
             CURSOS Y TALLERES
           </h2>
           <p className="mt-4 text-xl text-vc-blue-dark/70">
@@ -21,7 +21,7 @@ export default function Courses() {
               className="bg-vc-cream/40 rounded-2xl p-8 flex flex-col border border-vc-cream"
             >
               <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-vc-blue/10">
-                <GraduationCap className="w-6 h-6 text-vc-blue" aria-hidden="true" />
+                <GraduationCap className="w-6 h-6 text-vc-orange" aria-hidden="true" />
               </div>
               <h3 className="mt-5 font-semibold text-xl text-vc-blue-dark leading-snug">
                 {course.title}
@@ -50,7 +50,7 @@ export default function Courses() {
               </div>
               <a
                 href={`/talleres/${course.slug}`}
-                className="mt-6 w-full inline-flex items-center justify-center min-h-[56px] px-6 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
+                className="mt-6 w-full inline-flex items-center justify-center min-h-[56px] px-6 py-4 bg-vc-blue hover:bg-vc-blue-dark text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
               >
                 CONOCER MÁS
               </a>

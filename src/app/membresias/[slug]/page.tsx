@@ -51,10 +51,10 @@ export default async function MembershipPage({
             <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-2xl bg-white/20 mb-6">
               <Icon className="w-8 h-8 text-white" aria-hidden="true" />
             </div>
-            <h1 className="font-[var(--font-display)] text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight">
+            <h1 className="font-(family-name:--font-display) text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight">
               {membership.title}
             </h1>
-            <p className="mt-4 font-[var(--font-subtitle)] text-xl md:text-2xl italic opacity-90">
+            <p className="mt-4 font-(family-name:--font-subtitle) text-xl md:text-2xl italic opacity-90">
               {membership.tagline}
             </p>
           </div>
@@ -70,9 +70,9 @@ export default async function MembershipPage({
         </section>
 
         {/* What's included */}
-        <section className="bg-vc-cream py-16 md:py-24 px-4 sm:px-6 lg:px-8">
+        <section className="bg-white border-t border-vc-cream py-16 md:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
-            <h2 className="font-[var(--font-display)] text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
+            <h2 className="font-(family-name:--font-display) text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
               QUÉ INCLUYE
             </h2>
             <ul className="mt-8 space-y-4">
@@ -89,7 +89,7 @@ export default async function MembershipPage({
         {/* Facilitator */}
         <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
-            <h2 className="font-[var(--font-display)] text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
+            <h2 className="font-(family-name:--font-display) text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
               QUIÉN TE ACOMPAÑA
             </h2>
             <div className="mt-8 flex flex-col sm:flex-row items-center sm:items-start gap-6">
@@ -112,12 +112,12 @@ export default async function MembershipPage({
         </section>
 
         {/* Price + CTA */}
-        <section className="bg-vc-cream py-16 md:py-24 px-4 sm:px-6 lg:px-8">
+        <section className="bg-white border-t border-vc-cream py-16 md:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-xl mx-auto text-center">
             <p className="text-vc-blue-dark/50 text-lg mb-4">{membership.price}</p>
             <a
               href="/#contacto"
-              className="inline-flex items-center justify-center min-h-[56px] px-10 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange shadow-lg"
+              className="inline-flex items-center justify-center min-h-[56px] px-10 py-4 bg-vc-blue hover:bg-vc-blue-dark text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange shadow-lg"
             >
               SUSCRIBIRME
             </a>
@@ -131,7 +131,7 @@ export default async function MembershipPage({
         {membership.faqs.length > 0 && (
           <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto">
-              <h2 className="font-[var(--font-display)] text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight text-center">
+              <h2 className="font-(family-name:--font-display) text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight text-center">
                 PREGUNTAS FRECUENTES
               </h2>
               <div className="mt-10">

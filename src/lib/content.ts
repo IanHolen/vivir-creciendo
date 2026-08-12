@@ -33,7 +33,7 @@ export function whatsappHref(): string | null {
 // Nav según Sección 00 del doc: tres links + un botón CTA diferenciado.
 export const navLinks = [
   { label: "Actividades", href: "#actividades" },
-  { label: "Membresías", href: "#membresias" },
+  { label: "Membresía", href: "#membresias" }, // singular: hay una sola
   { label: "Quiénes somos", href: "#nosotras" },
 ];
 
@@ -55,19 +55,34 @@ export const heroContent = {
     "Grupo de mujeres y hombres de 65 años conversando y riendo en una sesión online de Vivir Creciendo",
 };
 
-// Sección 02 — Strip de prueba social (fondo azul marca, texto blanco).
-// El nº de miembros queda parametrizado y APAGADO hasta tener el dato real:
-// Alejandra comentó "¿Qué queremos poner aquí?" justo sobre ese número, así
-// que publicar "250" sería inventar una cifra. Cuando lo confirmen, poner
-// `memberCount: 250` y la frase aparece sola al principio del strip.
+// Sección 02 — Strip de prueba social (fondo naranja, texto blanco).
+//
+// Los dos números salen de acá y de ningún otro lado: alimentan el pie de la
+// foto del hero, este strip y la bajada de "¿Qué es Vivir Creciendo?" (Ian
+// 2026-08-12). Si cambian, se cambian una sola vez. Poner cualquiera de los
+// dos en `null` apaga la frase entera en los tres lugares.
 export const socialProof = {
-  memberCount: null as number | null,
+  memberCount: 200 as number | null,
+  countryCount: 10 as number | null,
   items: [
     "Facilitado por expertas con 40 años de experiencia",
     "Comunidad global en español",
-    "Actividades todas las semanas",
+    "Actividades semanales",
   ],
 };
+
+/**
+ * "+200 miembros activos en más de 10 países", o null si falta el dato.
+ *
+ * Devolver null y no una cadena vacía es a propósito: quien la usa decide si
+ * pinta el bloque o lo omite, en vez de renderizar un hueco.
+ */
+export function memberCountLine(): string | null {
+  const { memberCount, countryCount } = socialProof;
+  if (!memberCount) return null;
+  const base = `+${memberCount} miembros activos`;
+  return countryCount ? `${base} en más de ${countryCount} países` : base;
+}
 
 // Sección 03 — El Momento. Sin título visible: texto puro, centrado, ancho
 // máximo acotado. El único trabajo de esta sección es que el visitante piense
@@ -80,7 +95,11 @@ export const elMomento = [
 
 // Sección 05 — Cómo funciona. Tres pasos, sin apuros.
 export const comoFunciona = {
-  title: "Cómo empezar — son tres pasos, sin apuros",
+  // El título va como pregunta (Ian 2026-08-12). "Son tres pasos, sin apuros"
+  // baja a subtítulo: metida dentro de la pregunta, la frase la volvía una
+  // pregunta que no se puede responder.
+  title: "¿Cómo empezar?",
+  subtitle: "Son tres pasos, sin apuros.",
   steps: [
     {
       n: "01",
@@ -135,10 +154,13 @@ export const emotionalQuestions = [
 
 // Sección 04 — Qué es Vivir Creciendo. Tres columnas con ícono outline.
 export const pillarsIntro = "Vínculos reales. Mente activa. Protagonismo genuino.";
-export const pillarsTitle = "Qué es Vivir Creciendo";
+export const pillarsTitle = "¿Qué es Vivir Creciendo?";
 export const pillars = [
   {
-    icon: "MessagesSquare" as const,
+    // HeartHandshake y no MessagesSquare (Ian 2026-08-12): el bocadillo de
+    // diálogo dibuja la conversación, no el vínculo — y además chocaba con el
+    // ícono de "Mente activa", que también es de conversación.
+    icon: "HeartHandshake" as const,
     title: "VÍNCULOS REALES",
     description:
       "Un lugar donde escuchar y ser escuchado amplía tu mirada y te acerca a formas de pensar que quizás no habías considerado. Cada conversación enriquece, cada perspectiva suma y, poco a poco, se crean vínculos auténticos que sostienen.",
@@ -147,7 +169,7 @@ export const pillars = [
     icon: "Lightbulb" as const,
     title: "MENTE ACTIVA",
     description:
-      "Cine + reflexión, charlas con expertos y temas que invitan a pensar diferente. Cada semana una nueva propuesta para ampliar la mirada, aprender y seguir descubriendo, junto a personas con la misma curiosidad por seguir creciendo.",
+      "Cine Reflexión, charlas con expertos y temas que invitan a pensar diferente. Cada semana una nueva propuesta para ampliar la mirada, aprender y seguir descubriendo, junto a personas con la misma curiosidad por seguir creciendo.",
   },
   {
     icon: "Users" as const,
@@ -327,9 +349,11 @@ export interface MembershipPlan {
   featured?: boolean;
 }
 
-export const membershipsTitle = "Nuestras membresías";
+// Singular (Ian 2026-08-12): hay UNA membresía. El plural venía del esquema
+// viejo de tres planes y contradecía a la propia sección.
+export const membershipsTitle = "Nuestra membresía";
 export const membershipsSubtitle =
-  "Empieza por la actividad gratuita. Si el espacio es para ti, te sumas — y si no, no pasa nada.";
+  "Empieza por la actividad gratuita. Si el espacio es para ti, te esperamos.";
 
 export const membershipPlans: MembershipPlan[] = [
   {
@@ -356,7 +380,7 @@ export const membershipPlans: MembershipPlan[] = [
     priceNote: "o $270/año (2 meses gratis)",
     tagline: "Las conversaciones que nutren, semana a semana.",
     features: [
-      "Cine + Reflexión: te enviamos la película, la ves y reflexionamos juntos",
+      "Cine Reflexión: te enviamos la película, la ves y reflexionamos juntos",
       "Círculo de escucha: rueda grupal para poner palabras a lo que estás viviendo",
       "Salud y bienestar: exploramos la nutrición desde una mirada integral para cultivar salud, energía y bienestar",
       "Descuento en actividades especiales",
@@ -368,12 +392,20 @@ export const membershipPlans: MembershipPlan[] = [
   },
 ];
 
-/** Garantía de satisfacción — va debajo de las membresías (Parte XI del doc). */
-export const garantia = {
-  title: "Nuestra garantía",
-  text: "Si participas de tu primera actividad paga y sientes que no era lo que esperabas, te devolvemos el dinero sin preguntas. Solo escríbenos en los 7 días siguientes a tu primera sesión.",
+/**
+ * Bloque de debajo de las membresías.
+ *
+ * Reemplaza a la "garantía de satisfacción" con devolución a los 7 días que
+ * pedía la Parte XI del doc (Ian 2026-08-12). El trabajo de este bloque sigue
+ * siendo el mismo —desactivar el riesgo percibido justo cuando el visitante
+ * está mirando el precio— pero ahora lo hace explicando cómo funciona la
+ * cancelación, que es la duda concreta, en vez de prometer un reembolso.
+ */
+export const cancelacion = {
+  title: "Cancelas cuando quieras",
+  text: "No hay permanencia mínima ni penalización por irte. Si cancelas, tu membresía sigue activa hasta el final del período que ya pagaste: participas de todas las actividades hasta ese día y, simplemente, no se genera el cobro siguiente.",
   closing:
-    "Porque estamos seguros de que vas a querer quedarte — pero necesitamos que tú también lo estés.",
+    "Se cancela desde tu cuenta, sin llamados ni trámites. Queremos que estés porque quieres estar, no porque irse sea complicado.",
 };
 
 // Vista logueada — las 5 actividades completas del programa (contenido full)
@@ -522,6 +554,12 @@ export interface TeamMember {
    * se ven bien con el centro por defecto.
    */
   imagePosition?: string;
+  /**
+   * Ranura de /admin/multimedia que puede reemplazar a `image`. Si las
+   * fundadoras suben otra foto desde el panel, gana esa; si no, se usa el
+   * archivo de `image`. Ver MEDIA_SLOTS en src/lib/media.ts.
+   */
+  mediaSlot?: string;
   cofounder: boolean;
 }
 
@@ -537,6 +575,7 @@ export const teamMembers: TeamMember[] = [
     bio: "Cuando llegué a los 65 entendí que el bienestar es mucho más que cuidar el cuerpo. También necesitamos espacios donde seguir aprendiendo, compartiendo y sintiendo que pertenecemos.\n\nComo Coach de Salud en Nutrición Integrativa, llevo años acompañando a personas a construir una relación más consciente con su alimentación, su energía y su bienestar, respetando que cada historia y cada etapa de la vida son únicas.\n\nJunto con Nurit creamos Vivir Creciendo porque soñábamos con una comunidad en español donde las personas pudieran seguir aprendiendo, compartiendo y construyendo vínculos genuinos. Un lugar donde crecer no termina con la edad: simplemente cambia de forma.",
     image: "/images/alejandra.jpg", // foto real (Ian 2026-08-04)
     imagePosition: "object-top", // vertical 1126x1600 — centrada cortaría la cara
+    mediaSlot: "nosotras.alejandra",
     cofounder: true,
   },
   {
@@ -545,6 +584,7 @@ export const teamMembers: TeamMember[] = [
     quote: null,
     bio: "Hace casi cuarenta años acompaño a personas, parejas, familias y grupos en procesos de cambio. En ese recorrido comprendí que muchas de las transformaciones más profundas ocurren cuando encontramos espacios donde somos escuchados, reconocidos y dejamos de sentirnos solos.\n\nMi trabajo integra la psicoterapia, la docencia y el trabajo con grupos desde una mirada narrativa, colaborativa y existencial, siempre con la convicción de que el diálogo puede abrir nuevas posibilidades para vivir.\n\nJunto con Ale creamos Vivir Creciendo porque soñábamos con una comunidad en español donde las personas pudieran seguir aprendiendo, compartiendo y construyendo vínculos genuinos. Un espacio donde crecer no termina con la edad: simplemente cambia de forma.",
     image: "/images/nurit.png", // foto real (Ian 2026-06-28)
+    mediaSlot: "nosotras.nurit",
     cofounder: true,
   },
   {
@@ -647,46 +687,25 @@ export const pastActivities: Activity[] = [
 /**
  * Sección 06 — Prueba social (Error #3 del doc: la landing no tenía ninguna).
  *
- * PENDIENTE fundadoras: grabar 2-3 testimonios en video de 30 segundos
- * (nombre + ciudad + qué cambió en su vida). Mientras tanto se publican solo
- * voces reales, cada una con su procedencia explícita — un testimonio de
- * miembro y dos citas del Congreso. NO inventar testimonios ni atribuir a
- * "miembros" frases que no lo son: para este target, una prueba social falsa
- * que se nota cuesta más que la ausencia de prueba social.
+ * El arreglo de citas que vivía acá se movió a la tabla `voces` de la base
+ * (Ian 2026-08-12): ahora se administran en /admin/voces y se muestran en
+ * carrusel. Las tres originales están migradas tal cual, con su procedencia.
+ * Ver `src/lib/testimonios.ts`.
+ *
+ * Sigue en pie la regla que las gobierna: NO inventar testimonios ni atribuir
+ * a "miembros" frases que no lo son. Para este público, una prueba social
+ * falsa que se nota cuesta más que la ausencia de prueba social.
  */
 export const testimonialsTitle = "Voces de la comunidad";
 
-export interface Testimonial {
-  quote: string;
-  name: string;
-  /** Procedencia literal — se muestra tal cual bajo el nombre. */
-  context: string;
-  /** true = miembro de Vivir Creciendo; false = cita de otro ámbito. */
-  esMiembro: boolean;
-}
-
-export const testimonials: Testimonial[] = [
-  {
-    quote:
-      "En Vivir Creciendo encontré un grupo tan contenedor, tan agradable que espero con gusto los miércoles para reunirnos.",
-    name: "Virginia Estela Cohan",
-    context: "82 años · México · miembro de la comunidad",
-    esMiembro: true,
-  },
-  {
-    quote: "Ya no pongan a los viejos a jugar lotería, enséñenles a bailar.",
-    name: "Participante",
-    context: "Congreso Latinoamericano de Prácticas Narrativas",
-    esMiembro: false,
-  },
-  {
-    quote:
-      "Elijo creer que mi vejez será como un papel por escribir, por explorar y honrar.",
-    name: "Participante",
-    context: "Congreso Latinoamericano de Prácticas Narrativas",
-    esMiembro: false,
-  },
-];
+/** Título y bajada de la página /testimonios (videos). */
+export const testimoniosPage = {
+  title: "Testimonios",
+  subtitle:
+    "Miembros de Vivir Creciendo contando, en sus palabras, qué cambió desde que forman parte de la comunidad.",
+  vacio:
+    "Estamos grabando los primeros testimonios en video. Vuelve en unos días.",
+};
 
 /**
  * Sección 10 — FAQ (Parte IX del doc). Cada pregunta ataca una objeción
@@ -785,7 +804,9 @@ export const soporte = {
 
 // Sección 12 — Footer.
 export const footerContent = {
-  tagline: "La comunidad donde se sigue siendo.",
+  // Alineado con siteConfig.brandTagline (Ian 2026-08-12): la bajada del pie
+  // decía otra cosa que el tagline de marca, y era la única que se veía.
+  tagline: siteConfig.brandTagline,
   navTitle: "Navegación",
   contactTitle: "Contacto",
   legal: "© 2026 Vivir Creciendo. Todos los derechos reservados.",

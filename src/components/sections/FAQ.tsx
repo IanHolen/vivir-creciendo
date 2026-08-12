@@ -30,7 +30,7 @@ export default function FAQ() {
                 <AccordionTrigger className="text-left text-lg font-semibold text-vc-blue-dark py-5 hover:no-underline min-h-[56px]">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-vc-ink/80 text-lg leading-relaxed pb-5">
+                <AccordionContent className="text-vc-ink/80 text-lg leading-relaxed pb-5 text-justify hyphens-auto">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>

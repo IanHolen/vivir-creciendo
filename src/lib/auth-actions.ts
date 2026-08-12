@@ -8,9 +8,24 @@ import { createClient } from "@/lib/supabase/server";
  * Acciones de sesión (Supabase Auth email+password — contrato back f661857c).
  */
 
+/**
+ * A dónde volver después de entrar.
+ *
+ * Solo se aceptan rutas internas que empiecen con una sola barra. Un `next`
+ * que llegue como "https://otro-sitio.com" o "//otro-sitio.com" convertiría el
+ * login en un trampolín para llevar gente a cualquier lado desde un dominio de
+ * confianza (redirección abierta).
+ */
+function destinoSeguro(next: unknown): string {
+  const v = typeof next === "string" ? next.trim() : "";
+  if (!v.startsWith("/") || v.startsWith("//")) return "/";
+  return v;
+}
+
 export async function login(formData: FormData) {
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
+  const next = destinoSeguro(formData.get("next"));
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -18,12 +33,15 @@ export async function login(formData: FormData) {
   if (error) {
     redirect(
       "/login?error=" +
-        encodeURIComponent("Correo o contraseña incorrectos. Intenta de nuevo.")
+        encodeURIComponent("Correo o contraseña incorrectos. Intenta de nuevo.") +
+        (next !== "/" ? "&next=" + encodeURIComponent(next) : "")
     );
   }
 
-  // Vuelve a la MISMA landing (no una página distinta).
-  redirect("/");
+  // Vuelve de donde vino — por ejemplo, a la ficha de la actividad en la que
+  // pulsó "inscribirme". Sin esto quedaba siempre en la portada y perdía el
+  // hilo de lo que estaba haciendo.
+  redirect(next);
 }
 
 export async function logout() {

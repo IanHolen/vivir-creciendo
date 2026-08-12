@@ -2,13 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarDays, Plus, ShieldCheck } from "lucide-react";
+import {
+  CalendarDays,
+  Plus,
+  ShieldCheck,
+  ImagePlay,
+  Quote,
+  Video,
+} from "lucide-react";
 
 const NUEVA = "/admin/actividades/nueva";
 
 const tabs = [
   { href: "/admin", label: "Actividades", icon: CalendarDays },
   { href: NUEVA, label: "Nueva actividad", icon: Plus },
+  { href: "/admin/multimedia", label: "Multimedia", icon: ImagePlay },
+  { href: "/admin/voces", label: "Voces", icon: Quote },
+  { href: "/admin/testimonios", label: "Testimonios", icon: Video },
   { href: "/admin/equipo", label: "Equipo y accesos", icon: ShieldCheck },
 ];
 

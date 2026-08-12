@@ -8,6 +8,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { teamMembers, expertAreasTitle, expertAreas } from "@/lib/content";
+import { getSiteMedia } from "@/lib/media-queries";
 
 // Las 5 áreas de especialistas con su ícono (pareadas por índice con
 // `expertAreas` en content.ts).
@@ -21,8 +22,10 @@ const EXPERT_AREA_ICONS = [UsersRound, Laptop, HeartPulse, Flower2, TrendingUp];
  * rígidas") y no de Vivir Creciendo. Ambas cierran ahora con el mismo párrafo
  * sobre por qué crearon la comunidad.
  */
-export default function Nosotros() {
+export default async function Nosotros() {
   const cofounders = teamMembers.filter((m) => m.cofounder);
+  // Si subieron otra foto desde /admin/multimedia, gana esa.
+  const media = await getSiteMedia();
 
   return (
     <section
@@ -38,20 +41,30 @@ export default function Nosotros() {
         </p>
 
         <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
-          {cofounders.map((member) => (
+          {cofounders.map((member) => {
+            const ranura = member.mediaSlot ? media[member.mediaSlot] : undefined;
+            const foto = ranura?.url ?? member.image;
+            const alt = ranura?.desdeBiblioteca
+              ? ranura.alt
+              : `Foto de ${member.name}`;
+            const encuadre = ranura?.desdeBiblioteca
+              ? ""
+              : (member.imagePosition ?? "");
+
+            return (
             <div
               key={member.name}
               className="bg-white rounded-2xl p-8 shadow-sm border border-vc-cream"
             >
               <div className="flex flex-col items-center text-center">
                 <div className="w-32 h-32 rounded-full bg-vc-cream flex items-center justify-center overflow-hidden">
-                  {member.image ? (
+                  {foto ? (
                     <Image
-                      src={member.image}
-                      alt={`Foto de ${member.name}`}
+                      src={foto}
+                      alt={alt}
                       width={128}
                       height={128}
-                      className={`object-cover w-full h-full ${member.imagePosition ?? ""}`}
+                      className={`object-cover w-full h-full ${encuadre}`}
                     />
                   ) : (
                     <User
@@ -82,7 +95,8 @@ export default function Nosotros() {
                 </div>
               )}
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Especialistas — 5 categorías con ícono. */}

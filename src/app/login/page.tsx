@@ -12,9 +12,11 @@ export const metadata = {
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; next?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, next } = await searchParams;
+  // Solo rutas internas: ver destinoSeguro() en auth-actions.
+  const destino = next && next.startsWith("/") && !next.startsWith("//") ? next : "";
 
   return (
     <AuthShell
@@ -56,6 +58,7 @@ export default async function LoginPage({
 
       {/* Iniciar sesión — debajo, secundario. */}
       <form action={login} className="mt-6 space-y-5">
+        {destino && <input type="hidden" name="next" value={destino} />}
         <div>
           <label htmlFor="email" className={authLabelClass}>
             Correo electrónico

@@ -1,4 +1,4 @@
-import { socialProof } from "@/lib/content";
+import { socialProof, memberCountLine } from "@/lib/content";
 
 /**
  * Sección 02 — Strip de prueba social.
@@ -6,10 +6,9 @@ import { socialProof } from "@/lib/content";
  * Barra estrecha en azul marca que rompe visualmente el hero y da
  * credibilidad rápida antes de que el visitante siga bajando.
  *
- * El número de miembros está apagado a propósito (`socialProof.memberCount`
- * en null): Alejandra dejó un comentario en el doc preguntando qué poner ahí,
- * así que la cifra todavía no está confirmada. En cuanto la definan, basta
- * con poner el número en content.ts y la frase aparece sola.
+ * La cifra de miembros y países la arma `memberCountLine()` a partir de
+ * `socialProof` — la misma función que usan el pie de la foto del hero y la
+ * bajada de "¿Qué es Vivir Creciendo?". Un solo lugar para los tres.
  *
  * COLOR: la banda va en naranja (pedido de Ian, 5 ago). Usa `vc-orange-dark`
  * (#B8441F) y no el naranja de marca (#D85A35): en blanco sobre #D85A35 el
@@ -18,12 +17,8 @@ import { socialProof } from "@/lib/content";
  * requisito explícito para este público.
  */
 export default function SocialProof() {
-  const items = [
-    ...(socialProof.memberCount
-      ? [`Comunidad en crecimiento con ${socialProof.memberCount} miembros activos`]
-      : []),
-    ...socialProof.items,
-  ];
+  const miembros = memberCountLine();
+  const items = [...(miembros ? [miembros] : []), ...socialProof.items];
 
   return (
     <section className="bg-vc-orange-dark text-white px-4 sm:px-6 lg:px-8 py-6">

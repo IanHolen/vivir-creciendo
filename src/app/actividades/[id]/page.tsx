@@ -14,13 +14,19 @@ import {
   Tag,
   Check,
   HelpCircle,
-  ArrowRight,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
-import { getActivity, planMeta, modalidadLabel } from "@/lib/activities";
+import {
+  getActivities,
+  planMeta,
+  modalidadLabel,
+  normalizePlan,
+} from "@/lib/activities";
 import { getSessionUser } from "@/lib/session";
+import { getAccessState } from "@/lib/registrations";
+import ActivityRegisterButton from "@/components/ActivityRegisterButton";
 
 export const metadata = {
   title: "Actividad — Vivir Creciendo",
@@ -61,12 +67,34 @@ export default async function ActivityDetailPage({
 }) {
   const { id } = await params;
   const sp = await searchParams;
-  const [activity, { isLoggedIn, name }] = await Promise.all([
-    getActivity(id),
+  const [todas, { isLoggedIn, name }, acceso] = await Promise.all([
+    getActivities(),
     getSessionUser(sp),
+    getAccessState(),
   ]);
 
+  const activity = todas.find((a) => a.id === id) ?? null;
   if (!activity) return notFound();
+
+  const esGratuita = normalizePlan(activity.plan) === "gratuita";
+
+  // Punto 13.1: qué se le ofrece probar después de anotarse a una gratuita.
+  // Son las de la membresía a las que todavía no está anotado. Se acotan a
+  // tres: la ventana emergente es para elegir rápido, no para leer el
+  // catálogo entero.
+  const premiumParaProbar = todas
+    .filter(
+      (a) =>
+        a.id !== activity.id &&
+        normalizePlan(a.plan) === "membresia" &&
+        !acceso.inscritas.includes(a.id)
+    )
+    .slice(0, 3)
+    .map((a) => ({
+      id: a.id,
+      title: a.title,
+      short_preview: a.short_preview,
+    }));
 
   // El detalle completo está gateado por sesión (RPC get_activities devuelve
   // full_description = NULL si no hay sesión). Sin sesión mostramos el adelanto
@@ -177,12 +205,12 @@ export default async function ActivityDetailPage({
         <section className="py-16 md:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
             {hasFullDetail ? (
-              <p className="text-xl md:text-2xl text-vc-blue-dark/80 leading-relaxed whitespace-pre-line">
+              <p className="text-xl md:text-2xl text-vc-blue-dark/80 leading-relaxed whitespace-pre-line text-justify hyphens-auto">
                 {activity.full_description}
               </p>
             ) : (
               <>
-                <p className="text-xl md:text-2xl text-vc-blue-dark/80 leading-relaxed">
+                <p className="text-xl md:text-2xl text-vc-blue-dark/80 leading-relaxed text-justify hyphens-auto">
                   {activity.short_preview}
                 </p>
                 <div className="mt-10 rounded-2xl bg-vc-cream/40 border border-vc-cream p-8 text-center">
@@ -232,35 +260,39 @@ export default async function ActivityDetailPage({
                 <HelpCircle className="w-7 h-7 text-vc-orange" aria-hidden="true" />
                 Preguntas frecuentes
               </h2>
-              <p className="mt-6 text-lg text-vc-blue-dark/80 leading-relaxed whitespace-pre-line">
+              <p className="mt-6 text-lg text-vc-blue-dark/80 leading-relaxed whitespace-pre-line text-justify hyphens-auto">
                 {activity.faq}
               </p>
             </div>
           </section>
         )}
 
-        {/* Inscripción */}
-        {activity.enlace_inscripcion && (
-          <section className="pb-16 md:pb-20 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto rounded-3xl bg-vc-blue-dark text-white p-8 md:p-10 text-center">
-              <h2 className="font-(family-name:--font-display) text-2xl md:text-3xl font-black uppercase tracking-tight">
-                ¿Te gustaría participar?
-              </h2>
-              <p className="mt-3 text-lg text-white/80">
-                Reserva tu lugar en esta actividad.
-              </p>
-              <a
-                href={activity.enlace_inscripcion}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6 inline-flex items-center justify-center gap-2 min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-white/50 shadow-lg"
-              >
-                Quiero inscribirme
-                <ArrowRight className="w-5 h-5" aria-hidden="true" />
-              </a>
-            </div>
-          </section>
-        )}
+        {/* Inscripción.
+            Se muestra SIEMPRE, tenga o no enlace externo: la inscripción se
+            registra en la base (es lo que hace posible la prueba única del
+            punto 13) y el enlace de Zoom, si existe, se abre después. Antes
+            esta sección desaparecía cuando la actividad no tenía enlace
+            cargado, y no había forma de anotarse. */}
+        <section className="pb-16 md:pb-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto rounded-3xl bg-vc-blue-dark text-white p-8 md:p-10 text-center">
+            <h2 className="font-(family-name:--font-display) text-2xl md:text-3xl font-black uppercase tracking-tight">
+              ¿Te gustaría participar?
+            </h2>
+            <p className="mt-3 mb-6 text-lg text-white/80">
+              Reserva tu lugar en esta actividad.
+            </p>
+            <ActivityRegisterButton
+              activityId={activity.id}
+              esGratuita={esGratuita}
+              enlace={activity.enlace_inscripcion ?? null}
+              autenticado={acceso.autenticado}
+              tieneMembresia={acceso.tieneMembresia}
+              pruebaUsada={acceso.pruebaUsada}
+              yaInscrito={acceso.inscritas.includes(activity.id)}
+              premiumParaProbar={premiumParaProbar}
+            />
+          </div>
+        </section>
 
         {/* Volver */}
         <section className="py-12 px-4 sm:px-6 lg:px-8 text-center">

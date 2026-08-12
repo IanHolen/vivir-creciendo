@@ -93,7 +93,7 @@ export default async function Actividades() {
                   </div>
                 </div>
 
-                <p className="mt-5 flex-1 text-lg text-vc-ink/80 leading-relaxed">
+                <p className="mt-5 flex-1 text-lg text-vc-ink/80 leading-relaxed text-justify hyphens-auto">
                   {act.short_preview}
                 </p>
 

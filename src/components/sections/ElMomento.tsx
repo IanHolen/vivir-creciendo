@@ -15,10 +15,13 @@ export default function ElMomento() {
         {elMomento.map((p, i) => (
           <p
             key={i}
+            // El primer párrafo es el gancho y funciona como subtítulo: queda
+            // centrado y equilibrado. Los dos siguientes son prosa y van
+            // justificados (Ian 2026-08-12).
             className={
               i === 0
                 ? "text-xl md:text-2xl leading-relaxed font-medium text-vc-blue-dark text-balance"
-                : "text-lg md:text-xl leading-relaxed text-vc-ink"
+                : "text-lg md:text-xl leading-relaxed text-vc-ink text-justify hyphens-auto"
             }
           >
             {p}

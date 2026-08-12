@@ -14,6 +14,9 @@ export default function HowItWorks() {
         <h2 className="font-(family-name:--font-display) text-3xl md:text-4xl font-black text-vc-blue text-center uppercase tracking-tight text-balance">
           {comoFunciona.title}
         </h2>
+        <p className="mt-4 text-center text-lg md:text-xl text-vc-ink/80">
+          {comoFunciona.subtitle}
+        </p>
 
         <ol className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
           {comoFunciona.steps.map((step) => (
@@ -28,7 +31,7 @@ export default function HowItWorks() {
               <h3 className="mt-4 font-semibold text-xl md:text-2xl text-vc-blue-dark leading-snug">
                 {step.title}
               </h3>
-              <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed">
+              <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed text-justify hyphens-auto">
                 {step.text}
               </p>
             </li>

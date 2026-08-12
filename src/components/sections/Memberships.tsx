@@ -1,9 +1,9 @@
-import { Check, ArrowRight, ShieldCheck } from "lucide-react";
+import { Check, ArrowRight, CalendarCheck } from "lucide-react";
 import {
   membershipPlans,
   membershipsTitle,
   membershipsSubtitle,
-  garantia,
+  cancelacion,
 } from "@/lib/content";
 
 /**
@@ -97,25 +97,27 @@ export default function Memberships() {
           ))}
         </div>
 
-        {/* Garantía — va justo debajo de las membresías porque su trabajo es
-            desactivar el riesgo percibido en el momento exacto en que el
-            visitante está mirando el precio. */}
+        {/* Cómo funciona la cancelación — va justo debajo de las membresías
+            porque su trabajo es desactivar el riesgo percibido en el momento
+            exacto en que el visitante está mirando el precio. Antes había acá
+            una garantía de devolución a los 7 días; se reemplazó por la
+            explicación de la baja (Ian 2026-08-12). */}
         <div className="mt-12 max-w-3xl mx-auto bg-white rounded-2xl p-8 border border-vc-blue/15">
           <div className="flex items-start gap-4">
-            <ShieldCheck
+            <CalendarCheck
               className="w-8 h-8 text-vc-orange shrink-0"
               strokeWidth={1.5}
               aria-hidden="true"
             />
             <div>
               <h3 className="font-semibold text-xl text-vc-blue-dark">
-                {garantia.title}
+                {cancelacion.title}
               </h3>
-              <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed">
-                {garantia.text}
+              <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed text-justify hyphens-auto">
+                {cancelacion.text}
               </p>
-              <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed">
-                {garantia.closing}
+              <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed text-justify hyphens-auto">
+                {cancelacion.closing}
               </p>
             </div>
           </div>

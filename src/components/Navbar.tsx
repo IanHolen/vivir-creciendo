@@ -17,13 +17,28 @@ import { logout } from "@/lib/auth-actions";
  *
  * Contraste: blanco sobre #142B71 da ~13:1, muy por encima del 4.5:1 de AA.
  */
+/**
+ * CTA del nav. Crece de `sm` para arriba y no antes: en un teléfono de 390px
+ * conviven logo + este botón + el menú hamburguesa en la misma fila, y a 18px
+ * con px-6 el botón desborda y tapa la hamburguesa.
+ */
 const navCtaClass =
-  "inline-flex items-center justify-center min-h-[44px] px-5 py-2 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-base rounded-lg transition-colors focus-visible:ring-4 focus-visible:ring-white/70";
+  "inline-flex items-center justify-center whitespace-nowrap min-h-[48px] px-4 py-2.5 sm:px-6 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-base sm:text-lg rounded-lg transition-colors focus-visible:ring-4 focus-visible:ring-white/70";
 
-/** Link de texto sobre la barra azul. El hover aclara, no cambia de color: un
- *  naranja de texto sobre azul marino baja a ~3:1 y no llega a AA. */
+/**
+ * Link de texto sobre la barra azul.
+ *
+ * TAMAÑO (Ian 2026-08-19): 18px desde `lg` y 20px desde `xl`. Antes eran 16px,
+ * o sea MÁS CHICOS que el cuerpo de la página, que está en 18px — al revés de
+ * lo que corresponde para este público. El salto a 20px se reserva para `xl`
+ * porque entre 1024 y 1280px conviven hasta cinco elementos (los tres links,
+ * el saludo y "Cerrar sesión") y a 20px se desbordarían.
+ *
+ * El hover aclara, no cambia de color: un naranja de texto sobre azul marino
+ * baja a ~3:1 y no llega a AA.
+ */
 const navLinkClass =
-  "text-white/90 hover:text-white hover:underline underline-offset-4 transition-colors font-medium text-base focus-visible:ring-4 focus-visible:ring-white/70 rounded-lg px-2 py-1";
+  "text-white/90 hover:text-white hover:underline underline-offset-4 transition-colors font-medium text-lg xl:text-xl whitespace-nowrap focus-visible:ring-4 focus-visible:ring-white/70 rounded-lg px-2 py-1";
 
 export default function Navbar({
   isLoggedIn = false,
@@ -36,12 +51,29 @@ export default function Navbar({
 
   const loginControl = isLoggedIn ? (
     <div className="flex items-center gap-3">
+      {/* El saludo es el elemento de ancho impredecible de la barra: con los
+          links a 18-20px y cinco elementos en fila, un nombre largo la
+          desborda entre 1024 y 1280px. Dos frenos:
+            · debajo de xl no se muestra el nombre, solo "Mi perfil";
+            · de xl para arriba el nombre va recortado con puntos suspensivos,
+              así que ningún nombre, por largo que sea, rompe la barra.
+          El `aria-label` conserva el nombre completo para quien usa lector de
+          pantalla, aunque en pantalla aparezca cortado. */}
       <a
         href="/perfil"
         className={`min-h-[44px] inline-flex items-center ${navLinkClass}`}
-        aria-label="Ir a mi perfil"
+        aria-label={userName ? `Ir a mi perfil, ${userName}` : "Ir a mi perfil"}
       >
-        Hola{userName ? `, ${userName}` : ""}
+        {userName ? (
+          <>
+            <span className="xl:hidden">Mi perfil</span>
+            <span className="hidden xl:inline-block max-w-[14rem] truncate">
+              Hola, {userName}
+            </span>
+          </>
+        ) : (
+          "Mi perfil"
+        )}
       </a>
       <form action={logout}>
         <button
@@ -60,7 +92,7 @@ export default function Navbar({
       href="/login"
       className={`inline-flex items-center gap-2 min-h-[44px] ${navLinkClass}`}
     >
-      <LogIn className="w-4 h-4" aria-hidden="true" />
+      <LogIn className="w-5 h-5" aria-hidden="true" />
       Iniciar sesión
     </a>
   );
@@ -70,16 +102,30 @@ export default function Navbar({
       className="sticky top-0 z-40 bg-vc-blue text-white shadow-sm"
       aria-label="Navegación principal"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-20">
+      {/* Barra más alta (Ian 2026-08-19): 80px en mobile, 96px de md para
+          arriba. De paso queda igualada con el `scroll-mt-20 md:scroll-mt-24`
+          que ya traían las secciones ancladas, que estaba calculado para esa
+          altura y sobraba unos píxeles. */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 md:h-24">
         <a
           href="#"
           className="shrink-0 focus-visible:ring-4 focus-visible:ring-white/70 rounded-lg"
         >
-          <Logo variant="white" className="h-12 w-auto md:h-14" />
+          {/* 72px en desktop, contra los 56 de antes. El lockup es 1080x461,
+              así que a 72px de alto mide ~169px de ancho y deja 12px de aire
+              arriba y abajo dentro de la barra de 96px.
+              En teléfonos angostos baja: el logo comparte fila con el botón
+              naranja y la hamburguesa. A 320px (el iPhone SE viejo) los tres
+              solo entran con el logo en 40px — a 48px el botón se partía en
+              dos líneas y pisaba el logo, cosa que ya venía pasando. */}
+          <Logo
+            variant="white"
+            className="h-10 w-auto min-[360px]:h-12 sm:h-14 md:h-[4.5rem]"
+          />
         </a>
 
         {/* Desktop links */}
-        <div className="hidden lg:flex items-center gap-6">
+        <div className="hidden lg:flex items-center gap-4 xl:gap-6">
           {navLinks.map((link) => (
             <a key={link.label} href={link.href} className={navLinkClass}>
               {link.label}
@@ -115,7 +161,7 @@ export default function Navbar({
       {/* Mobile menu — mismo azul que la barra, para que se lea como una sola
           superficie desplegada y no como un panel ajeno. */}
       {open && (
-        <div className="lg:hidden fixed inset-0 top-16 md:top-20 bg-vc-blue z-30 flex flex-col items-center justify-center gap-8 p-8">
+        <div className="lg:hidden fixed inset-0 top-20 md:top-24 bg-vc-blue z-30 flex flex-col items-center justify-center gap-8 p-8">
           {navLinks.map((link) => (
             <a
               key={link.label}

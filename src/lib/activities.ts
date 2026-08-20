@@ -28,7 +28,7 @@ export const PLAN_META: Record<
   gratuita: {
     label: "Gratuita",
     badgeClass: "bg-vc-blue text-white",
-    hint: "Abierta a cualquiera, sin tarjeta.",
+    hint: "Abierta a cualquiera.",
   },
   membresia: {
     label: "Membresía",

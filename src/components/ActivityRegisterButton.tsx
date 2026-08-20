@@ -247,8 +247,7 @@ export default function ActivityRegisterButton({
 
       {gastaraPrueba && (
         <p className="mt-3 text-base text-white/80">
-          Esta actividad es de la membresía. Puedes probarla una vez, gratis y
-          sin tarjeta.
+          Esta actividad es de la membresía. Puedes probarla una vez, gratis.
         </p>
       )}
       {bloqueada && (
@@ -299,7 +298,7 @@ export default function ActivityRegisterButton({
                   ¿Quieres probar también una actividad de la membresía?
                 </p>
                 <p className="mt-2 text-base text-vc-ink/75 leading-relaxed">
-                  Puedes entrar a una, gratis y sin tarjeta, para ver cómo son.
+                  Puedes entrar a una, gratis, para ver cómo son.
                   Es una sola vez: después, para seguir participando, hace falta
                   la membresía.
                 </p>

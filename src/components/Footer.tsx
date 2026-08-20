@@ -149,7 +149,7 @@ export default function Footer() {
                   className="inline-flex items-center gap-2 hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
                 >
                   <FacebookIcon className="w-5 h-5" />
-                  vivircreciendo
+                  {siteConfig.social.facebookLabel}
                 </a>
               </li>
             </ul>

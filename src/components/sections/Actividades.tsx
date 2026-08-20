@@ -87,7 +87,7 @@ export default async function Actividades() {
                     </h3>
                     {gratuita && (
                       <span className="mt-2 inline-block bg-vc-orange text-white text-sm font-semibold px-3 py-1 rounded-full">
-                        Gratis, sin registro de tarjeta
+                        Gratis
                       </span>
                     )}
                   </div>

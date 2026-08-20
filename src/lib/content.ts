@@ -14,7 +14,11 @@ export const siteConfig = {
   // Mensaje pre-rellenado del link de WhatsApp (Parte XI del doc).
   whatsappPrefill: "Hola, quiero saber más sobre Vivir Creciendo",
   social: {
-    facebook: "https://facebook.com/vivircreciendo",
+    // Página real (Ian 2026-08-19). Antes apuntaba a facebook.com/vivircreciendo,
+    // un nombre de usuario que la página no tiene: el link daba en la nada.
+    // La página no tiene nombre corto, así que la URL va con el id numérico.
+    facebook: "https://www.facebook.com/profile.php?id=61550076244304",
+    facebookLabel: "Vivir Creciendo",
     instagram: "https://instagram.com/vivir_creciendo",
     youtube: "https://youtube.com/@VivirCreciendoComunidad",
   },
@@ -50,7 +54,9 @@ export const heroContent = {
   cta: "Quiero mi actividad gratuita",
   ctaHref: "#contacto",
   // Texto de bajo riesgo debajo del botón — reduce la fricción del alta.
-  ctaNote: "Sin tarjeta de crédito. Sin compromiso de permanencia.",
+  // Se quitó "Sin tarjeta de crédito" (Ian 2026-08-19). Estaba acá y en otros
+  // cuatro lugares; no reintroducirlo suelto en un solo sitio.
+  ctaNote: "Sin compromiso de permanencia.",
   imageAlt:
     "Grupo de mujeres y hombres de 65 años conversando y riendo en una sesión online de Vivir Creciendo",
 };
@@ -104,7 +110,7 @@ export const comoFunciona = {
     {
       n: "01",
       title: "Prueba una actividad gratis",
-      text: "Sin registrar tarjeta. Sin datos innecesarios. Solo tu nombre y tu email.",
+      text: "Sin datos innecesarios. Solo tu nombre y tu email.",
     },
     {
       n: "02",
@@ -363,12 +369,12 @@ export const membershipPlans: MembershipPlan[] = [
     // PENDIENTE fundadoras: el doc marca este plan como "todavía no definido,
     // conversar con Ariel". El copy queda publicable tal cual; si cambian las
     // condiciones, se edita solo este objeto.
-    priceNote: "Sin tarjeta de crédito, sin compromiso.",
+    priceNote: "Sin compromiso.",
     tagline: "Una actividad por mes para conocernos desde adentro.",
     features: [
       "1 actividad online en vivo por mes",
       "Acceso a una actividad para conocernos",
-      "Sin datos de tarjeta ni compromiso de permanencia",
+      "Sin compromiso de permanencia",
     ],
     cta: "Quiero probar gratis",
     ctaHref: "#contacto",
@@ -791,7 +797,7 @@ export const finalCta = {
   title: "Tu próxima conversación importante empieza acá.",
   description: "Súmate sin compromiso. La primera actividad es gratis.",
   button: "Quiero mi actividad gratuita",
-  note: "Sin tarjeta de crédito. Sin compromiso de permanencia. Cancelas cuando quieras.",
+  note: "Sin compromiso de permanencia. Cancelas cuando quieras.",
 };
 
 // Soporte humano — el email ya es real; el WhatsApp se renderiza solo si

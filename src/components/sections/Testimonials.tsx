@@ -34,7 +34,7 @@ export default async function Testimonials() {
           <p className="mt-10 text-center">
             <Link
               href="/testimonios"
-              className="inline-flex items-center gap-2 min-h-[52px] px-6 py-3 rounded-xl border-2 border-vc-blue text-vc-blue font-semibold text-lg hover:bg-vc-blue hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange/40"
+              className="inline-flex items-center gap-2 min-h-[52px] px-6 py-3 rounded-xl border-2 border-vc-orange-dark text-vc-orange-dark font-semibold text-lg hover:bg-vc-orange-dark hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/40"
             >
               Ver {videos.length === 1 ? "el testimonio" : "los testimonios"} en
               video

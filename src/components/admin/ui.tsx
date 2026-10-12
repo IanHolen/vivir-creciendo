@@ -16,17 +16,37 @@ export const labelClass = "block text-base font-semibold text-vc-blue-dark";
 
 export const hintClass = "mt-1 text-sm text-vc-ink/55";
 
-/** Botón naranja — la acción principal e irreversible-por-defecto de cada vista. */
-export const btnPrimary =
-  "inline-flex items-center justify-center gap-2 min-h-[52px] px-6 py-3 rounded-xl bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vc-orange/40";
+/**
+ * TODOS LOS BOTONES EN TERRACOTA (Ian, 20-ago-2026).
+ *
+ * Antes había dos botones llenos de distinto color: naranja para la acción
+ * principal y azul para las secundarias con peso. Ahora los dos son terracota,
+ * y la jerarquía la marca el relleno y no el tono: LLENO para lo que hay que
+ * hacer, CONTORNEADO (`btnGhost`) para lo demás. `btnDanger` sigue en rojo
+ * aparte: no es una elección de color de marca sino la señal de que la acción
+ * borra algo, y teñirla de terracota la haría indistinguible de un botón
+ * cualquiera.
+ *
+ * El anillo de foco es AZUL en los dos: sobre un botón terracota, un anillo
+ * terracota no se ve, y es la única señal de foco de quien navega con teclado.
+ */
 
-/** Botón azul — acciones secundarias con peso (crear, restablecer). */
+/** Botón lleno — la acción principal de cada vista. */
+export const btnPrimary =
+  "inline-flex items-center justify-center gap-2 min-h-[52px] px-6 py-3 rounded-xl bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vc-blue/40";
+
+/**
+ * Segundo botón lleno (crear, restablecer). Comparte el color con `btnPrimary`
+ * desde el cambio a terracota; se conserva como nombre propio para no tocar los
+ * treinta y pico de sitios que lo usan y para poder volver a separarlos si
+ * alguna vista lo necesita.
+ */
 export const btnBlue =
-  "inline-flex items-center justify-center gap-2 min-h-[52px] px-6 py-3 rounded-xl bg-vc-blue hover:bg-vc-blue-dark text-white font-semibold text-lg transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vc-blue/30";
+  "inline-flex items-center justify-center gap-2 min-h-[52px] px-6 py-3 rounded-xl bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vc-blue/40";
 
 /** Botón contorneado — navegación y acciones sin consecuencias. */
 export const btnGhost =
-  "inline-flex items-center justify-center gap-2 min-h-[52px] px-5 py-3 rounded-xl border-2 border-vc-cream bg-white hover:border-vc-blue hover:text-vc-blue text-vc-ink font-semibold text-lg transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vc-blue/30";
+  "inline-flex items-center justify-center gap-2 min-h-[52px] px-5 py-3 rounded-xl border-2 border-vc-cream bg-white hover:border-vc-orange hover:text-vc-orange-dark text-vc-ink font-semibold text-lg transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-vc-blue/30";
 
 /** Botón destructivo — solo detrás de una confirmación explícita. */
 export const btnDanger =

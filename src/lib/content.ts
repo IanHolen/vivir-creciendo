@@ -34,15 +34,26 @@ export function whatsappHref(): string | null {
   )}`;
 }
 
-// Nav según Sección 00 del doc: tres links + un botón CTA diferenciado.
+// Nav según Sección 00 del doc: los links + un botón CTA diferenciado.
+//
+// Los anclajes van con "/" adelante ("/#actividades", no "#actividades") a
+// propósito. El nav se pinta también en las páginas propias (/testimonios,
+// /nosotros, /membresias/…) y ahí un "#actividades" a secas busca un ancla que
+// no existe en esa página: el link no hace nada. Con "/#actividades" el
+// navegador vuelve a la portada y baja a la sección. Desde la portada misma
+// sigue siendo una navegación dentro del mismo documento —o sea, el mismo
+// salto de siempre, sin recargar.
 export const navLinks = [
-  { label: "Actividades", href: "#actividades" },
-  { label: "Membresía", href: "#membresias" }, // singular: hay una sola
-  { label: "Quiénes somos", href: "#nosotras" },
+  { label: "Actividades", href: "/#actividades" },
+  { label: "Membresía", href: "/#membresias" }, // singular: hay una sola
+  { label: "Quiénes somos", href: "/#nosotras" },
+  // Testimonios en video (Ian, 20-ago-2026). Antes solo estaba en el pie y no
+  // se encontraba. Es la prueba social más fuerte que hay: va en el nav.
+  { label: "Testimonios", href: "/testimonios" },
 ];
 
 /** CTA del nav — visualmente distinto a los links (naranja, sticky). */
-export const navCta = { label: "Prueba gratis", href: "#contacto" };
+export const navCta = { label: "Prueba gratis", href: "/#contacto" };
 
 // Sección 01 — Hero. UN SOLO CTA (Error #4 del doc, Ley de Hick): los tres
 // botones que competían acá se redujeron a "Quiero mi actividad gratuita".

@@ -117,7 +117,7 @@ export default async function MembershipPage({
             <p className="text-vc-blue-dark/50 text-lg mb-4">{membership.price}</p>
             <a
               href="/#contacto"
-              className="inline-flex items-center justify-center min-h-[56px] px-10 py-4 bg-vc-blue hover:bg-vc-blue-dark text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange shadow-lg"
+              className="inline-flex items-center justify-center min-h-[56px] px-10 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50 shadow-lg"
             >
               SUSCRIBIRME
             </a>

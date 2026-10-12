@@ -104,7 +104,7 @@ export default function FechaPicker({ defaultValue }: { defaultValue?: string | 
         <button
           type="button"
           onClick={() => setDates([...dates, ""])}
-          className="mt-3 inline-flex items-center gap-2 min-h-[44px] px-4 py-2 rounded-xl border-2 border-vc-orange text-vc-orange hover:bg-vc-orange hover:text-white font-medium transition-colors"
+          className="mt-3 inline-flex items-center gap-2 min-h-[44px] px-4 py-2 rounded-xl border-2 border-vc-orange-dark text-vc-orange-dark hover:bg-vc-orange-dark hover:text-white font-medium transition-colors"
         >
           <Plus className="w-5 h-5" aria-hidden="true" />
           Agregar otra fecha

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Menu, X, LogIn } from "lucide-react";
 import Logo from "./Logo";
 import { navLinks, navCta } from "@/lib/content";
@@ -28,17 +29,20 @@ const navCtaClass =
 /**
  * Link de texto sobre la barra azul.
  *
- * TAMAÑO (Ian 2026-08-19): 18px desde `lg` y 20px desde `xl`. Antes eran 16px,
- * o sea MÁS CHICOS que el cuerpo de la página, que está en 18px — al revés de
- * lo que corresponde para este público. El salto a 20px se reserva para `xl`
- * porque entre 1024 y 1280px conviven hasta cinco elementos (los tres links,
- * el saludo y "Cerrar sesión") y a 20px se desbordarían.
+ * TAMAÑO (Ian 2026-08-19): 18px. Antes eran 16px, o sea MÁS CHICOS que el
+ * cuerpo de la página, que está en 18px — al revés de lo que corresponde para
+ * este público.
+ *
+ * Había un salto a 20px desde `xl` que se quitó el 20-ago-2026, cuando entró
+ * "Testimonios" como cuarto link: con cuatro links, el saludo y "Cerrar
+ * sesión", a 20px la barra se desborda incluso a 1280px. Los 18px son el piso
+ * acordado y no se bajan; lo que cede es el tamaño extra, que era un lujo.
  *
  * El hover aclara, no cambia de color: un naranja de texto sobre azul marino
  * baja a ~3:1 y no llega a AA.
  */
 const navLinkClass =
-  "text-white/90 hover:text-white hover:underline underline-offset-4 transition-colors font-medium text-lg xl:text-xl whitespace-nowrap focus-visible:ring-4 focus-visible:ring-white/70 rounded-lg px-2 py-1";
+  "text-white/90 hover:text-white hover:underline underline-offset-4 transition-colors font-medium text-lg whitespace-nowrap focus-visible:ring-4 focus-visible:ring-white/70 rounded-lg px-2 py-1";
 
 export default function Navbar({
   isLoggedIn = false,
@@ -58,7 +62,9 @@ export default function Navbar({
             · de xl para arriba el nombre va recortado con puntos suspensivos,
               así que ningún nombre, por largo que sea, rompe la barra.
           El `aria-label` conserva el nombre completo para quien usa lector de
-          pantalla, aunque en pantalla aparezca cortado. */}
+          pantalla, aunque en pantalla aparezca cortado.
+          Desde el 20-ago-2026 la barra solo existe de `xl` para arriba, así
+          que el `xl:hidden` de abajo solo actúa dentro del menú desplegado. */}
       <a
         href="/perfil"
         className={`min-h-[44px] inline-flex items-center ${navLinkClass}`}
@@ -107,8 +113,10 @@ export default function Navbar({
           que ya traían las secciones ancladas, que estaba calculado para esa
           altura y sobraba unos píxeles. */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 md:h-24">
-        <a
-          href="#"
+        {/* "/" y no "#": el nav se pinta también en /testimonios y en las demás
+            páginas propias, y ahí el logo tiene que volver a la portada. */}
+        <Link
+          href="/"
           className="shrink-0 focus-visible:ring-4 focus-visible:ring-white/70 rounded-lg"
         >
           {/* 72px en desktop, contra los 56 de antes. El lockup es 1080x461,
@@ -122,10 +130,16 @@ export default function Navbar({
             variant="white"
             className="h-10 w-auto min-[360px]:h-12 sm:h-14 md:h-[4.5rem]"
           />
-        </a>
+        </Link>
 
-        {/* Desktop links */}
-        <div className="hidden lg:flex items-center gap-4 xl:gap-6">
+        {/* Desktop links.
+            El corte está en `xl` (1280px) y no en `lg` (1024px) desde que son
+            cuatro links: a 1024px la fila logo + 4 links + sesión + "Prueba
+            gratis" no entra, y el botón naranja quedaba cortado contra el
+            borde derecho. Entre 1024 y 1280 se ve la hamburguesa, que para
+            este público muestra los mismos links a 24px y en vertical — mejor
+            que una barra apretada. */}
+        <div className="hidden xl:flex items-center gap-4 xl:gap-6">
           {navLinks.map((link) => (
             <a key={link.label} href={link.href} className={navLinkClass}>
               {link.label}
@@ -140,7 +154,7 @@ export default function Navbar({
         </div>
 
         {/* Mobile controls */}
-        <div className="flex lg:hidden items-center gap-2">
+        <div className="flex xl:hidden items-center gap-2">
           {!isLoggedIn && (
             <a href={navCta.href} className={navCtaClass}>
               {navCta.label}
@@ -161,7 +175,7 @@ export default function Navbar({
       {/* Mobile menu — mismo azul que la barra, para que se lea como una sola
           superficie desplegada y no como un panel ajeno. */}
       {open && (
-        <div className="lg:hidden fixed inset-0 top-20 md:top-24 bg-vc-blue z-30 flex flex-col items-center justify-center gap-8 p-8">
+        <div className="xl:hidden fixed inset-0 top-20 md:top-24 bg-vc-blue z-30 flex flex-col items-center justify-center gap-8 p-8">
           {navLinks.map((link) => (
             <a
               key={link.label}

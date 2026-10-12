@@ -84,10 +84,15 @@ export default function Memberships() {
 
               <a
                 href={plan.ctaHref}
-                className={`mt-6 w-full inline-flex items-center justify-center gap-2 min-h-[56px] px-6 py-4 font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange/50 ${
+                // Los dos botones en terracota (Ian, 20-ago-2026). La
+                // diferencia entre el plan gratis y el de pago la marca el
+                // relleno, no el color: contorneado el primero, lleno el
+                // segundo. El contorno usa el naranja oscuro porque el de
+                // marca, como texto sobre blanco, no llega a AA.
+                className={`mt-6 w-full inline-flex items-center justify-center gap-2 min-h-[56px] px-6 py-4 font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50 ${
                   plan.kind === "gratis"
-                    ? "border-2 border-vc-blue text-vc-blue hover:bg-vc-blue hover:text-white"
-                    : "bg-vc-blue hover:bg-vc-blue-dark text-white shadow-lg"
+                    ? "border-2 border-vc-orange-dark text-vc-orange-dark hover:bg-vc-orange-dark hover:text-white"
+                    : "bg-vc-orange hover:bg-vc-orange-light text-white shadow-lg"
                 }`}
               >
                 {plan.cta}

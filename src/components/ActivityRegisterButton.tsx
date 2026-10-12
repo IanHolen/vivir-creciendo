@@ -65,7 +65,7 @@ const BTN_PRINCIPAL =
   "inline-flex items-center justify-center gap-2 min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-white/50 shadow-lg disabled:opacity-60";
 
 const BTN_SECUNDARIO =
-  "inline-flex items-center justify-center gap-2 min-h-[52px] px-6 py-3 rounded-xl border-2 border-vc-blue text-vc-blue font-semibold text-lg hover:bg-vc-blue hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange/40";
+  "inline-flex items-center justify-center gap-2 min-h-[52px] px-6 py-3 rounded-xl border-2 border-vc-orange-dark text-vc-orange-dark font-semibold text-lg hover:bg-vc-orange-dark hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/40";
 
 /**
  * Ventana emergente sobre <dialog> nativo.

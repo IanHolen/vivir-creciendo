@@ -322,7 +322,7 @@ function Row({
         </Link>
         <Link
           href={`/admin/actividades/${a.id}`}
-          className="inline-flex items-center gap-2 min-h-[44px] px-4 py-2 rounded-xl bg-vc-blue hover:bg-vc-blue-dark text-white font-semibold"
+          className="inline-flex items-center gap-2 min-h-[44px] px-4 py-2 rounded-xl bg-vc-orange-dark hover:bg-vc-orange text-white font-semibold"
         >
           <Pencil className="w-5 h-5" aria-hidden="true" />
           Editar

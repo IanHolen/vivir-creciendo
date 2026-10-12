@@ -220,7 +220,7 @@ export default async function ActivityDetailPage({
                   </p>
                   <a
                     href="/login"
-                    className="mt-6 inline-flex items-center justify-center gap-2 min-h-[56px] px-8 py-4 bg-vc-blue hover:bg-vc-blue-dark text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange shadow-lg"
+                    className="mt-6 inline-flex items-center justify-center gap-2 min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50 shadow-lg"
                   >
                     <LogIn className="w-5 h-5" aria-hidden="true" />
                     Iniciar sesión

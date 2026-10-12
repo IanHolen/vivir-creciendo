@@ -62,6 +62,12 @@ export interface MediaSlot {
   fallback: string | null;
   /** Texto alternativo por defecto (solo imágenes). */
   fallbackAlt?: string;
+  /**
+   * Carátula del video por defecto (solo videos). Solo se usa mientras la
+   * ranura muestre el archivo por defecto: si alguien sube otro video, esta
+   * imagen sería un fotograma de una grabación distinta.
+   */
+  fallbackPoster?: string;
   /** Encuadre del recorte, para las fotos que se muestran en círculo. */
   objectPosition?: string;
 }
@@ -85,7 +91,17 @@ export const MEDIA_SLOTS: MediaSlot[] = [
     ubicacion: "Inicio → recuadro ancho debajo de la portada.",
     recomendacion:
       "Horizontal 16:9, alrededor de 90 segundos. Nurit y Alejandra contando de qué se trata. Con subtítulos en español: buena parte del público lo va a ver sin sonido.",
-    fallback: null,
+    // El video de presentación de las fundadoras (Ian, 20-ago-2026). Viene en
+    // el repo y no de la biblioteca a propósito: es parte de la portada, tiene
+    // que estar aunque la base no responda.
+    //
+    // El original venía en HEVC de 72 MB. Se recodificó a H.264 (HEVC no lo
+    // reproduce Firefox), 1080p a 2,8 Mbps -> 25 MB, con el índice al
+    // principio del archivo para que empiece sin bajarlo entero. Si se
+    // reemplaza, mantener H.264: es el único códec que reproducen todos los
+    // navegadores.
+    fallback: "/videos/fundadoras.mp4",
+    fallbackPoster: "/images/fundadoras-poster.jpg",
   },
   {
     key: "nosotras.alejandra",

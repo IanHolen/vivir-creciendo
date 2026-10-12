@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Logo from "./Logo";
 import { siteConfig, navLinks, footerContent, whatsappHref } from "@/lib/content";
 
@@ -62,12 +63,12 @@ export default function Footer() {
             </h2>
             <ul className="space-y-3">
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/"
                   className="text-white/80 hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
                 >
                   Inicio
-                </a>
+                </Link>
               </li>
               {navLinks.map((link) => (
                 <li key={link.label}>
@@ -79,24 +80,15 @@ export default function Footer() {
                   </a>
                 </li>
               ))}
+              {/* Testimonios ya no se lista acá: desde el 20-ago-2026 está en
+                  `navLinks`, y este bloque lo pintaba por segunda vez. */}
               <li>
-                {/* La página de testimonios en video no tiene entrada en el
-                    nav a propósito (la portada es una pendiente resbaladiza,
-                    sin salidas). El pie es el lugar donde sí corresponde. */}
-                <a
-                  href="/testimonios"
-                  className="text-white/80 hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
-                >
-                  Testimonios
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#contacto"
+                <Link
+                  href="/#contacto"
                   className="text-white/80 hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
                 >
                   Contacto
-                </a>
+                </Link>
               </li>
             </ul>
           </nav>

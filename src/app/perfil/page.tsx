@@ -135,7 +135,7 @@ export default async function PerfilPage({
             </p>
             <button
               type="submit"
-              className="mt-5 inline-flex items-center justify-center min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange shadow-lg"
+              className="mt-5 inline-flex items-center justify-center min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50 shadow-lg"
             >
               Guardar nombre
             </button>
@@ -228,14 +228,14 @@ export default async function PerfilPage({
                 href={wa}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center min-h-[56px] px-6 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
+                className="inline-flex items-center justify-center min-h-[56px] px-6 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50"
               >
                 Cambiar mi plan por WhatsApp
               </a>
             )}
             <Link
               href="/contacto"
-              className="inline-flex items-center justify-center min-h-[56px] px-6 py-4 border-2 border-vc-blue text-vc-blue-dark hover:bg-vc-blue/5 font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
+              className="inline-flex items-center justify-center min-h-[56px] px-6 py-4 border-2 border-vc-orange-dark text-vc-orange-dark hover:bg-vc-orange/10 font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50"
             >
               Ir a contacto
             </Link>
@@ -254,7 +254,7 @@ export default async function PerfilPage({
             </p>
             <Link
               href="/admin"
-              className="mt-5 inline-flex items-center justify-center min-h-[56px] px-8 py-4 bg-vc-blue hover:bg-vc-blue-dark text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange shadow-lg"
+              className="mt-5 inline-flex items-center justify-center min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50 shadow-lg"
             >
               Editar Actividades
             </Link>

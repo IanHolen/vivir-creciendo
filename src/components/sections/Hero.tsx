@@ -95,17 +95,24 @@ export default async function Hero() {
         </div>
 
         {/* Video de las fundadoras — Error #6 del doc.
-            Ya no hay que tocar código para publicarlo: se sube en
-            /admin/multimedia y se asigna a la ranura "Video de las
-            fundadoras". Mientras esté vacía se mantiene el recuadro de
-            "próximamente".
-            PENDIENTE fundadoras: pista de subtítulos en español (.vtt). El doc
-            los marca como obligatorios — buena parte de este público mira sin
-            sonido o con el volumen bajo. */}
+            Publicado el 20-ago-2026: Nurit y Alejandra contando de qué se
+            trata, 1:13, con los subtítulos en español ya incrustados en la
+            imagen (el doc los marca como obligatorios: buena parte de este
+            público mira sin sonido).
+            Se puede reemplazar sin tocar código desde /admin/multimedia,
+            ranura "Video de las fundadoras". El recuadro de "próximamente" de
+            abajo queda para ese caso: si alguien deja la ranura vacía y borra
+            el archivo por defecto, la portada no se rompe. */}
         <div className="mt-14 md:mt-20 max-w-4xl mx-auto">
           {video.url ? (
             <video
               src={video.url}
+              // La carátula solo corresponde al video que trae el sitio: si
+              // alguien sube otro desde el panel, un fotograma de esta
+              // grabación sería la portada equivocada.
+              poster={
+                video.desdeBiblioteca ? undefined : video.slot.fallbackPoster
+              }
               controls
               // Sin autoplay: un video que arranca solo con sonido, en una
               // portada, es la forma más rápida de que alguien cierre la

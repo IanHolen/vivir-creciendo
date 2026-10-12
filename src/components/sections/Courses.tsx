@@ -50,7 +50,7 @@ export default function Courses() {
               </div>
               <a
                 href={`/talleres/${course.slug}`}
-                className="mt-6 w-full inline-flex items-center justify-center min-h-[56px] px-6 py-4 bg-vc-blue hover:bg-vc-blue-dark text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
+                className="mt-6 w-full inline-flex items-center justify-center min-h-[56px] px-6 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50"
               >
                 CONOCER MÁS
               </a>

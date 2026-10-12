@@ -90,7 +90,7 @@ export default function Newsletter() {
             <button
               type="submit"
               disabled={formState === "sending" || !consent}
-              className="w-full min-h-[56px] px-8 py-4 bg-vc-blue hover:bg-vc-blue-dark text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange disabled:opacity-60"
+              className="w-full min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50 disabled:opacity-60"
             >
               {formState === "sending" ? "Enviando..." : "SUSCRIBIRME"}
             </button>

@@ -64,7 +64,8 @@ export async function crearSubidaFirmada(
   filename: string,
   kind: MediaKind
 ): Promise<
-  { ok: true; path: string; token: string } | { ok: false; error: string }
+  | { ok: true; path: string; token: string; signedUrl: string }
+  | { ok: false; error: string }
 > {
   const { supabase, isAdmin } = await requireAdmin();
   if (!isAdmin) return { ok: false, error: "No tienes permisos." };
@@ -80,7 +81,7 @@ export async function crearSubidaFirmada(
   if (error || !data) {
     return { ok: false, error: error?.message ?? "No se pudo preparar la subida." };
   }
-  return { ok: true, path: data.path, token: data.token };
+  return { ok: true, path: data.path, token: data.token, signedUrl: data.signedUrl };
 }
 
 /**
@@ -196,6 +197,52 @@ export async function borrarArchivo(formData: FormData) {
 }
 
 /**
+ * Núcleo del guardado de una ranura, compartido por el <form> del panel y por
+ * el subidor. Devuelve el resultado; quien llama decide si redirige o no.
+ */
+async function guardarRanura(
+  slot: string,
+  mediaId: string,
+  alt: string | null
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const def = findSlot(slot);
+  if (!def) return { ok: false, error: "Esa ubicación no existe." };
+
+  const { supabase, isAdmin } = await requireAdmin();
+  if (!isAdmin) return { ok: false, error: "No tienes permisos de administrador." };
+
+  if (mediaId) {
+    // Que la ranura del video no termine con una foto adentro.
+    const { data: asset } = await supabase
+      .from("media_assets")
+      .select("kind")
+      .eq("id", mediaId)
+      .single();
+    if (!asset) return { ok: false, error: "Ese archivo ya no está en la biblioteca." };
+    if (asset.kind !== def.kind) {
+      return {
+        ok: false,
+        error: `"${def.label}" necesita ${def.kind === "video" ? "un video" : "una imagen"}.`,
+      };
+    }
+  }
+
+  const { error } = await supabase.from("site_media").upsert(
+    {
+      slot,
+      media_id: mediaId || null,
+      alt,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "slot" }
+  );
+
+  if (error) return { ok: false, error: error.message };
+  revalidate();
+  return { ok: true };
+}
+
+/**
  * Asignar (o vaciar) una ranura del sitio.
  *
  * Vaciarla no borra el archivo: la ranura vuelve a mostrar el archivo por
@@ -205,36 +252,27 @@ export async function asignarRanura(formData: FormData) {
   const slot = String(formData.get("slot") ?? "");
   const mediaId = String(formData.get("media_id") ?? "");
   const def = findSlot(slot);
-  if (!def) fail("Esa ubicación no existe.");
 
-  const supabase = await adminClient();
+  const res = await guardarRanura(slot, mediaId, text(formData, "alt"));
+  if (!res.ok) fail(res.error);
 
-  if (mediaId) {
-    // Que la ranura del video no termine con una foto adentro.
-    const { data: asset } = await supabase
-      .from("media_assets")
-      .select("kind")
-      .eq("id", mediaId)
-      .single();
-    if (!asset) fail("Ese archivo ya no está en la biblioteca.");
-    if (asset.kind !== def.kind) {
-      fail(
-        `"${def.label}" necesita ${def.kind === "video" ? "un video" : "una imagen"}.`
-      );
-    }
-  }
+  const label = def?.label ?? "El archivo";
+  ok(mediaId ? `"${label}" actualizado.` : `"${label}" volvió al archivo por defecto.`);
+}
 
-  const { error } = await supabase.from("site_media").upsert(
-    {
-      slot,
-      media_id: mediaId || null,
-      alt: text(formData, "alt"),
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: "slot" }
-  );
-
-  if (error) fail(error.message);
-  revalidate();
-  ok(mediaId ? `"${def.label}" actualizado.` : `"${def.label}" volvió al archivo por defecto.`);
+/**
+ * Igual que `asignarRanura`, pero para el subidor: cuando alguien sube una
+ * foto desde adentro de una ranura, el archivo tiene que quedar puesto ahí
+ * mismo sin un segundo paso.
+ *
+ * Devuelve el resultado en vez de redirigir — la llama JavaScript, y un
+ * redirect en una server action llamada desde el cliente no se ve.
+ */
+export async function usarEnRanura(
+  slot: string,
+  mediaId: string
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  // `alt` en null: se queda el texto de fábrica de la ranura hasta que alguien
+  // escriba uno propio en el formulario de al lado.
+  return guardarRanura(slot, mediaId, null);
 }

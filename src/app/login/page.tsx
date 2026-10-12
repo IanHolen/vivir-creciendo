@@ -91,7 +91,7 @@ export default async function LoginPage({
 
         <button
           type="submit"
-          className="w-full inline-flex items-center justify-center min-h-[56px] px-8 py-4 border-2 border-vc-blue text-vc-blue-dark hover:bg-vc-blue hover:text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
+          className="w-full inline-flex items-center justify-center min-h-[56px] px-8 py-4 border-2 border-vc-orange-dark text-vc-orange-dark hover:bg-vc-orange-dark hover:text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50"
         >
           Iniciar sesión
         </button>

@@ -24,12 +24,21 @@ export const metadata = { title: "Multimedia — Vivir Creciendo" };
 /**
  * /admin/multimedia — punto 3 de la lista de Ian (12-ago-2026).
  *
- * Dos bloques, en este orden a propósito:
+ * Tres bloques, en este orden a propósito:
  *
  *   1. DÓNDE SE USA (las ranuras). Es lo que casi siempre vienen a hacer:
- *      cambiar la foto de la portada o poner el video de las fundadoras.
- *   2. LA BIBLIOTECA. Todo lo subido, con su descripción y en qué lugares está
+ *      cambiar la foto de la portada o poner el video de las fundadoras. Cada
+ *      ranura trae su propio botón de subir, así cambiar una foto es UN paso.
+ *   2. SUBIR A LA BIBLIOTECA, para el material que todavía no tiene lugar
+ *      asignado (por ejemplo, videos de testimonios).
+ *   3. LA BIBLIOTECA. Todo lo subido, con su descripción y en qué lugares está
  *      puesto, para poder borrar sin romper nada sin querer.
+ *
+ * REORDENADO el 20-ago-2026 (Ian): el único botón de subir estaba al final de
+ * la página, después de toda la biblioteca. Quien entraba veía las fotos, la
+ * lista desplegable —vacía, porque no había nada subido— y el campo de
+ * descripción, y se iba con la impresión de que el panel solo dejaba escribir
+ * descripciones. Subir ahora está en los dos lugares donde se necesita.
  *
  * Los logos y el favicon no aparecen: se cambian por código. Un archivo mal
  * subido ahí deja el sitio entero sin logo.
@@ -204,7 +213,7 @@ export default async function MultimediaPage() {
       <Card
         icon={LayoutTemplate}
         title="Dónde se usa cada archivo"
-        hint="Elige qué archivo de la biblioteca ocupa cada lugar del sitio. Si dejas «Usar el archivo por defecto», vuelve a la imagen que trae el sitio de fábrica."
+        hint="Cada lugar del sitio con su archivo. Puedes subir uno nuevo desde aquí mismo, o elegir alguno que ya esté en la biblioteca. Con «Usar el archivo por defecto» vuelve a la imagen que trae el sitio de fábrica."
         className="mt-6"
       >
         <ul className="space-y-6">
@@ -247,11 +256,22 @@ export default async function MultimediaPage() {
                   <p className="text-base text-vc-ink/70">{slot.ubicacion}</p>
                   <p className={hintClass}>{slot.recomendacion}</p>
 
-                  <form action={asignarRanura} className="mt-3 space-y-3">
+                  {/* Camino corto: elegir un archivo del disco y que quede
+                      puesto acá de una. No necesita que la biblioteca tenga
+                      nada, que es justo el caso en el que la lista de abajo no
+                      sirve para nada. */}
+                  <div className="mt-3">
+                    <MediaUploader soloTipo={slot.kind} slot={slot.key} />
+                  </div>
+
+                  <form action={asignarRanura} className="mt-4 space-y-3">
                     <input type="hidden" name="slot" value={slot.key} />
 
                     <label className="block">
-                      <span className={labelClass}>Archivo</span>
+                      <span className={labelClass}>
+                        …o usar {slot.kind === "video" ? "un video" : "una foto"}{" "}
+                        que ya está en la biblioteca
+                      </span>
                       <select
                         name="media_id"
                         defaultValue={actual.mediaId ?? ""}
@@ -269,7 +289,7 @@ export default async function MultimediaPage() {
                         <span className={`${hintClass} block`}>
                           Todavía no hay{" "}
                           {slot.kind === "video" ? "videos" : "fotos"} en la
-                          biblioteca. Súbelos más abajo.
+                          biblioteca: usa el botón de arriba.
                         </span>
                       )}
                     </label>
@@ -306,12 +326,12 @@ export default async function MultimediaPage() {
       </Card>
 
       {/* ------------------------------------------------------------------ */}
-      {/* 2. Subir                                                            */}
+      {/* 2. Subir a la biblioteca                                            */}
       {/* ------------------------------------------------------------------ */}
       <Card
         icon={Upload}
-        title="Subir un archivo"
-        hint="Se agrega a la biblioteca. Después lo puedes usar en cualquiera de los lugares de arriba o en un testimonio en video."
+        title="Subir fotos o videos a la biblioteca"
+        hint="Para material que todavía no va en ningún lugar fijo — por ejemplo, los videos de los testimonios. Para cambiar la portada o el video de las fundadoras es más rápido el botón de subir que tiene cada lugar aquí arriba."
         className="mt-6"
       >
         <MediaUploader />

@@ -2,7 +2,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { updateMyProfile } from "@/lib/profile-actions";
-import { whatsappHref } from "@/lib/content";
+import { whatsappHref, siteConfig, cancelacion } from "@/lib/content";
+import { PLANES, PROVIDER_LABEL, type PlanKey, type Provider } from "@/lib/payments/plans";
+import { cancelarSuscripcion } from "@/lib/subscription-actions";
 
 export const metadata = {
   title: "Mi perfil — Vivir Creciendo",
@@ -24,11 +26,15 @@ interface MyProfile {
   created_at: string | null;
 }
 
-interface Membership {
-  id: number;
-  key: string;
-  name: string;
-  description: string | null;
+interface MySubscription {
+  provider: Provider;
+  plan: PlanKey;
+  status: string;
+  currency: string;
+  amount: number;
+  paid_until: string | null;
+  next_billing_at: string | null;
+  cancel_requested_at: string | null;
 }
 
 const inputClass =
@@ -53,6 +59,7 @@ export default async function PerfilPage({
   searchParams: Promise<{ error?: string; ok?: string }>;
 }) {
   const { error, ok } = await searchParams;
+  const okMessage = ok && ok !== "1" ? ok : "Tus cambios se guardaron.";
   const supabase = await createClient();
 
   const {
@@ -63,12 +70,10 @@ export default async function PerfilPage({
   const { data: profileData } = await supabase.rpc("get_my_profile");
   const profile = profileData as MyProfile | null;
 
-  const { data: membershipsData } = await supabase
-    .from("memberships")
-    .select("id, key, name, description")
-    .eq("is_active", true)
-    .order("sort_order", { ascending: true });
-  const memberships = (membershipsData ?? []) as Membership[];
+  const { data: subData } = await supabase.rpc("my_subscription");
+  const sub = (subData as MySubscription | null) ?? null;
+  const { data: hasMembership } = await supabase.rpc("has_membership");
+  const tieneMembresia = Boolean(hasMembership);
 
   const displayName =
     profile?.full_name ?? user.email?.split("@")[0] ?? "amig@";
@@ -100,7 +105,7 @@ export default async function PerfilPage({
             role="status"
             className="mt-6 rounded-xl bg-green-50 border border-green-200 px-4 py-3 text-base text-green-700"
           >
-            Tus cambios se guardaron.
+            {okMessage}
           </p>
         )}
         {error && (
@@ -167,78 +172,110 @@ export default async function PerfilPage({
             Tu membresía
           </h2>
 
-          {profile?.membership ? (
+          {tieneMembresia ? (
             <div className="mt-5 rounded-2xl bg-vc-cream/60 p-5 border border-vc-cream">
               <p className="text-sm font-semibold uppercase tracking-wide text-vc-orange">
-                Plan actual
+                {sub && sub.cancel_requested_at ? "Cancelada · acceso vigente" : "Activa"}
               </p>
               <p className="mt-1 text-2xl font-black text-vc-blue-dark">
-                {profile.membership.name}
+                Membresía {sub ? PLANES[sub.plan].nombre.toLowerCase() : ""}
               </p>
-              {profile.membership.description && (
-                <p className="mt-2 text-lg text-vc-blue-dark/70 leading-relaxed">
-                  {profile.membership.description}
-                </p>
-              )}
+              <dl className="mt-4 space-y-2 text-lg text-vc-blue-dark/80">
+                {sub && (
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
+                    <dt className="text-base text-vc-blue-dark/60">Pagas con</dt>
+                    <dd>{PROVIDER_LABEL[sub.provider]} · {sub.currency === "USD" ? PLANES[sub.plan].usdLabel : `$${Number(sub.amount).toLocaleString("es-AR")} ARS`}</dd>
+                  </div>
+                )}
+                {sub && !sub.cancel_requested_at && formatDate(sub.next_billing_at) && (
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
+                    <dt className="text-base text-vc-blue-dark/60">Próximo cobro</dt>
+                    <dd>{formatDate(sub.next_billing_at)}</dd>
+                  </div>
+                )}
+                {sub && sub.cancel_requested_at && formatDate(sub.paid_until) && (
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
+                    <dt className="text-base text-vc-blue-dark/60">Participas hasta</dt>
+                    <dd>{formatDate(sub.paid_until)}</dd>
+                  </div>
+                )}
+                {!sub && profile?.membership && (
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
+                    <dt className="text-base text-vc-blue-dark/60">Plan</dt>
+                    <dd>{profile.membership.name}</dd>
+                  </div>
+                )}
+              </dl>
+            </div>
+          ) : sub && (sub.status === "APPROVAL_PENDING" || sub.status === "pending") ? (
+            <div className="mt-5 rounded-2xl bg-vc-blue-soft p-5 border border-vc-blue/15">
+              <p className="text-lg text-vc-blue-dark leading-relaxed">
+                Tienes un pago empezado con {PROVIDER_LABEL[sub.provider]} que no se
+                completó. No se realizó ningún cobro.
+              </p>
+              <Link
+                href="/membresia"
+                className="mt-4 inline-flex items-center justify-center min-h-[52px] px-6 py-3 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50"
+              >
+                Terminar de sumarme
+              </Link>
             </div>
           ) : (
-            <p className="mt-5 text-lg text-vc-blue-dark/70 leading-relaxed">
-              Todavía no tienes una membresía activa. Escríbenos y te ayudamos a
-              elegir el plan ideal para ti.
-            </p>
+            <>
+              <p className="mt-5 text-lg text-vc-blue-dark/70 leading-relaxed">
+                Todavía no tienes una membresía activa. Con ella entras a todas las
+                actividades: {PLANES.mensual.usdLabel} o {PLANES.anual.usdLabel}.
+              </p>
+              <Link
+                href="/membresia"
+                className="mt-5 inline-flex items-center justify-center min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50 shadow-lg"
+              >
+                Quiero sumarme
+              </Link>
+            </>
           )}
 
-          {memberships.length > 0 && (
-            <div className="mt-6">
-              <p className="text-base font-medium text-vc-blue-dark/60">
-                Planes disponibles
+          {/* Cancelar: detrás de un <details>, como todo lo irreversible del
+              sitio. HTML puro, funciona sin JavaScript. */}
+          {sub && (sub.status === "ACTIVE" || sub.status === "authorized") && !sub.cancel_requested_at && (
+            <details className="mt-8 rounded-2xl border border-vc-cream p-5">
+              <summary className="cursor-pointer text-lg font-semibold text-vc-blue-dark">
+                Cancelar mi membresía
+              </summary>
+              <p className="mt-3 text-base text-vc-blue-dark/70 leading-relaxed">
+                {cancelacion.text}
               </p>
-              <ul className="mt-3 space-y-2">
-                {memberships.map((m) => {
-                  const current = m.id === profile?.membership_id;
-                  return (
-                    <li
-                      key={m.id}
-                      className={`flex items-center justify-between gap-3 rounded-xl px-4 py-3 border-2 ${
-                        current
-                          ? "border-vc-orange bg-vc-orange/5"
-                          : "border-vc-cream"
-                      }`}
-                    >
-                      <span className="text-lg text-vc-blue-dark">{m.name}</span>
-                      {current && (
-                        <span className="text-sm font-semibold text-vc-orange uppercase">
-                          Tu plan
-                        </span>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
+              <form action={cancelarSuscripcion} className="mt-4">
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center min-h-[52px] px-6 py-3 border-2 border-red-300 text-red-700 hover:bg-red-50 font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-red-300"
+                >
+                  Sí, cancelar mi membresía
+                </button>
+              </form>
+            </details>
           )}
 
           <p className="mt-6 text-base text-vc-blue-dark/60 leading-relaxed">
-            Para cambiar o activar tu plan, escríbenos. Te ayudamos personalmente,
-            paso a paso.
+            ¿Dudas con tu pago? Escríbenos y te ayudamos personalmente.
           </p>
-          <div className="mt-4 flex flex-col sm:flex-row gap-3">
+          <div className="mt-3 flex flex-col sm:flex-row gap-3">
             {wa && (
               <a
                 href={wa}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center min-h-[56px] px-6 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50"
+                className="inline-flex items-center justify-center min-h-[52px] px-6 py-3 border-2 border-vc-orange-dark text-vc-orange-dark hover:bg-vc-orange/10 font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50"
               >
-                Cambiar mi plan por WhatsApp
+                Escribir por WhatsApp
               </a>
             )}
-            <Link
-              href="/contacto"
-              className="inline-flex items-center justify-center min-h-[56px] px-6 py-4 border-2 border-vc-orange-dark text-vc-orange-dark hover:bg-vc-orange/10 font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50"
+            <a
+              href={`mailto:${siteConfig.email}`}
+              className="inline-flex items-center justify-center min-h-[52px] px-6 py-3 border-2 border-vc-cream text-vc-blue-dark hover:border-vc-blue font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50"
             >
-              Ir a contacto
-            </Link>
+              {siteConfig.email}
+            </a>
           </div>
         </section>
 

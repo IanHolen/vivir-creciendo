@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Check, ArrowRight, CalendarCheck } from "lucide-react";
 import {
   membershipPlans,
@@ -82,7 +83,7 @@ export default function Memberships() {
                 </p>
               )}
 
-              <a
+              <Link
                 href={plan.ctaHref}
                 // Los dos botones en terracota (Ian, 20-ago-2026). La
                 // diferencia entre el plan gratis y el de pago la marca el
@@ -97,7 +98,7 @@ export default function Memberships() {
               >
                 {plan.cta}
                 <ArrowRight className="w-5 h-5" aria-hidden="true" />
-              </a>
+              </Link>
             </div>
           ))}
         </div>

@@ -369,8 +369,8 @@ export default function ActivityRegisterButton({
             Sin permanencia mínima: cancelas cuando quieras y sigues entrando
             hasta el final del período que pagaste.
           </p>
-          <Link href="/#membresias" className={`${BTN_SECUNDARIO} mt-5 w-full`}>
-            Ver la membresía
+          <Link href="/membresia" className={`${BTN_SECUNDARIO} mt-5 w-full`}>
+            Quiero la membresía
             <ArrowRight className="w-5 h-5" aria-hidden="true" />
           </Link>
           <button

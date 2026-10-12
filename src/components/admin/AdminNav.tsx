@@ -9,6 +9,7 @@ import {
   ImagePlay,
   Quote,
   Video,
+  CreditCard,
 } from "lucide-react";
 
 const NUEVA = "/admin/actividades/nueva";
@@ -19,6 +20,7 @@ const tabs = [
   { href: "/admin/multimedia", label: "Multimedia", icon: ImagePlay },
   { href: "/admin/voces", label: "Voces", icon: Quote },
   { href: "/admin/testimonios", label: "Testimonios", icon: Video },
+  { href: "/admin/suscripciones", label: "Suscripciones", icon: CreditCard },
   { href: "/admin/equipo", label: "Equipo y accesos", icon: ShieldCheck },
 ];
 

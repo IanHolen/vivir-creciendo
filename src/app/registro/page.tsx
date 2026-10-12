@@ -13,9 +13,10 @@ export const metadata = {
 export default async function RegistroPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; next?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, next } = await searchParams;
+  const destino = next && next.startsWith("/") && !next.startsWith("//") ? next : "";
 
   return (
     <AuthShell
@@ -26,7 +27,7 @@ export default async function RegistroPage({
         <p>
           ¿Ya tienes cuenta?{" "}
           <Link
-            href="/login"
+            href={destino ? `/login?next=${encodeURIComponent(destino)}` : "/login"}
             className="font-semibold text-vc-orange hover:underline"
           >
             Inicia sesión
@@ -35,6 +36,7 @@ export default async function RegistroPage({
       }
     >
       <form action={signup} className="mt-8 space-y-6">
+        {destino && <input type="hidden" name="next" value={destino} />}
         <div>
           <label htmlFor="name" className={authLabelClass}>
             Tu nombre

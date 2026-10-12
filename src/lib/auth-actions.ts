@@ -59,11 +59,14 @@ export async function signup(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
+  const next = destinoSeguro(formData.get("next"));
+  const nextQs = next !== "/" ? "&next=" + encodeURIComponent(next) : "";
 
   if (password.length < 8) {
     redirect(
       "/registro?error=" +
-        encodeURIComponent("La contraseña debe tener al menos 8 caracteres.")
+        encodeURIComponent("La contraseña debe tener al menos 8 caracteres.") +
+        nextQs
     );
   }
 
@@ -76,7 +79,8 @@ export async function signup(formData: FormData) {
   if (error || !data?.ok) {
     redirect(
       "/registro?error=" +
-        encodeURIComponent(friendlySignupError(await edgeErrorCode(error, data)))
+        encodeURIComponent(friendlySignupError(await edgeErrorCode(error, data))) +
+        nextQs
     );
   }
 
@@ -87,10 +91,11 @@ export async function signup(formData: FormData) {
   });
   if (loginError) {
     // La cuenta se creó; mandamos a login con aviso.
-    redirect("/login?error=" + encodeURIComponent("Cuenta creada. Inicia sesión."));
+    redirect("/login?error=" + encodeURIComponent("Cuenta creada. Inicia sesión.") + nextQs);
   }
 
-  redirect("/");
+  // Si venía de /membresia, vuelve ahí a terminar de pagar.
+  redirect(next);
 }
 
 /** Extrae el código de error del cuerpo de una Edge Function (non-2xx) o del data. */

@@ -404,7 +404,8 @@ export const membershipPlans: MembershipPlan[] = [
     ],
     reassurance: "Sin compromisos de permanencia. Cancelas cuando quieras.",
     cta: "Quiero sumarme",
-    ctaHref: "#contacto",
+    // Desde oct-2026 el pago se hace en el sitio: PayPal o Mercado Pago.
+    ctaHref: "/membresia",
     featured: true,
   },
 ];

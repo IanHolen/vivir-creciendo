@@ -21,10 +21,19 @@ import {
  *    fundadoras en MP_PRECIO_MENSUAL_ARS / MP_PRECIO_ANUAL_ARS.
  */
 
+/** Precio en ARS válido: entero y razonable (evita "27.000" leído como 27). */
+function precioValido(raw: string | undefined): boolean {
+  const n = Number(raw);
+  return Number.isInteger(n) && n >= 1000;
+}
+
+/** Solo se vende si TODO está, incluida la clave de webhooks: sin ella una
+ *  cancelación hecha en la app de MP nunca se reflejaría. */
 export const mercadoPagoConfigurado = Boolean(
   process.env.MP_ACCESS_TOKEN &&
-    process.env.MP_PRECIO_MENSUAL_ARS &&
-    process.env.MP_PRECIO_ANUAL_ARS
+    process.env.MP_WEBHOOK_SECRET &&
+    precioValido(process.env.MP_PRECIO_MENSUAL_ARS) &&
+    precioValido(process.env.MP_PRECIO_ANUAL_ARS)
 );
 
 function cliente() {

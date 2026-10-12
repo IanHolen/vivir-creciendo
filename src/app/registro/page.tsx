@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { destinoSeguro } from "@/lib/safe-redirect";
 import AuthShell, {
   authInputClass,
   authLabelClass,
@@ -16,7 +17,7 @@ export default async function RegistroPage({
   searchParams: Promise<{ error?: string; next?: string }>;
 }) {
   const { error, next } = await searchParams;
-  const destino = next && next.startsWith("/") && !next.startsWith("//") ? next : "";
+  const destino = destinoSeguro(next, "") ;
 
   return (
     <AuthShell

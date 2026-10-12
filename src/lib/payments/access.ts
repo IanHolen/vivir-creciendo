@@ -56,25 +56,45 @@ export async function buscarSuscripcion(provider: Provider, providerSubId: strin
   return (data as SubscriptionRow | null) ?? null;
 }
 
-/** Actualiza estado/fechas y recalcula el acceso del usuario. */
+/**
+ * Actualiza estado/fechas y recalcula el acceso del usuario.
+ *
+ * `paid_until` NO se escribe directo: pasa por `extend_paid_until()` en la
+ * base, que solo lo deja crecer (greatest). Así ni un reintento de cobro
+ * con `next_billing_time` más cercano, ni un aviso viejo, ni dos avisos a
+ * la vez pueden acortar el acceso ya pagado. Los estados terminales
+ * (cancelada/vencida) los protege el trigger `subscriptions_guard_terminal`.
+ */
 export async function actualizarSuscripcion(
   provider: Provider,
   providerSubId: string,
-  cambios: Partial<Pick<SubscriptionRow, "status" | "next_billing_at" | "paid_until">> & {
+  cambios: Partial<Pick<SubscriptionRow, "status" | "next_billing_at" | "cancel_requested_at">> & {
     raw?: unknown;
+    /** Fin de período conocido: extiende paid_until si es mayor al actual. */
+    paidUntil?: Date;
   }
 ): Promise<SubscriptionRow | null> {
   const db = createAdminClient();
+  const { paidUntil, ...campos } = cambios;
   const { data, error } = await db
     .from("subscriptions")
-    .update(cambios)
+    .update(campos)
     .eq("provider", provider)
     .eq("provider_sub_id", providerSubId)
     .select("*")
     .maybeSingle();
   if (error) throw error;
   const row = data as SubscriptionRow | null;
-  if (row) await sincronizarAcceso(row.user_id);
+  if (!row) return null;
+  if (paidUntil) {
+    const { error: e2 } = await db.rpc("extend_paid_until", {
+      p_provider: provider,
+      p_sub_id: providerSubId,
+      p_until: paidUntil.toISOString(),
+    });
+    if (e2) throw e2;
+  }
+  await sincronizarAcceso(row.user_id);
   return row;
 }
 
@@ -109,11 +129,56 @@ export async function registrarCobroAprobado(input: {
   if (error && error.code !== "23505") throw error;
   if (error) return;
 
-  const nuevo = paidUntilDesde(input.paidAt, sub.plan);
-  const actual = sub.paid_until ? new Date(sub.paid_until) : null;
   await actualizarSuscripcion(input.provider, input.providerSubId, {
-    paid_until: (!actual || nuevo > actual ? nuevo : actual).toISOString(),
+    paidUntil: paidUntilDesde(input.paidAt, sub.plan),
   });
+}
+
+/**
+ * Un cobro devuelto o revertido. Se marca el pago y se recalcula paid_until
+ * a partir de los cobros que SIGUEN aprobados (si no queda ninguno, ahora
+ * mismo). Es la única operación que puede acortar paid_until, y lo hace a
+ * propósito: una socia reembolsada del plan anual no conserva 12 meses.
+ */
+export async function marcarCobroRevertido(
+  provider: Provider,
+  providerPaymentId: string,
+  estado: "refunded" | "reversed" | "charged_back"
+): Promise<void> {
+  const db = createAdminClient();
+  const { data: pago } = await db
+    .from("subscription_payments")
+    .update({ status: estado })
+    .eq("provider", provider)
+    .eq("provider_payment_id", providerPaymentId)
+    .select("subscription_id")
+    .maybeSingle();
+  if (!pago) return;
+
+  const { data: sub } = await db
+    .from("subscriptions")
+    .select("*")
+    .eq("id", pago.subscription_id)
+    .maybeSingle();
+  if (!sub) return;
+  const fila = sub as SubscriptionRow;
+
+  const { data: aprobados } = await db
+    .from("subscription_payments")
+    .select("paid_at")
+    .eq("subscription_id", fila.id)
+    .eq("status", "approved");
+  const fechas = (aprobados ?? [])
+    .map((p) => (p.paid_at ? paidUntilDesde(new Date(p.paid_at), fila.plan).getTime() : 0))
+    .filter(Boolean);
+  const nuevo = fechas.length ? new Date(Math.max(...fechas)) : new Date();
+
+  const { error } = await db
+    .from("subscriptions")
+    .update({ paid_until: nuevo.toISOString() })
+    .eq("id", fila.id);
+  if (error) throw error;
+  await sincronizarAcceso(fila.user_id);
 }
 
 export async function sincronizarAcceso(userId: string): Promise<boolean> {
@@ -125,7 +190,14 @@ export async function sincronizarAcceso(userId: string): Promise<boolean> {
   return Boolean(data);
 }
 
-/** Guarda el aviso; devuelve false si ya lo habíamos procesado. */
+/**
+ * Guarda el aviso; devuelve false si ya lo habíamos procesado.
+ *
+ * Se registra ANTES de procesar para cortar reintentos simultáneos, y si el
+ * procesamiento falla se llama a `olvidarEvento()` y se responde 5xx, para
+ * que el proveedor lo vuelva a mandar. Sin eso, un fallo transitorio de la
+ * base dejaría un pago (o una cancelación) perdido para siempre.
+ */
 export async function registrarEvento(
   provider: Provider,
   eventId: string,
@@ -139,4 +211,9 @@ export async function registrarEvento(
   if (error && error.code === "23505") return false;
   if (error) throw error;
   return true;
+}
+
+export async function olvidarEvento(provider: Provider, eventId: string): Promise<void> {
+  const db = createAdminClient();
+  await db.from("webhook_events").delete().eq("provider", provider).eq("event_id", eventId);
 }

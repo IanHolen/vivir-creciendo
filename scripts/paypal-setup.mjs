@@ -15,12 +15,13 @@ import { readFileSync } from "node:fs";
 
 const args = process.argv.slice(2);
 const live = args.includes("--live");
-const webhookUrl = args[args.indexOf("--webhook") + 1];
+const wi = args.indexOf("--webhook");
+const webhookUrl = wi >= 0 ? args[wi + 1] : undefined;
 const env = Object.fromEntries(
   readFileSync(".env.local", "utf8")
     .split("\n")
     .filter((l) => /^[A-Z_]+=/.test(l))
-    .map((l) => [l.slice(0, l.indexOf("=")), l.slice(l.indexOf("=") + 1).trim()])
+    .map((l) => [l.slice(0, l.indexOf("=")), l.slice(l.indexOf("=") + 1).trim().replace(/^["']|["']$/g, "")])
 );
 const id = live ? env.PAYPAL_LIVE_CLIENT_ID : env.PAYPAL_CLIENT_ID;
 const secret = live ? env.PAYPAL_LIVE_CLIENT_SECRET : env.PAYPAL_CLIENT_SECRET;

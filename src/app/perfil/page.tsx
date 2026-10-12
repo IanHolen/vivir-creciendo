@@ -5,6 +5,7 @@ import { updateMyProfile } from "@/lib/profile-actions";
 import { whatsappHref, siteConfig, cancelacion } from "@/lib/content";
 import { PLANES, PROVIDER_LABEL, type PlanKey, type Provider } from "@/lib/payments/plans";
 import { cancelarSuscripcion } from "@/lib/subscription-actions";
+import CancelButton from "./CancelButton";
 
 export const metadata = {
   title: "Mi perfil — Vivir Creciendo",
@@ -59,7 +60,19 @@ export default async function PerfilPage({
   searchParams: Promise<{ error?: string; ok?: string }>;
 }) {
   const { error, ok } = await searchParams;
-  const okMessage = ok && ok !== "1" ? ok : "Tus cambios se guardaron.";
+  // Códigos, no texto libre: una URL con ?ok=<texto> podría mostrar cualquier
+  // cosa dentro de una caja verde con el diseño del sitio (phishing fácil).
+  const MENSAJES_OK: Record<string, string> = {
+    "1": "Tus cambios se guardaron.",
+    cancelada: "Tu membresía quedó cancelada. Sigues participando hasta el final del período que ya pagaste.",
+    "ya-activa": "Tu membresía ya está activa.",
+  };
+  const MENSAJES_ERROR: Record<string, string> = {
+    "no-activa": "No tienes una membresía activa para cancelar.",
+    cancelar: "No pudimos cancelar en este momento. Intenta de nuevo o escríbenos.",
+  };
+  const okMessage = ok ? (MENSAJES_OK[ok] ?? null) : null;
+  const errorMessage = error ? (MENSAJES_ERROR[error] ?? "No se pudo completar la acción.") : null;
   const supabase = await createClient();
 
   const {
@@ -74,6 +87,12 @@ export default async function PerfilPage({
   const sub = (subData as MySubscription | null) ?? null;
   const { data: hasMembership } = await supabase.rpc("has_membership");
   const tieneMembresia = Boolean(hasMembership);
+  // Derivado del estado del proveedor, no solo de nuestro botón: si cancela
+  // desde paypal.com o la app de MP, también tiene que verse como cancelada.
+  const cancelada = Boolean(
+    sub && (sub.cancel_requested_at || ["CANCELLED", "cancelled", "EXPIRED"].includes(sub.status))
+  );
+  const suspendida = Boolean(sub && (sub.status === "SUSPENDED" || sub.status === "paused"));
 
   const displayName =
     profile?.full_name ?? user.email?.split("@")[0] ?? "amig@";
@@ -100,7 +119,7 @@ export default async function PerfilPage({
           Hola, {displayName}. Aquí ves y actualizas tus datos.
         </p>
 
-        {ok && (
+        {okMessage && (
           <p
             role="status"
             className="mt-6 rounded-xl bg-green-50 border border-green-200 px-4 py-3 text-base text-green-700"
@@ -108,12 +127,12 @@ export default async function PerfilPage({
             {okMessage}
           </p>
         )}
-        {error && (
+        {errorMessage && (
           <p
             role="alert"
             className="mt-6 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-base text-red-700"
           >
-            {error}
+            {errorMessage}
           </p>
         )}
 
@@ -175,7 +194,7 @@ export default async function PerfilPage({
           {tieneMembresia ? (
             <div className="mt-5 rounded-2xl bg-vc-cream/60 p-5 border border-vc-cream">
               <p className="text-sm font-semibold uppercase tracking-wide text-vc-orange">
-                {sub && sub.cancel_requested_at ? "Cancelada · acceso vigente" : "Activa"}
+                {cancelada ? "Cancelada · acceso vigente" : suspendida ? "Pago pendiente" : "Activa"}
               </p>
               <p className="mt-1 text-2xl font-black text-vc-blue-dark">
                 Membresía {sub ? PLANES[sub.plan].nombre.toLowerCase() : ""}
@@ -187,13 +206,13 @@ export default async function PerfilPage({
                     <dd>{PROVIDER_LABEL[sub.provider]} · {sub.currency === "USD" ? PLANES[sub.plan].usdLabel : `$${Number(sub.amount).toLocaleString("es-AR")} ARS`}</dd>
                   </div>
                 )}
-                {sub && !sub.cancel_requested_at && formatDate(sub.next_billing_at) && (
+                {sub && !cancelada && !suspendida && formatDate(sub.next_billing_at) && (
                   <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
                     <dt className="text-base text-vc-blue-dark/60">Próximo cobro</dt>
                     <dd>{formatDate(sub.next_billing_at)}</dd>
                   </div>
                 )}
-                {sub && sub.cancel_requested_at && formatDate(sub.paid_until) && (
+                {sub && (cancelada || suspendida) && formatDate(sub.paid_until) && (
                   <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
                     <dt className="text-base text-vc-blue-dark/60">Participas hasta</dt>
                     <dd>{formatDate(sub.paid_until)}</dd>
@@ -206,6 +225,13 @@ export default async function PerfilPage({
                   </div>
                 )}
               </dl>
+              {suspendida && (
+                <p className="mt-4 text-base text-vc-ink/80 leading-relaxed">
+                  No se pudo cobrar tu último pago. Revisa tu tarjeta en{" "}
+                  {sub ? PROVIDER_LABEL[sub.provider] : "tu cuenta"} para que la membresía
+                  continúe. Si no se resuelve, sigues participando hasta la fecha de arriba.
+                </p>
+              )}
             </div>
           ) : sub && (sub.status === "APPROVAL_PENDING" || sub.status === "pending") ? (
             <div className="mt-5 rounded-2xl bg-vc-blue-soft p-5 border border-vc-blue/15">
@@ -237,7 +263,7 @@ export default async function PerfilPage({
 
           {/* Cancelar: detrás de un <details>, como todo lo irreversible del
               sitio. HTML puro, funciona sin JavaScript. */}
-          {sub && (sub.status === "ACTIVE" || sub.status === "authorized") && !sub.cancel_requested_at && (
+          {sub && (sub.status === "ACTIVE" || sub.status === "authorized" || suspendida) && !cancelada && (
             <details className="mt-8 rounded-2xl border border-vc-cream p-5">
               <summary className="cursor-pointer text-lg font-semibold text-vc-blue-dark">
                 Cancelar mi membresía
@@ -246,12 +272,7 @@ export default async function PerfilPage({
                 {cancelacion.text}
               </p>
               <form action={cancelarSuscripcion} className="mt-4">
-                <button
-                  type="submit"
-                  className="inline-flex items-center justify-center min-h-[52px] px-6 py-3 border-2 border-red-300 text-red-700 hover:bg-red-50 font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-red-300"
-                >
-                  Sí, cancelar mi membresía
-                </button>
+                <CancelButton />
               </form>
             </details>
           )}

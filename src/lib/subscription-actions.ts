@@ -28,7 +28,7 @@ export async function iniciarSuscripcion(formData: FormData) {
   const plan = formData.get("plan");
   const provider = formData.get("proveedor");
   if (!isPlanKey(plan) || !isProvider(provider)) {
-    redirect("/membresia?error=" + encodeURIComponent("Elige un plan y una forma de pago."));
+    redirect("/membresia?error=datos");
   }
 
   const supabase = await createClient();
@@ -44,6 +44,18 @@ export async function iniciarSuscripcion(formData: FormData) {
     .maybeSingle();
 
   const admin = createAdminClient();
+
+  // Una sola suscripción activa por persona. La página ya lo evita, pero dos
+  // pestañas abiertas (o un webhook que llega entre medio) no se enteran.
+  const { data: activa } = await admin
+    .from("subscriptions")
+    .select("id")
+    .eq("user_id", user.id)
+    .in("status", ["ACTIVE", "authorized"])
+    .limit(1)
+    .maybeSingle();
+  if (activa) redirect("/perfil?ok=ya-activa");
+
   let destino: string;
 
   try {
@@ -54,7 +66,7 @@ export async function iniciarSuscripcion(formData: FormData) {
         userId: user.id,
         email: user.email ?? null,
         nombre: perfil?.full_name ?? null,
-        returnUrl: `${siteUrl()}/membresia/retorno?proveedor=paypal`,
+        returnUrl: `${siteUrl()}/membresia/retorno/paypal`,
         cancelUrl: `${siteUrl()}/membresia?cancelado=1`,
       });
       const { error } = await admin.from("subscriptions").insert({
@@ -75,7 +87,7 @@ export async function iniciarSuscripcion(formData: FormData) {
         plan,
         userId: user.id,
         email: user.email,
-        backUrl: `${siteUrl()}/membresia/retorno?proveedor=mercadopago`,
+        backUrl: `${siteUrl()}/membresia/retorno/mercadopago`,
       });
       const { error } = await admin.from("subscriptions").insert({
         user_id: user.id,
@@ -91,33 +103,10 @@ export async function iniciarSuscripcion(formData: FormData) {
     }
   } catch (e) {
     console.error("[suscripcion] no se pudo iniciar:", e);
-    redirect(
-      "/membresia?error=" +
-        encodeURIComponent(
-          "No pudimos abrir la página de pago. Intenta de nuevo en un momento o escríbenos."
-        )
-    );
+    redirect("/membresia?error=proveedor");
   }
 
   redirect(destino);
-}
-
-/** La suscripción vigente (o la última) del usuario con sesión. */
-async function suscripcionVigenteDe(userId: string): Promise<SubscriptionRow | null> {
-  const admin = createAdminClient();
-  const { data } = await admin
-    .from("subscriptions")
-    .select("*")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false })
-    .limit(10);
-  const rows = (data ?? []) as SubscriptionRow[];
-  return (
-    rows.find((r) => r.status === "ACTIVE" || r.status === "authorized") ??
-    rows.find((r) => r.status === "APPROVAL_PENDING" || r.status === "pending") ??
-    rows[0] ??
-    null
-  );
 }
 
 export async function cancelarSuscripcion() {
@@ -127,48 +116,60 @@ export async function cancelarSuscripcion() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/perfil");
 
-  const sub = await suscripcionVigenteDe(user.id);
-  if (!sub || !(sub.status === "ACTIVE" || sub.status === "authorized")) {
-    redirect("/perfil?error=" + encodeURIComponent("No tienes una membresía activa para cancelar."));
-  }
-
-  try {
-    if (sub.provider === "paypal") {
-      await cancelarSuscripcionPayPal(sub.provider_sub_id, "Cancelada por la socia desde el sitio");
-    } else {
-      await cancelarSuscripcionMP(sub.provider_sub_id);
-    }
-  } catch (e) {
-    console.error("[suscripcion] no se pudo cancelar:", e);
-    redirect(
-      "/perfil?error=" +
-        encodeURIComponent("No pudimos cancelar en este momento. Intenta de nuevo o escríbenos.")
-    );
-  }
-
-  // El proveedor ya la cerró; se refleja acá sin esperar el webhook (que de
-  // todos modos va a llegar y a confirmar lo mismo). El acceso sigue hasta
-  // paid_until: eso lo respeta sync_membership_from_subscriptions().
   const admin = createAdminClient();
-  const paidUntil =
-    sub.paid_until ??
-    (sub.next_billing_at ? conGracia(new Date(sub.next_billing_at)).toISOString() : null);
-  await admin
+  const { data } = await admin
     .from("subscriptions")
-    .update({
-      status: sub.provider === "paypal" ? "CANCELLED" : "cancelled",
-      cancel_requested_at: new Date().toISOString(),
-      ...(paidUntil ? { paid_until: paidUntil } : {}),
-    })
-    .eq("id", sub.id);
+    .select("*")
+    .eq("user_id", user.id)
+    .in("status", ["ACTIVE", "authorized", "SUSPENDED", "paused"]);
+  const activas = (data ?? []) as SubscriptionRow[];
+
+  if (activas.length === 0) {
+    // Doble clic o ya cancelada desde el proveedor: no es un error para la socia.
+    const { data: ultima } = await admin
+      .from("subscriptions")
+      .select("status")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    const st = ultima?.status;
+    if (st === "CANCELLED" || st === "cancelled" || st === "EXPIRED") redirect("/perfil?ok=cancelada");
+    redirect("/perfil?error=no-activa");
+  }
+
+  // Si por alguna razón hubiera más de una (dos pestañas), se cancelan todas:
+  // dejar una cobrando "a escondidas" es el peor resultado posible.
+  for (const sub of activas) {
+    try {
+      if (sub.provider === "paypal") {
+        await cancelarSuscripcionPayPal(sub.provider_sub_id, "Cancelada por la socia desde el sitio");
+      } else {
+        await cancelarSuscripcionMP(sub.provider_sub_id);
+      }
+    } catch (e) {
+      console.error("[suscripcion] no se pudo cancelar:", sub.provider_sub_id, e);
+      redirect("/perfil?error=cancelar");
+    }
+
+    // El proveedor ya la cerró; se refleja acá sin esperar el webhook (que de
+    // todos modos va a llegar y confirmar lo mismo). El acceso sigue hasta
+    // paid_until: eso lo respeta sync_membership_from_subscriptions().
+    const paidUntil =
+      sub.paid_until ??
+      (sub.next_billing_at ? conGracia(new Date(sub.next_billing_at)).toISOString() : null);
+    await admin
+      .from("subscriptions")
+      .update({
+        status: sub.provider === "paypal" ? "CANCELLED" : "cancelled",
+        cancel_requested_at: new Date().toISOString(),
+        ...(paidUntil && !sub.paid_until ? { paid_until: paidUntil } : {}),
+      })
+      .eq("id", sub.id);
+  }
   await sincronizarAcceso(user.id);
 
   revalidatePath("/perfil");
   revalidatePath("/");
-  redirect(
-    "/perfil?ok=" +
-      encodeURIComponent(
-        "Tu membresía quedó cancelada. Sigues participando hasta el final del período que ya pagaste."
-      )
-  );
+  redirect("/perfil?ok=cancelada");
 }

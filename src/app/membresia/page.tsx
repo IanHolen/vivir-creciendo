@@ -45,6 +45,11 @@ export default async function MembresiaPage({
   const arsMensual = mercadoPagoConfigurado ? montoArs("mensual") : null;
   const arsAnual = mercadoPagoConfigurado ? montoArs("anual") : null;
   const planPago = membershipPlans.find((p) => p.kind === "paga");
+  const MENSAJES_ERROR: Record<string, string> = {
+    datos: "Elige un plan y una forma de pago.",
+    proveedor: "No pudimos abrir la página de pago. Intenta de nuevo en un momento o escríbenos.",
+  };
+  const errorMessage = sp.error ? (MENSAJES_ERROR[sp.error] ?? "No se pudo continuar.") : null;
 
   return (
     <>
@@ -59,9 +64,9 @@ export default async function MembresiaPage({
             de Mercado Pago y vuelves aquí con tu membresía activa.
           </p>
 
-          {sp.error && (
+          {errorMessage && (
             <p role="alert" className="mt-8 rounded-xl bg-red-50 border border-red-200 px-5 py-4 text-lg text-red-800 text-center">
-              {sp.error}
+              {errorMessage}
             </p>
           )}
           {sp.cancelado && (
@@ -116,6 +121,10 @@ export default async function MembresiaPage({
             </div>
           ) : (
             <form action={iniciarSuscripcion} className="mt-10 space-y-6">
+              {/* Enter en el formulario dispararía el PRIMER botón submit (PayPal)
+                  aunque la socia quisiera Mercado Pago. Este botón oculto y
+                  deshabilitado absorbe el submit implícito. */}
+              <button type="submit" disabled hidden aria-hidden="true" tabIndex={-1} />
               {/* Plan */}
               <fieldset className="bg-white rounded-3xl shadow-xl p-6 md:p-8">
                 <legend className="sr-only">Elige tu plan</legend>
@@ -169,9 +178,9 @@ export default async function MembresiaPage({
               <div className="bg-white rounded-3xl shadow-xl p-6 md:p-8">
                 <h2 className="text-xl font-semibold text-vc-blue-dark">2. Elige cómo pagar</h2>
                 <p className="mt-2 text-base text-vc-ink/70 leading-relaxed">
-                  Si vives en Argentina, Mercado Pago cobra en pesos. Desde
-                  cualquier otro país, PayPal cobra en dólares y acepta tarjeta
-                  aunque no tengas cuenta de PayPal.
+                  Si vives en Argentina y tienes cuenta de Mercado Pago, cobra
+                  en pesos. Desde cualquier otro país, PayPal cobra en dólares y
+                  acepta tarjeta aunque no tengas cuenta de PayPal.
                 </p>
                 <ProviderButtons paypal={paypalConfigurado} mercadopago={mercadoPagoConfigurado} />
                 <p className="mt-5 flex items-start gap-2 text-base text-vc-ink/65 leading-relaxed">

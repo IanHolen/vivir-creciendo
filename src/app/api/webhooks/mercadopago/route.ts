@@ -7,6 +7,9 @@ import {
 import {
   actualizarSuscripcion,
   buscarSuscripcion,
+  conGracia,
+  marcarCobroRevertido,
+  olvidarEvento,
   registrarCobroAprobado,
   registrarEvento,
 } from "@/lib/payments/access";
@@ -36,13 +39,16 @@ export async function POST(req: NextRequest) {
     // también en la query string.
   }
 
-  const dataId = url.searchParams.get("data.id") ?? (body.data?.id != null ? String(body.data.id) : null);
+  // La firma se calcula SOLO con el data.id de la query string (así lo
+  // define MP); el del cuerpo sirve para procesar si la query no lo trae.
+  const dataIdQuery = url.searchParams.get("data.id");
+  const dataId = dataIdQuery ?? (body.data?.id != null ? String(body.data.id) : null);
   const type = url.searchParams.get("type") ?? body.type ?? null;
 
   const valido = verificarWebhookMP({
     xSignature: req.headers.get("x-signature"),
     xRequestId: req.headers.get("x-request-id"),
-    dataId,
+    dataId: dataIdQuery,
   });
   if (!valido) return NextResponse.json({ error: "firma inválida" }, { status: 401 });
   if (!dataId || !type) return NextResponse.json({ ok: true, ignorado: true });
@@ -59,19 +65,24 @@ export async function POST(req: NextRequest) {
       const sub = await obtenerSuscripcionMP(dataId);
       const existente = await buscarSuscripcion("mercadopago", sub.id);
       if (existente) {
+        const next = sub.next_payment_date ?? null;
         await actualizarSuscripcion("mercadopago", sub.id, {
           status: sub.status,
-          next_billing_at: sub.next_payment_date ?? null,
+          next_billing_at: next,
+          ...(sub.status === "authorized" && next ? { paidUntil: conGracia(new Date(next)) } : {}),
           raw: sub,
         });
       }
     } else if (type === "subscription_authorized_payment") {
       const cobro = await obtenerCobroMP(dataId);
-      if (cobro.payment?.status === "approved" && cobro.preapproval_id) {
+      const ps = cobro.payment?.status;
+      if ((ps === "refunded" || ps === "charged_back") && cobro.payment?.id) {
+        await marcarCobroRevertido("mercadopago", String(cobro.payment.id), ps);
+      } else if (ps === "approved" && cobro.preapproval_id) {
         await registrarCobroAprobado({
           provider: "mercadopago",
           providerSubId: cobro.preapproval_id,
-          providerPaymentId: String(cobro.payment.id ?? cobro.id),
+          providerPaymentId: String(cobro.payment?.id ?? cobro.id),
           amount: cobro.transaction_amount ?? null,
           currency: cobro.currency_id ?? null,
           paidAt: new Date(cobro.debit_date ?? Date.now()),
@@ -80,10 +91,12 @@ export async function POST(req: NextRequest) {
       }
     }
   } catch (e) {
-    // Se responde 200 igual: ya quedó el evento guardado y MP no tiene por
-    // qué reintentar un aviso que nosotros no supimos procesar. El error
-    // queda en los logs para revisarlo.
-    console.error("[webhook mercadopago]", e);
+    // Fallo nuestro (base caída, timeout): se olvida el evento y se responde
+    // 500 para que MP lo reintente (cada 15 min). Si fuera un 200, el pago o
+    // la cancelación se perderían para siempre.
+    console.error("[webhook mercadopago]", type, e);
+    await olvidarEvento("mercadopago", eventId).catch(() => {});
+    return NextResponse.json({ error: "reintentar" }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true });

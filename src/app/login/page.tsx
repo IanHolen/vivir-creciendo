@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { destinoSeguro } from "@/lib/safe-redirect";
 import AuthShell, {
   authInputClass,
   authLabelClass,
@@ -16,7 +17,7 @@ export default async function LoginPage({
 }) {
   const { error, next } = await searchParams;
   // Solo rutas internas: ver destinoSeguro() en auth-actions.
-  const destino = next && next.startsWith("/") && !next.startsWith("//") ? next : "";
+  const destino = destinoSeguro(next, "") ;
 
   return (
     <AuthShell

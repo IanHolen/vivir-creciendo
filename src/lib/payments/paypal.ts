@@ -16,12 +16,19 @@ const BASE =
     ? "https://api-m.paypal.com"
     : "https://api-m.sandbox.paypal.com";
 
+/** Solo se vende si TODO está: sin PAYPAL_WEBHOOK_ID, una cancelación hecha
+ *  en paypal.com nunca se reflejaría y la socia tendría acceso indefinido. */
 export const paypalConfigurado = Boolean(
   process.env.PAYPAL_CLIENT_ID &&
     process.env.PAYPAL_CLIENT_SECRET &&
     process.env.PAYPAL_PLAN_MENSUAL &&
-    process.env.PAYPAL_PLAN_ANUAL
+    process.env.PAYPAL_PLAN_ANUAL &&
+    process.env.PAYPAL_WEBHOOK_ID
 );
+
+if (process.env.NODE_ENV === "production" && process.env.VERCEL_ENV === "production" && process.env.PAYPAL_ENV !== "live") {
+  console.error("[paypal] ATENCIÓN: el sitio está en producción pero PAYPAL_ENV no es 'live'. Los pagos irían a sandbox.");
+}
 
 let cached: { token: string; exp: number } | null = null;
 
@@ -93,6 +100,13 @@ export interface PayPalSubscription {
   links?: { rel: string; href: string }[];
 }
 
+/** PayPal pide nombre y apellido por separado. */
+function nombrePayPal(completo: string): { given_name: string; surname?: string } {
+  const partes = completo.trim().split(/\s+/);
+  if (partes.length < 2) return { given_name: partes[0] ?? "" };
+  return { given_name: partes.slice(0, -1).join(" "), surname: partes[partes.length - 1] };
+}
+
 export function planIdDe(plan: "mensual" | "anual"): string {
   const id = plan === "mensual" ? process.env.PAYPAL_PLAN_MENSUAL : process.env.PAYPAL_PLAN_ANUAL;
   if (!id) throw new Error(`Falta PAYPAL_PLAN_${plan.toUpperCase()} en el entorno.`);
@@ -115,7 +129,7 @@ export async function crearSuscripcionPayPal(input: {
       custom_id: input.userId,
       subscriber: {
         ...(input.email ? { email_address: input.email } : {}),
-        ...(input.nombre ? { name: { given_name: input.nombre } } : {}),
+        ...(input.nombre ? { name: nombrePayPal(input.nombre) } : {}),
       },
       application_context: {
         brand_name: "Vivir Creciendo",

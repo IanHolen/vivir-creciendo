@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { getSessionUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 import { isProvider } from "@/lib/payments/plans";
+import { siteConfig } from "@/lib/content";
 import { obtenerSuscripcionPayPal } from "@/lib/payments/paypal";
 import { obtenerSuscripcionMP } from "@/lib/payments/mercadopago";
 import { actualizarSuscripcion, buscarSuscripcion, conGracia } from "@/lib/payments/access";
@@ -14,30 +15,45 @@ import AutoRefresh from "./AutoRefresh";
 export const metadata = { title: "Confirmando tu membresía — Vivir Creciendo" };
 export const dynamic = "force-dynamic";
 
-type Estado = "activa" | "pendiente" | "fallida";
+type Estado = "activa" | "pendiente" | "fallida" | "desconocida";
 
 /**
- * A dónde vuelve la socia después de pagar.
+ * A dónde vuelve la socia después de pagar: /membresia/retorno/paypal o
+ * /membresia/retorno/mercadopago. El proveedor va en la ruta (no en la query)
+ * porque Mercado Pago concatena `?preapproval_id=` sin mirar si ya había
+ * parámetros, y rompería `?proveedor=`.
  *
  * Esta página NO otorga el acceso por lo que diga la URL (cualquiera puede
  * escribir ?subscription_id=...). Lo que hace es preguntarle al proveedor
  * por el estado real de ESA suscripción, y solo si pertenece al usuario con
  * sesión actualiza la base. El webhook hará lo mismo por su lado.
+ *
+ * Y NUNCA dice "no se cobró" cuando no lo sabe: si la fila no es de esta
+ * cuenta (otra sesión, otro navegador al volver desde la app de MP), se
+ * muestra el estado "desconocida" sin botón de volver a pagar.
  */
 export default async function RetornoPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ proveedor: string }>;
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
+  const { proveedor } = await params;
   const sp = await searchParams;
   const { isLoggedIn, name } = await getSessionUser(sp);
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/login?next=/perfil");
+  if (!user) {
+    // Volver EXACTAMENTE acá después de entrar, con los ids del pago.
+    const qs = new URLSearchParams(
+      Object.entries(sp).filter((e): e is [string, string] => typeof e[1] === "string")
+    ).toString();
+    redirect(`/login?next=${encodeURIComponent(`/membresia/retorno/${proveedor}${qs ? "?" + qs : ""}`)}`);
+  }
 
-  const proveedor = sp.proveedor;
   const externalId =
     proveedor === "paypal" ? sp.subscription_id : proveedor === "mercadopago" ? sp.preapproval_id : undefined;
 
@@ -54,20 +70,34 @@ export default async function RetornoPage({
           await actualizarSuscripcion("paypal", externalId, {
             status: s.status,
             next_billing_at: next,
-            ...(s.status === "ACTIVE" && next ? { paid_until: conGracia(new Date(next)).toISOString() } : {}),
+            ...(s.status === "ACTIVE" && next ? { paidUntil: conGracia(new Date(next)) } : {}),
             raw: s,
           });
-          estado = s.status === "ACTIVE" ? "activa" : s.status === "APPROVAL_PENDING" || s.status === "APPROVED" ? "pendiente" : "fallida";
+          estado =
+            s.status === "ACTIVE"
+              ? "activa"
+              : s.status === "APPROVAL_PENDING" || s.status === "APPROVED"
+                ? "pendiente"
+                : s.status === "CANCELLED" || s.status === "EXPIRED"
+                  ? "fallida"
+                  : "desconocida"; // SUSPENDED u otro: que no vuelva a pagar
         } else {
           const s = await obtenerSuscripcionMP(externalId);
           const next = s.next_payment_date ?? null;
           await actualizarSuscripcion("mercadopago", externalId, {
             status: s.status,
             next_billing_at: next,
-            ...(s.status === "authorized" && next ? { paid_until: conGracia(new Date(next)).toISOString() } : {}),
+            ...(s.status === "authorized" && next ? { paidUntil: conGracia(new Date(next)) } : {}),
             raw: s,
           });
-          estado = s.status === "authorized" ? "activa" : s.status === "pending" ? "pendiente" : "fallida";
+          estado =
+            s.status === "authorized"
+              ? "activa"
+              : s.status === "pending"
+                ? "pendiente"
+                : s.status === "cancelled"
+                  ? "fallida"
+                  : "desconocida";
         }
       } catch (e) {
         console.error("[retorno] no se pudo consultar al proveedor:", e);
@@ -75,12 +105,10 @@ export default async function RetornoPage({
         detalle = "No pudimos confirmar con el proveedor en este momento. Lo seguimos intentando.";
       }
     } else {
-      estado = "fallida";
-      detalle = "No encontramos esta suscripción en tu cuenta.";
+      estado = "desconocida";
     }
   } else {
-    estado = "fallida";
-    detalle = "Faltan datos del pago en el enlace de regreso.";
+    estado = "desconocida";
   }
 
   return (
@@ -128,6 +156,28 @@ export default async function RetornoPage({
                 Si después de unos minutos sigue así, revisa tu perfil o escríbenos.
               </p>
               <Link href="/perfil" className="mt-4 inline-flex items-center justify-center min-h-[52px] px-6 py-3 border-2 border-vc-cream text-vc-blue-dark font-semibold text-lg rounded-xl hover:border-vc-blue">
+                Ir a mi perfil
+              </Link>
+            </>
+          )}
+
+          {estado === "desconocida" && (
+            <>
+              <span className="mx-auto flex items-center justify-center w-20 h-20 rounded-full bg-amber-50">
+                <AlertTriangle className="w-10 h-10 text-amber-600" aria-hidden="true" />
+              </span>
+              <h1 className="mt-6 font-(family-name:--font-display) text-3xl font-black text-vc-blue-dark uppercase tracking-tight text-balance">
+                No pudimos relacionar este pago con tu cuenta
+              </h1>
+              <p className="mt-4 text-lg text-vc-ink/80 leading-relaxed">
+                Es posible que hayas entrado con otra cuenta o desde otro navegador.
+                <strong> No vuelvas a pagar.</strong> Escríbenos a{" "}
+                <a href={`mailto:${siteConfig.email}`} className="text-vc-blue underline underline-offset-4">
+                  {siteConfig.email}
+                </a>{" "}
+                y lo resolvemos enseguida.
+              </p>
+              <Link href="/perfil" className="mt-8 inline-flex items-center justify-center min-h-[56px] px-8 py-4 border-2 border-vc-orange-dark text-vc-orange-dark hover:bg-vc-orange-dark hover:text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50">
                 Ir a mi perfil
               </Link>
             </>

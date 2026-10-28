@@ -30,8 +30,10 @@ if (!id || !secret) throw new Error("Faltan credenciales en .env.local");
 
 const PRODUCT_NAME = "Membresía Vivir Creciendo";
 const PLANS = [
-  { key: "MENSUAL", name: "Membresía mensual", desc: "USD 27 al mes", unit: "MONTH", value: "27" },
-  { key: "ANUAL", name: "Membresía anual", desc: "USD 270 al año (2 meses gratis)", unit: "YEAR", value: "270" },
+  // El precio va en el nombre: si cambia, el script crea un plan nuevo y el
+  // viejo queda ACTIVE solo para las suscripciones ya existentes.
+  { key: "MENSUAL", name: "Membresía mensual (USD 30)", desc: "USD 30 al mes", unit: "MONTH", value: "30" },
+  { key: "ANUAL", name: "Membresía anual (USD 270)", legacyName: "Membresía anual", desc: "USD 270 al año (3 meses gratis)", unit: "YEAR", value: "270" },
 ];
 
 const tok = await fetch(`${BASE}/v1/oauth2/token`, {
@@ -82,7 +84,9 @@ if (!product) {
 const existing = await api(`/v1/billing/plans?product_id=${product.id}&page_size=20`);
 const out = {};
 for (const p of PLANS) {
-  let plan = (existing.plans ?? []).find((x) => x.name === p.name && x.status === "ACTIVE");
+  let plan = (existing.plans ?? []).find(
+    (x) => (x.name === p.name || (p.legacyName && x.name === p.legacyName)) && x.status === "ACTIVE"
+  );
   if (!plan) {
     plan = await api("/v1/billing/plans", {
       method: "POST",

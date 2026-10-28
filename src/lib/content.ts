@@ -236,7 +236,7 @@ export const memberships: Membership[] = [
     facilitatorBio:
       "Psicoterapeuta con más de 30 años de experiencia. Cofundadora de Vivir Creciendo.",
     closingQuote: "Comunidad, humor y emoción.",
-    price: "Incluida en la Membresía — $27 USD/mes",
+    price: "Incluida en la Membresía — $30 USD/mes",
     faqs: [
       {
         question: "¿Qué tipo de películas seleccionan?",
@@ -278,7 +278,7 @@ export const memberships: Membership[] = [
     facilitatorBio:
       "Psicoterapeuta con más de 30 años de experiencia. Cofundadora de Vivir Creciendo. Formada en Terapia Comunitaria Integrativa.",
     closingQuote: "Ninguna de nuestras historias se escribe en soledad.",
-    price: "Incluida en la Membresía — $27 USD/mes",
+    price: "Incluida en la Membresía — $30 USD/mes",
     faqs: [
       {
         question: "¿Qué es una Rueda de Trabajo Comunitario?",
@@ -320,7 +320,7 @@ export const memberships: Membership[] = [
       "Coach de Bienestar y Nutrición Integrativa. Cofundadora de Vivir Creciendo. Transformó su propia vida a los 55 años.",
     closingQuote:
       "Yo viví 50 años engañada. A mis 55 viví una experiencia transformadora.",
-    price: "Incluida en la Membresía — $27 USD/mes",
+    price: "Incluida en la Membresía — $30 USD/mes",
     faqs: [
       {
         question: "¿Necesito seguir una dieta?",
@@ -393,8 +393,8 @@ export const membershipPlans: MembershipPlan[] = [
   {
     name: "Membresía",
     kind: "paga",
-    price: "$27 USD/mes",
-    priceNote: "o $270/año (2 meses gratis)",
+    price: "$30 USD/mes",
+    priceNote: "o $270/año (3 meses gratis)",
     tagline: "Las conversaciones que nutren, semana a semana.",
     features: [
       "Cine Reflexión: te enviamos la película, la ves y reflexionamos juntos",

@@ -33,7 +33,7 @@ export const PLAN_META: Record<
   membresia: {
     label: "Membresía",
     badgeClass: "bg-vc-orange text-white",
-    hint: "Incluida en la membresía de $27 USD/mes.",
+    hint: "Incluida en la membresía de $30 USD/mes.",
   },
 };
 

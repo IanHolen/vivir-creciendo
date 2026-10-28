@@ -362,7 +362,7 @@ export default function ActivityRegisterButton({
               aria-hidden="true"
             />
             Esta actividad es parte de la membresía. Ya probaste una sin
-            suscribirte — para seguir participando de todas, súmate por $27 USD
+            suscribirte — para seguir participando de todas, súmate por $30 USD
             al mes.
           </p>
           <p className="mt-4 text-base text-vc-ink/70 leading-relaxed">

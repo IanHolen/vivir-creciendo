@@ -42,7 +42,7 @@ export default function ProviderButtons({
         name="proveedor"
         value="mercadopago"
         disabled={pending || !mercadopago}
-        title={mercadopago ? undefined : "Muy pronto"}
+        title={mercadopago ? undefined : "El pago en pesos con Mercado Pago estará disponible muy pronto"}
         className={`${base} bg-[#009EE3] hover:bg-[#0081BA] text-white shadow-lg`}
       >
         {pending ? <Loader2 className="w-5 h-5 animate-spin" aria-hidden="true" /> : null}

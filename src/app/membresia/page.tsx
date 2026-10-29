@@ -7,7 +7,8 @@ import { createClient } from "@/lib/supabase/server";
 import { cancelacion, membershipPlans } from "@/lib/content";
 import { PLANES, isPlanKey, type PlanKey } from "@/lib/payments/plans";
 import { paypalConfigurado } from "@/lib/payments/paypal";
-import { mercadoPagoConfigurado, montoArs } from "@/lib/payments/mercadopago";
+import { mercadoPagoCredenciales } from "@/lib/payments/mercadopago";
+import { obtenerPreciosArs, preciosCompletos } from "@/lib/payments/precios-ars";
 import { iniciarSuscripcion } from "@/lib/subscription-actions";
 import ProviderButtons from "./ProviderButtons";
 
@@ -42,8 +43,12 @@ export default async function MembresiaPage({
     yaTiene = Boolean(data);
   }
 
-  const arsMensual = mercadoPagoConfigurado ? montoArs("mensual") : null;
-  const arsAnual = mercadoPagoConfigurado ? montoArs("anual") : null;
+  // Mercado Pago solo se ofrece con credenciales Y los dos precios en ARS
+  // cargados desde /admin; si falta algo, se paga solo con PayPal (USD).
+  const preciosArs = await obtenerPreciosArs();
+  const mercadoPagoDisponible = mercadoPagoCredenciales && preciosCompletos(preciosArs);
+  const arsMensual = mercadoPagoDisponible ? preciosArs.mensual : null;
+  const arsAnual = mercadoPagoDisponible ? preciosArs.anual : null;
   const planPago = membershipPlans.find((p) => p.kind === "paga");
   const MENSAJES_ERROR: Record<string, string> = {
     datos: "Elige un plan y una forma de pago.",
@@ -182,7 +187,7 @@ export default async function MembresiaPage({
                   en pesos. Desde cualquier otro país, PayPal cobra en dólares y
                   acepta tarjeta aunque no tengas cuenta de PayPal.
                 </p>
-                <ProviderButtons paypal={paypalConfigurado} mercadopago={mercadoPagoConfigurado} />
+                <ProviderButtons paypal={paypalConfigurado} mercadopago={mercadoPagoDisponible} />
                 <p className="mt-5 flex items-start gap-2 text-base text-vc-ink/65 leading-relaxed">
                   <ShieldCheck className="w-5 h-5 shrink-0 mt-0.5 text-vc-orange" aria-hidden="true" />
                   El pago se hace en la página segura del proveedor. Nosotros

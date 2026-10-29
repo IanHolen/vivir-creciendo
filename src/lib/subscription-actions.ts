@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isPlanKey, isProvider, PLANES } from "@/lib/payments/plans";
 import { crearSuscripcionPayPal, cancelarSuscripcionPayPal, paypalConfigurado } from "@/lib/payments/paypal";
-import { crearSuscripcionMP, cancelarSuscripcionMP, mercadoPagoConfigurado } from "@/lib/payments/mercadopago";
+import { crearSuscripcionMP, cancelarSuscripcionMP, mercadoPagoListo } from "@/lib/payments/mercadopago";
 import { conGracia, sincronizarAcceso, type SubscriptionRow } from "@/lib/payments/access";
 
 /**
@@ -81,7 +81,7 @@ export async function iniciarSuscripcion(formData: FormData) {
       if (error) throw error;
       destino = sub.approveUrl;
     } else {
-      if (!mercadoPagoConfigurado) throw new Error("Mercado Pago no está configurado.");
+      if (!(await mercadoPagoListo())) throw new Error("Mercado Pago no está configurado (credenciales o precios en ARS).");
       if (!user.email) throw new Error("Tu cuenta no tiene correo.");
       const sub = await crearSuscripcionMP({
         plan,

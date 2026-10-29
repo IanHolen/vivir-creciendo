@@ -6,6 +6,8 @@ import {
   WebhookSignatureValidator,
   InvalidWebhookSignatureError,
 } from "mercadopago";
+import type { PlanKey } from "./plans";
+import { obtenerPreciosArs, preciosCompletos } from "./precios-ars";
 
 /**
  * Suscripciones de Mercado Pago Argentina (API de "preapproval").
@@ -18,23 +20,20 @@ import {
  *    `init_point` (checkout hospedado) y la socia paga ahí. Nunca pedimos la
  *    tarjeta en nuestro sitio.
  *  · Moneda ARS: MP Argentina no cobra en USD. El monto lo definen las
- *    fundadoras en MP_PRECIO_MENSUAL_ARS / MP_PRECIO_ANUAL_ARS.
+ *    fundadoras desde /admin/suscripciones (tabla site_settings), con las
+ *    variables MP_PRECIO_*_ARS como respaldo.
  */
 
-/** Precio en ARS válido: entero y razonable (evita "27.000" leído como 27). */
-function precioValido(raw: string | undefined): boolean {
-  const n = Number(raw);
-  return Number.isInteger(n) && n >= 1000;
-}
+/** Credenciales presentes. Solo se vende si TODO está, incluida la clave de
+ *  webhooks: sin ella una cancelación hecha en la app de MP nunca se reflejaría.
+ *  Los precios en ARS se leen aparte (`obtenerPreciosArs`, los edita el admin). */
+export const mercadoPagoCredenciales = Boolean(process.env.MP_ACCESS_TOKEN && process.env.MP_WEBHOOK_SECRET);
 
-/** Solo se vende si TODO está, incluida la clave de webhooks: sin ella una
- *  cancelación hecha en la app de MP nunca se reflejaría. */
-export const mercadoPagoConfigurado = Boolean(
-  process.env.MP_ACCESS_TOKEN &&
-    process.env.MP_WEBHOOK_SECRET &&
-    precioValido(process.env.MP_PRECIO_MENSUAL_ARS) &&
-    precioValido(process.env.MP_PRECIO_ANUAL_ARS)
-);
+/** Listo para vender: credenciales + los dos precios cargados. */
+export async function mercadoPagoListo(): Promise<boolean> {
+  if (!mercadoPagoCredenciales) return false;
+  return preciosCompletos(await obtenerPreciosArs());
+}
 
 function cliente() {
   const accessToken = process.env.MP_ACCESS_TOKEN;
@@ -42,12 +41,10 @@ function cliente() {
   return new MercadoPagoConfig({ accessToken, options: { timeout: 8000 } });
 }
 
-export function montoArs(plan: "mensual" | "anual"): number {
-  const raw = plan === "mensual" ? process.env.MP_PRECIO_MENSUAL_ARS : process.env.MP_PRECIO_ANUAL_ARS;
-  const n = Number(raw);
-  if (!Number.isFinite(n) || n <= 0) {
-    throw new Error(`Falta o es inválido MP_PRECIO_${plan.toUpperCase()}_ARS.`);
-  }
+export async function montoArs(plan: PlanKey): Promise<number> {
+  const precios = await obtenerPreciosArs();
+  const n = precios[plan];
+  if (n == null) throw new Error(`Falta el precio en ARS del plan ${plan} (se carga en /admin/suscripciones).`);
   return n;
 }
 
@@ -71,7 +68,7 @@ export async function crearSuscripcionMP(input: {
   email: string;
   backUrl: string;
 }): Promise<{ id: string; status: MPStatus; initPoint: string; monto: number }> {
-  const monto = montoArs(input.plan);
+  const monto = await montoArs(input.plan);
   const pre = new PreApproval(cliente());
   const res = (await pre.create({
     body: {

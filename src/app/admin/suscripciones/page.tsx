@@ -1,6 +1,9 @@
-import { CreditCard, Inbox, Info } from "lucide-react";
+import { Banknote, CreditCard, Inbox, Info } from "lucide-react";
 import { requireAdmin } from "@/lib/admin-auth";
-import { Card, hintClass } from "@/components/admin/ui";
+import { Card, Field, TextInput, btnPrimary, hintClass } from "@/components/admin/ui";
+import { mercadoPagoCredenciales } from "@/lib/payments/mercadopago";
+import { obtenerPreciosArs, preciosCompletos } from "@/lib/payments/precios-ars";
+import { guardarPreciosArs } from "@/lib/precios-actions";
 import { PLANES, PROVIDER_LABEL, type PlanKey, type Provider } from "@/lib/payments/plans";
 
 export const metadata = { title: "Suscripciones — Panel de Vivir Creciendo" };
@@ -47,10 +50,12 @@ function estado(r: Row): { label: string; cls: string } {
 export default async function SuscripcionesPage() {
   const { supabase } = await requireAdmin();
 
-  const [{ data: subs }, { data: perfiles }] = await Promise.all([
+  const [{ data: subs }, { data: perfiles }, preciosArs] = await Promise.all([
     supabase.from("subscriptions").select("*").order("created_at", { ascending: false }).limit(200),
     supabase.from("profiles").select("id, email, full_name, membership_id"),
+    obtenerPreciosArs(),
   ]);
+  const mpActivo = mercadoPagoCredenciales && preciosCompletos(preciosArs);
   const rows = (subs ?? []) as Row[];
   const porUsuario = new Map(
     ((perfiles ?? []) as { id: string; email: string | null; full_name: string | null; membership_id: number | null }[]).map((p) => [p.id, p])
@@ -77,6 +82,42 @@ export default async function SuscripcionesPage() {
           de pago.
         </span>
       </p>
+
+      <Card
+        icon={Banknote}
+        title="Precios en pesos (Mercado Pago)"
+        hint="PayPal cobra en dólares los precios de la web. Mercado Pago cobra en pesos argentinos: estos son los montos. Si quedan vacíos, en la página de pago solo aparece PayPal."
+        className="mt-6"
+      >
+        <form action={guardarPreciosArs} className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {(Object.keys(PLANES) as PlanKey[]).map((plan) => (
+            <Field
+              key={plan}
+              label={`${PLANES[plan].nombre} — en pesos`}
+              hint={`Hoy en dólares: ${PLANES[plan].usdLabel}.`}
+            >
+              <TextInput
+                name={`precio_${plan}`}
+                type="text"
+                inputMode="numeric"
+                placeholder={plan === "mensual" ? "Ej.: 30000" : "Ej.: 270000"}
+                defaultValue={preciosArs[plan] ?? ""}
+                required
+              />
+            </Field>
+          ))}
+          <div className="sm:col-span-2 flex flex-wrap items-center gap-4">
+            <button type="submit" className={btnPrimary}>Guardar precios</button>
+            <span className={hintClass}>
+              {mpActivo
+                ? "Mercado Pago está activo con estos montos. El cambio aplica a quien se suscriba a partir de ahora; las suscripciones ya activas siguen con su monto."
+                : mercadoPagoCredenciales
+                  ? "Mercado Pago está apagado hasta que guardes los dos precios."
+                  : "Mercado Pago no tiene credenciales en este entorno; los precios se guardan igual."}
+            </span>
+          </div>
+        </form>
+      </Card>
 
       <Card icon={CreditCard} title="Historial" className="mt-6">
         {rows.length === 0 ? (

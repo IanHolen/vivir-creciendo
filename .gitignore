@@ -42,3 +42,4 @@ next-env.d.ts
 
 # capturas de verificación local (no son fuente)
 .verify/
+.env.vercel.production

@@ -1,4 +1,4 @@
-import { Banknote, CreditCard, Inbox, Info } from "lucide-react";
+import { AlertTriangle, Banknote, CreditCard, Inbox, Info } from "lucide-react";
 import { requireAdmin } from "@/lib/admin-auth";
 import { Card, Field, TextInput, btnPrimary, hintClass } from "@/components/admin/ui";
 import { mercadoPagoCredenciales } from "@/lib/payments/mercadopago";
@@ -21,7 +21,18 @@ interface Row {
   paid_until: string | null;
   next_billing_at: string | null;
   cancel_requested_at: string | null;
+  cancel_reason?: string | null;
   created_at: string;
+}
+
+/** Cobro de una suscripción cerrada por duplicada: hay que reembolsarlo. */
+interface CobroDuplicado {
+  subscription_id: string;
+  provider: Provider;
+  provider_payment_id: string;
+  amount: number | null;
+  currency: string | null;
+  paid_at: string | null;
 }
 
 function fecha(iso: string | null): string {
@@ -32,6 +43,7 @@ function fecha(iso: string | null): string {
 /** Estado legible + color. Los estados crudos difieren por proveedor. */
 function estado(r: Row): { label: string; cls: string } {
   const s = r.status;
+  if (r.cancel_reason === "duplicada") return { label: "Duplicada · cerrada", cls: "bg-red-100 text-red-900" };
   if (s === "ACTIVE" || s === "authorized") {
     return r.cancel_requested_at
       ? { label: "Cancelada · vigente", cls: "bg-amber-100 text-amber-900" }
@@ -50,11 +62,17 @@ function estado(r: Row): { label: string; cls: string } {
 export default async function SuscripcionesPage() {
   const { supabase } = await requireAdmin();
 
-  const [{ data: subs }, { data: perfiles }, preciosArs] = await Promise.all([
+  const [{ data: subs }, { data: perfiles }, preciosArs, { data: dupData }] = await Promise.all([
     supabase.from("subscriptions").select("*").order("created_at", { ascending: false }).limit(200),
     supabase.from("profiles").select("id, email, full_name, membership_id"),
     obtenerPreciosArs(),
+    supabase
+      .from("subscription_payments")
+      .select("subscription_id, provider, provider_payment_id, amount, currency, paid_at")
+      .eq("status", "duplicado")
+      .order("paid_at", { ascending: false }),
   ]);
+  const duplicados = (dupData ?? []) as CobroDuplicado[];
   const mpActivo = mercadoPagoCredenciales && preciosCompletos(preciosArs);
   const rows = (subs ?? []) as Row[];
   const porUsuario = new Map(
@@ -118,6 +136,38 @@ export default async function SuscripcionesPage() {
           </div>
         </form>
       </Card>
+
+      {duplicados.length > 0 && (
+        <div role="alert" className="mt-6 rounded-2xl border-2 border-red-200 bg-red-50 p-6">
+          <p className="flex items-center gap-2 text-lg font-bold text-red-900">
+            <AlertTriangle className="w-5 h-5" aria-hidden="true" />
+            {duplicados.length === 1 ? "Hay un cobro duplicado para reembolsar" : `Hay ${duplicados.length} cobros duplicados para reembolsar`}
+          </p>
+          <p className="mt-2 text-base text-red-900/80 leading-relaxed">
+            Alguien terminó con dos suscripciones a la vez (por ejemplo, pagó en dos pestañas). La
+            segunda ya quedó cancelada y su membresía sigue activa con la primera, pero lo que se
+            le cobró en la segunda hay que devolverlo desde {duplicados.some((d) => d.provider === "paypal") ? "PayPal" : "Mercado Pago"}
+            {duplicados.some((d) => d.provider === "paypal") && duplicados.some((d) => d.provider === "mercadopago") ? " y Mercado Pago" : ""}.
+            Cuando el reembolso queda registrado, sale de esta lista.
+          </p>
+          <ul className="mt-4 space-y-2">
+            {duplicados.map((d) => {
+              const sub = rows.find((r) => r.id === d.subscription_id);
+              const p = sub ? porUsuario.get(sub.user_id) : undefined;
+              return (
+                <li key={`${d.provider}-${d.provider_payment_id}`} className="rounded-xl bg-white px-4 py-3 text-base">
+                  <span className="font-semibold text-vc-blue-dark">{p?.full_name ?? p?.email ?? "—"}</span>
+                  {" · "}
+                  {d.amount != null ? `$${Number(d.amount).toLocaleString("es-AR")} ${d.currency ?? ""}` : "monto —"}
+                  {" · "}
+                  {PROVIDER_LABEL[d.provider]} · {fecha(d.paid_at)}
+                  <span className="block text-xs text-vc-ink/50 font-mono break-all">Cobro {d.provider_payment_id}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
 
       <Card icon={CreditCard} title="Historial" className="mt-6">
         {rows.length === 0 ? (

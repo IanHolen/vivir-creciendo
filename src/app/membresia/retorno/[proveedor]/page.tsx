@@ -9,7 +9,7 @@ import { isProvider } from "@/lib/payments/plans";
 import { siteConfig } from "@/lib/content";
 import { obtenerSuscripcionPayPal } from "@/lib/payments/paypal";
 import { obtenerSuscripcionMP } from "@/lib/payments/mercadopago";
-import { actualizarSuscripcion, buscarSuscripcion, conGracia } from "@/lib/payments/access";
+import { actualizarSuscripcion, buscarSuscripcion, conGracia, type SubscriptionRow } from "@/lib/payments/access";
 import AutoRefresh from "./AutoRefresh";
 
 export const metadata = { title: "Confirmando tu membresía — Vivir Creciendo" };
@@ -63,11 +63,12 @@ export default async function RetornoPage({
   if (isProvider(proveedor) && externalId) {
     const fila = await buscarSuscripcion(proveedor, externalId);
     if (fila && fila.user_id === user.id) {
+      let actualizada: SubscriptionRow | null = null;
       try {
         if (proveedor === "paypal") {
           const s = await obtenerSuscripcionPayPal(externalId);
           const next = s.billing_info?.next_billing_time ?? null;
-          await actualizarSuscripcion("paypal", externalId, {
+          actualizada = await actualizarSuscripcion("paypal", externalId, {
             status: s.status,
             next_billing_at: next,
             ...(s.status === "ACTIVE" && next ? { paidUntil: conGracia(new Date(next)) } : {}),
@@ -84,7 +85,7 @@ export default async function RetornoPage({
         } else {
           const s = await obtenerSuscripcionMP(externalId);
           const next = s.next_payment_date ?? null;
-          await actualizarSuscripcion("mercadopago", externalId, {
+          actualizada = await actualizarSuscripcion("mercadopago", externalId, {
             status: s.status,
             next_billing_at: next,
             ...(s.status === "authorized" && next ? { paidUntil: conGracia(new Date(next)) } : {}),
@@ -99,6 +100,9 @@ export default async function RetornoPage({
                   ? "fallida"
                   : "desconocida";
         }
+        // Esta era la segunda de dos pestañas y quedó cerrada por duplicada:
+        // la membresía está activa con la otra, no es un pago fallido.
+        if (actualizada?.cancel_reason === "duplicada") estado = "activa";
       } catch (e) {
         console.error("[retorno] no se pudo consultar al proveedor:", e);
         estado = "pendiente";

@@ -155,6 +155,14 @@ export interface Activity {
   enlace_inscripcion?: string | null; // URL de inscripción
   faq?: string | null; // preguntas frecuentes (texto libre)
   plan?: string | null; // gratuita | membresia (ver normalizePlan)
+
+  // --- calendario (supabase/migrations/20261029_activities_calendario.sql) ---
+  // Opcionales: si la migración aún no está aplicada llegan undefined y la UI
+  // no ofrece "Agregar a mi calendario". Ver lib/calendario.ts.
+  cal_inicio?: string | null; // "2026-11-05T16:00:00", hora local de cal_zona
+  cal_zona?: string | null; // IANA, p. ej. "America/Mexico_City"
+  cal_duracion_min?: number | null;
+  cal_repeticion?: string | null; // unica | semanal | mensual
 }
 
 export async function getActivities(): Promise<Activity[]> {

@@ -3,12 +3,18 @@ import { ArrowLeft } from "lucide-react";
 import { createActivity } from "@/lib/admin-actions";
 import ActivityForm from "@/components/admin/ActivityForm";
 import { btnGhost } from "@/components/admin/ui";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export const metadata = {
   title: "Nueva actividad — Panel de Vivir Creciendo",
 };
 
-export default function NuevaActividadPage() {
+export default async function NuevaActividadPage() {
+  // ¿Ya está aplicada la migración del calendario? Si la columna no existe,
+  // la consulta falla y el formulario no muestra esos campos.
+  const { supabase } = await requireAdmin();
+  const { error: sinCalendario } = await supabase.from("activities").select("cal_zona").limit(1);
+
   return (
     <>
       <div className="mb-6">
@@ -29,7 +35,7 @@ export default function NuevaActividadPage() {
       </div>
 
       <form action={createActivity}>
-        <ActivityForm submitLabel="Crear actividad">
+        <ActivityForm submitLabel="Crear actividad" calendarioDisponible={!sinCalendario}>
           <Link href="/admin" className={btnGhost}>
             Cancelar
           </Link>

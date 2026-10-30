@@ -63,7 +63,13 @@ export type RegistroStatus =
   | "already";
 
 export type RegistroResult =
-  | { ok: true; status: RegistroStatus; enlace: string | null }
+  | {
+      ok: true;
+      status: RegistroStatus;
+      enlace: string | null;
+      /** Para "Agregar a mi calendario" en la ventana de éxito; null sin fecha. */
+      calendario: { google: string | null; ics: string } | null;
+    }
   | {
       ok: false;
       /** trial_used = ya usó la prueba y no tiene membresía: hay que vender. */

@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { inscribirse } from "@/lib/registration-actions";
 import type { RegistroStatus } from "@/lib/registrations";
+import BotonesCalendario, { type EnlacesCalendario } from "@/components/BotonesCalendario";
 
 /**
  * Inscripción a una actividad, con la prueba única de actividad de paga
@@ -51,12 +52,20 @@ interface Props {
   yaInscrito: boolean;
   /** Actividades de paga que se ofrecen como prueba en el popup de 13.1. */
   premiumParaProbar: ActividadMini[];
+  /** "Agregar a mi calendario" una vez inscrito; null si no hay fecha cargada. */
+  calendario: EnlacesCalendario | null;
 }
 
 type Ventana =
   | { tipo: "cerrada" }
   /** Se anotó. `siguiente` = mostrar además la oferta de probar una premium. */
-  | { tipo: "exito"; status: RegistroStatus; enlace: string | null; ofrecerPrueba: boolean }
+  | {
+      tipo: "exito";
+      status: RegistroStatus;
+      enlace: string | null;
+      calendario: EnlacesCalendario | null;
+      ofrecerPrueba: boolean;
+    }
   /** Ya gastó la prueba: hay que vender la membresía. */
   | { tipo: "vender" }
   | { tipo: "error"; mensaje: string };
@@ -101,9 +110,11 @@ function Modal({
       onClose={onClose}
       onCancel={onClose}
       aria-labelledby="modal-titulo"
-      className="w-[min(34rem,calc(100vw-2rem))] rounded-2xl p-0 bg-white text-vc-ink backdrop:bg-vc-blue-dark/60 open:animate-in"
+      // m-auto: el reset de Tailwind le quita al <dialog> el margin:auto del
+      // navegador y la ventana quedaba pegada arriba a la izquierda.
+      className="m-auto w-[min(40rem,calc(100vw-2rem))] max-h-[calc(100dvh-2rem)] rounded-3xl p-0 bg-white text-vc-ink shadow-2xl backdrop:bg-vc-blue-dark/60 open:animate-in"
     >
-      <div className="p-7 md:p-8">
+      <div className="p-8 md:p-10">
         <div className="flex items-start justify-between gap-4">
           <h2
             id="modal-titulo"
@@ -135,6 +146,7 @@ export default function ActivityRegisterButton({
   pruebaUsada,
   yaInscrito,
   premiumParaProbar,
+  calendario,
 }: Props) {
   const router = useRouter();
   const [ventana, setVentana] = useState<Ventana>({ tipo: "cerrada" });
@@ -163,6 +175,7 @@ export default function ActivityRegisterButton({
       tipo: "exito",
       status: r.status,
       enlace: r.enlace,
+      calendario: r.calendario,
       // 13.1: la oferta va solo después de una gratuita, y solo si la prueba
       // sigue disponible. Después de gastarla en la propia oferta, no.
       ofrecerPrueba:
@@ -214,6 +227,14 @@ export default function ActivityRegisterButton({
               <ArrowRight className="w-5 h-5" aria-hidden="true" />
             </a>
           </p>
+        )}
+        {calendario && (
+          <div className="mt-8 pt-6 border-t border-white/15">
+            <p className="mb-4 text-lg text-white/85">
+              📅 Agrégala a tu calendario y te avisamos una hora antes.
+            </p>
+            <BotonesCalendario enlaces={calendario} sobreOscuro />
+          </div>
         )}
       </div>
     );
@@ -288,6 +309,18 @@ export default function ActivityRegisterButton({
                 Abrir el enlace del encuentro
                 <ArrowRight className="w-5 h-5" aria-hidden="true" />
               </a>
+            )}
+
+            {ventana.calendario && (
+              <div className="mt-6 rounded-xl bg-vc-cream/60 p-5">
+                <p className="font-semibold text-lg text-vc-blue-dark">
+                  📅 Agrégala a tu calendario
+                </p>
+                <p className="mt-1 mb-4 text-base text-vc-ink/75">
+                  Te llegará un aviso una hora antes de cada encuentro.
+                </p>
+                <BotonesCalendario enlaces={ventana.calendario} compacto />
+              </div>
             )}
 
             {/* 13.1 — la oferta de probar una actividad de la membresía */}

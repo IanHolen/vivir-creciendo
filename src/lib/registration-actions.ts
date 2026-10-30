@@ -1,12 +1,16 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import {
   REGISTRO_ERRORES,
   type RegistroResult,
   type RegistroStatus,
 } from "@/lib/registrations";
+import { getActivity } from "@/lib/activities";
+import { enviarConfirmacionActividad } from "@/lib/email/confirmacion-actividad";
+import { enlacesCalendario } from "@/lib/calendario";
 
 /**
  * Inscribirse a una actividad.
@@ -72,9 +76,37 @@ export async function inscribirse(activityId: string): Promise<RegistroResult> {
   revalidatePath("/perfil");
   revalidatePath(`/actividades/${activityId}`);
 
+  const status = (r.status ?? "gratuita") as RegistroStatus;
+  // Con sesión: trae la descripción completa para el correo y el calendario.
+  const activity = await getActivity(activityId);
+
+  // Correo de confirmación con toda la actividad y el .ics para el
+  // calendario. Va en after(): la persona ve su confirmación al instante y el
+  // envío (1-2 s) corre después. Si ya estaba inscrita no se reenvía.
+  if (status !== "already" && activity) {
+    after(async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user?.email) return;
+      const { data: perfil } = await supabase
+        .from("profiles")
+        .select("full_name")
+        .eq("id", user.id)
+        .maybeSingle();
+      await enviarConfirmacionActividad({
+        to: user.email,
+        nombre: perfil?.full_name ?? null,
+        activity,
+        status,
+      });
+    });
+  }
+
   return {
     ok: true,
-    status: (r.status ?? "gratuita") as RegistroStatus,
+    status,
     enlace: r.enlace ?? null,
+    calendario: activity ? enlacesCalendario(activity) : null,
   };
 }

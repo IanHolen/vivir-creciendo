@@ -51,7 +51,11 @@ export default async function EditarActividadPage({
 
       <form action={updateActivity}>
         <input type="hidden" name="id" value={activity.id} />
-        <ActivityForm activity={activity} submitLabel="Guardar cambios">
+        <ActivityForm
+          activity={activity}
+          submitLabel="Guardar cambios"
+          calendarioDisponible={"cal_zona" in data}
+        >
           <Link href="/admin" className={btnGhost}>
             Descartar
           </Link>

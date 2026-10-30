@@ -27,6 +27,7 @@ import {
 import { getSessionUser } from "@/lib/session";
 import { getAccessState } from "@/lib/registrations";
 import ActivityRegisterButton from "@/components/ActivityRegisterButton";
+import { enlacesCalendario } from "@/lib/calendario";
 
 export const metadata = {
   title: "Actividad — Vivir Creciendo",
@@ -96,11 +97,19 @@ export default async function ActivityDetailPage({
       short_preview: a.short_preview,
     }));
 
-  // El detalle completo está gateado por sesión (RPC get_activities devuelve
-  // full_description = NULL si no hay sesión). Sin sesión mostramos el adelanto
-  // + CTA de login, igual que la sección de la landing. El resto de campos
-  // (fecha, precio, facilitador…) son públicos: impulsan la inscripción.
-  const hasFullDetail = activity.full_description != null;
+  // Sin sesión solo se ve el escaparate: título, imagen, adelanto corto y el
+  // CTA de login. La ficha, la descripción completa, "Qué incluye" y las
+  // preguntas frecuentes son para quien inició sesión (Ian, 29-oct-2026).
+  //
+  // El candado depende de la sesión REAL (`acceso.autenticado`, auth.uid() en
+  // la base), no de `isLoggedIn`: ese acepta ?vista=logueado para QA y
+  // dejaría ver el detalle a cualquiera con solo cambiar la URL. Tampoco
+  // depende de que full_description venga NULL: una actividad sin descripción
+  // completa cargada también llega NULL, y a una socia con sesión le pedía
+  // "iniciar sesión" en bucle.
+  const conSesion = acceso.autenticado;
+  const fullDescription = activity.full_description?.trim() || null;
+  const mostrarCandado = !conSesion;
   const plan = planMeta(activity.plan);
   const beneficios = (activity.beneficios ?? "")
     .split("\n")
@@ -171,8 +180,8 @@ export default async function ActivityDetailPage({
           </section>
         )}
 
-        {/* Ficha pública (fecha, precio, facilitador…) */}
-        {hasFicha && (
+        {/* Ficha (fecha, precio, facilitador…): solo con sesión */}
+        {conSesion && hasFicha && (
           <section className="px-4 sm:px-6 lg:px-8 pt-16 md:pt-24">
             <div className="max-w-3xl mx-auto">
               <dl className="grid grid-cols-1 sm:grid-cols-2 gap-6 rounded-3xl bg-vc-cream/40 border border-vc-cream p-8 md:p-10">
@@ -204,9 +213,9 @@ export default async function ActivityDetailPage({
         {/* Descripción (gateada por sesión) */}
         <section className="py-16 md:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
-            {hasFullDetail ? (
+            {!mostrarCandado ? (
               <p className="text-xl md:text-2xl text-vc-blue-dark/80 leading-relaxed whitespace-pre-line text-justify hyphens-auto">
-                {activity.full_description}
+                {fullDescription ?? activity.short_preview}
               </p>
             ) : (
               <>
@@ -219,7 +228,7 @@ export default async function ActivityDetailPage({
                     Inicia sesión para ver el detalle completo de esta actividad.
                   </p>
                   <a
-                    href="/login"
+                    href={`/login?next=${encodeURIComponent(`/actividades/${activity.id}`)}`}
                     className="mt-6 inline-flex items-center justify-center gap-2 min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50 shadow-lg"
                   >
                     <LogIn className="w-5 h-5" aria-hidden="true" />
@@ -232,7 +241,7 @@ export default async function ActivityDetailPage({
         </section>
 
         {/* Qué incluye */}
-        {beneficios.length > 0 && (
+        {conSesion && beneficios.length > 0 && (
           <section className="pb-16 md:pb-20 px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto">
               <h2 className="font-(family-name:--font-display) text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
@@ -253,7 +262,7 @@ export default async function ActivityDetailPage({
         )}
 
         {/* Preguntas frecuentes */}
-        {activity.faq && (
+        {conSesion && activity.faq && (
           <section className="pb-16 md:pb-20 px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto">
               <h2 className="flex items-center gap-2 font-(family-name:--font-display) text-2xl md:text-3xl font-black text-vc-blue-dark uppercase tracking-tight">
@@ -290,6 +299,7 @@ export default async function ActivityDetailPage({
               pruebaUsada={acceso.pruebaUsada}
               yaInscrito={acceso.inscritas.includes(activity.id)}
               premiumParaProbar={premiumParaProbar}
+              calendario={conSesion ? enlacesCalendario(activity) : null}
             />
           </div>
         </section>

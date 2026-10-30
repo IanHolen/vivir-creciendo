@@ -52,6 +52,31 @@ function parseFields(formData: FormData) {
     // Normalizado a la membresía única: guardar siempre el valor canónico va
     // limpiando las filas viejas con "basica"/"plus" a medida que se editan.
     plan: normalizePlan(text(formData, "plan")),
+    ...calendarFields(formData),
+  };
+}
+
+/**
+ * Campos del calendario. Solo si el formulario los mostró (cal_habilitado):
+ * mientras la migración 2026-10-29 no esté aplicada, mandar columnas que no
+ * existen haría fallar el guardado entero.
+ */
+function calendarFields(formData: FormData): {
+  cal_inicio?: string | null;
+  cal_zona?: string;
+  cal_duracion_min?: number | null;
+  cal_repeticion?: string;
+} {
+  if (formData.get("cal_habilitado") !== "1") return {};
+  const inicio = text(formData, "cal_inicio");
+  const dur = Number(text(formData, "cal_duracion_min"));
+  const rep = text(formData, "cal_repeticion");
+  return {
+    // datetime-local manda "2026-11-05T16:00": hora de pared, sin zona.
+    cal_inicio: inicio && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(inicio) ? inicio : null,
+    cal_zona: text(formData, "cal_zona") ?? "America/Mexico_City",
+    cal_duracion_min: Number.isInteger(dur) && dur >= 5 && dur <= 1440 ? dur : null,
+    cal_repeticion: rep === "semanal" || rep === "mensual" ? rep : "unica",
   };
 }
 

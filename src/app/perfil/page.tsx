@@ -6,6 +6,9 @@ import { whatsappHref, siteConfig, cancelacion } from "@/lib/content";
 import { PLANES, PROVIDER_LABEL, type PlanKey, type Provider } from "@/lib/payments/plans";
 import { cancelarSuscripcion } from "@/lib/subscription-actions";
 import CancelButton from "./CancelButton";
+import { getActivities, planMeta, modalidadLabel } from "@/lib/activities";
+import { getAccessState } from "@/lib/registrations";
+import AgregarCalendario from "@/components/AgregarCalendario";
 
 export const metadata = {
   title: "Mi perfil — Vivir Creciendo",
@@ -86,6 +89,9 @@ export default async function PerfilPage({
   const { data: subData } = await supabase.rpc("my_subscription");
   const sub = (subData as MySubscription | null) ?? null;
   const { data: hasMembership } = await supabase.rpc("has_membership");
+  // Actividades a las que ya confirmó, en el orden del catálogo.
+  const [actividades, acceso] = await Promise.all([getActivities(), getAccessState()]);
+  const misActividades = actividades.filter((a) => acceso.inscritas.includes(a.id));
   const tieneMembresia = Boolean(hasMembership);
   // Derivado del estado del proveedor, no solo de nuestro botón: si cancela
   // desde paypal.com o la app de MP, también tiene que verse como cancelada.
@@ -183,6 +189,69 @@ export default async function PerfilPage({
               </div>
             )}
           </dl>
+        </section>
+
+        {/* Mis actividades: lo que ya confirmó */}
+        <section className="mt-8 bg-white rounded-2xl shadow-sm p-6 md:p-8 border border-vc-cream">
+          <h2 className="font-(family-name:--font-display) text-2xl font-black text-vc-blue-dark uppercase tracking-tight">
+            Mis actividades
+          </h2>
+          {misActividades.length === 0 ? (
+            <>
+              <p className="mt-4 text-lg text-vc-blue-dark/70 leading-relaxed">
+                Todavía no te inscribiste a ninguna actividad.
+              </p>
+              <Link
+                href="/#actividades"
+                className="mt-5 inline-flex items-center justify-center min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50 shadow-lg"
+              >
+                Ver actividades
+              </Link>
+            </>
+          ) : (
+            <ul className="mt-5 space-y-4">
+              {misActividades.map((a) => {
+                const plan = planMeta(a.plan);
+                const cuando = [a.fecha, a.hora, a.frecuencia, modalidadLabel(a.modalidad)]
+                  .filter(Boolean)
+                  .join(" · ");
+                return (
+                  <li key={a.id} className="rounded-2xl bg-vc-cream/60 p-5 border border-vc-cream">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-sm font-semibold uppercase tracking-wide text-green-700">
+                        ✓ Confirmada
+                      </span>
+                      {plan && (
+                        <span className={`text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full ${plan.badgeClass}`}>
+                          {plan.label}
+                        </span>
+                      )}
+                    </div>
+                    <Link
+                      href={`/actividades/${a.id}`}
+                      className="mt-2 block text-xl font-black text-vc-blue-dark hover:text-vc-orange"
+                    >
+                      {a.title}
+                    </Link>
+                    {cuando && <p className="mt-1 text-base text-vc-blue-dark/70">{cuando}</p>}
+                    <div className="mt-4 flex flex-col sm:flex-row flex-wrap gap-3">
+                      {a.enlace_inscripcion && (
+                        <a
+                          href={a.enlace_inscripcion}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center min-h-[44px] px-4 py-2 text-base font-semibold rounded-xl bg-vc-blue hover:bg-vc-blue-dark text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50"
+                        >
+                          Entrar a la actividad
+                        </a>
+                      )}
+                      <AgregarCalendario activity={a} compacto />
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </section>
 
         {/* Membresía */}

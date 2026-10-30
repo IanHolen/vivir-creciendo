@@ -34,6 +34,7 @@ import {
   hintClass,
   btnPrimary,
 } from "@/components/admin/ui";
+import { REPETICIONES, ZONAS_HORARIAS } from "@/lib/calendario";
 
 /** Los campos de public.activities tal como los edita el panel. */
 export interface AdminActivity {
@@ -60,6 +61,79 @@ export interface AdminActivity {
   enlace_inscripcion: string | null;
   faq: string | null;
   plan: string | null;
+  // Calendario: undefined mientras la migración 2026-10-29 no esté aplicada.
+  cal_inicio?: string | null;
+  cal_zona?: string | null;
+  cal_duracion_min?: number | null;
+  cal_repeticion?: string | null;
+}
+
+/**
+ * Fecha estructurada para "Agregar a mi calendario" (correo de confirmación,
+ * perfil y página de la actividad). Separada de Fecha/Horario, que son texto
+ * para leer: esta es la que entiende un calendario.
+ */
+function CalendarioFields({ a }: { a?: AdminActivity }) {
+  return (
+    <fieldset className="rounded-2xl border-2 border-vc-cream p-5 space-y-5">
+      {/* Marca para el server action: estos campos existen en la base. */}
+      <input type="hidden" name="cal_habilitado" value="1" />
+      <legend className={`${labelClass} px-2`}>Para el calendario de las socias</legend>
+      <p className={hintClass}>
+        Con esto, quien se inscribe recibe el evento para agregarlo a su
+        calendario (Google, Apple, Outlook) con aviso una hora antes. Si lo
+        dejas en blanco, no se ofrece.
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <Field label="Primera sesión" hint="Día y hora en la zona de al lado.">
+          <input
+            type="datetime-local"
+            name="cal_inicio"
+            defaultValue={a?.cal_inicio?.slice(0, 16) ?? ""}
+            className={inputClass}
+          />
+        </Field>
+        <Field label="Zona horaria">
+          <select
+            name="cal_zona"
+            defaultValue={a?.cal_zona ?? "America/Mexico_City"}
+            className={inputClass}
+          >
+            {ZONAS_HORARIAS.map((z) => (
+              <option key={z.value} value={z.value}>
+                {z.label}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <Field label="Duración (minutos)">
+          <input
+            type="number"
+            name="cal_duracion_min"
+            min={5}
+            max={1440}
+            step={5}
+            defaultValue={a?.cal_duracion_min ?? ""}
+            placeholder="60"
+            className={inputClass}
+          />
+        </Field>
+        <Field label="Se repite">
+          <select
+            name="cal_repeticion"
+            defaultValue={a?.cal_repeticion ?? "unica"}
+            className={inputClass}
+          >
+            {REPETICIONES.map((r) => (
+              <option key={r.value} value={r.value}>
+                {r.label}
+              </option>
+            ))}
+          </select>
+        </Field>
+      </div>
+    </fieldset>
+  );
 }
 
 /**
@@ -177,10 +251,13 @@ function IconPicker({ current }: { current?: string | null }) {
 export default function ActivityForm({
   activity,
   submitLabel,
+  calendarioDisponible = false,
   children,
 }: {
   activity?: AdminActivity;
   submitLabel: string;
+  /** false mientras la migración del calendario no esté aplicada. */
+  calendarioDisponible?: boolean;
   /** Acciones extra de la barra inferior (p. ej. "Ver en el sitio"). */
   children?: React.ReactNode;
 }) {
@@ -264,6 +341,7 @@ export default function ActivityForm({
                 </select>
               </Field>
             </div>
+            {calendarioDisponible && <CalendarioFields a={a} />}
           </div>
         </Card>
 

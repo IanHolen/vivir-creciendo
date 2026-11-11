@@ -6,7 +6,12 @@ import {
   WebhookSignatureValidator,
   InvalidWebhookSignatureError,
 } from "mercadopago";
-import type { PlanKey } from "./plans";
+import { TRIAL_DIAS, type PlanKey } from "./plans";
+
+/** auto_recurring con free_trial (falta en los tipos del SDK). */
+type PreApprovalRequestAutoRecurring = NonNullable<
+  NonNullable<Parameters<PreApproval["create"]>[0]["body"]>["auto_recurring"]
+> & { free_trial?: { frequency: number; frequency_type: "days" | "months" } };
 import { obtenerPreciosArs, preciosCompletos } from "./precios-ars";
 
 /**
@@ -82,7 +87,12 @@ export async function crearSuscripcionMP(input: {
         frequency_type: "months",
         transaction_amount: monto,
         currency_id: "ARS",
-      },
+        // 30 días gratis: MP deja la suscripción `authorized` sin cobrar y
+        // programa el primer cobro al día 31 (next_payment_date). La API lo
+        // acepta en preapproval sin plan (probado 11-nov-2026) aunque los
+        // tipos del SDK todavía no lo declaren; por eso el cast de abajo.
+        free_trial: { frequency: TRIAL_DIAS, frequency_type: "days" },
+      } as PreApprovalRequestAutoRecurring,
     },
   })) as unknown as MPPreapproval;
 

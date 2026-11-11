@@ -17,12 +17,12 @@ import { getSiteMedia } from "@/lib/media-queries";
  */
 export default async function Hero() {
   const miembros = memberCountLine();
-  // La foto y el video salen de las ranuras que se editan en
-  // /admin/multimedia. Si no hay nada asignado, `foto` cae al archivo de
-  // /public que trae el sitio y `video` queda en null.
+  // La foto sale de la ranura que se edita en /admin/multimedia. Si no hay
+  // nada asignado, cae al archivo de /public que trae el sitio.
   const media = await getSiteMedia();
   const foto = media["hero.foto"];
-  const video = media["hero.video"];
+  // El video de las fundadoras ya no va acá: desde nov-2026 vive debajo de
+  // las bios en NOSOTRAS (ver VideoFundadoras), como pidió el documento.
 
   return (
     // Fondo crema (#F7F3EE), como pide el doc para el hero. Abre la
@@ -94,58 +94,6 @@ export default async function Hero() {
           </figure>
         </div>
 
-        {/* Video de las fundadoras — Error #6 del doc.
-            Publicado el 20-ago-2026: Nurit y Alejandra contando de qué se
-            trata, 1:13, con los subtítulos en español ya incrustados en la
-            imagen (el doc los marca como obligatorios: buena parte de este
-            público mira sin sonido).
-            Se puede reemplazar sin tocar código desde /admin/multimedia,
-            ranura "Video de las fundadoras". El recuadro de "próximamente" de
-            abajo queda para ese caso: si alguien deja la ranura vacía y borra
-            el archivo por defecto, la portada no se rompe. */}
-        <div className="mt-14 md:mt-20 max-w-4xl mx-auto">
-          {video.url ? (
-            <video
-              src={video.url}
-              // La carátula solo corresponde al video que trae el sitio: si
-              // alguien sube otro desde el panel, un fotograma de esta
-              // grabación sería la portada equivocada.
-              poster={
-                video.desdeBiblioteca ? undefined : video.slot.fallbackPoster
-              }
-              controls
-              // Sin autoplay: un video que arranca solo con sonido, en una
-              // portada, es la forma más rápida de que alguien cierre la
-              // pestaña. `preload="metadata"` baja la carátula y la duración,
-              // no el video entero.
-              preload="metadata"
-              playsInline
-              className="w-full aspect-video rounded-3xl bg-black shadow-xl"
-            >
-              Tu navegador no puede reproducir este video.
-            </video>
-          ) : (
-            <div
-              className="relative aspect-video w-full rounded-3xl overflow-hidden bg-white border border-vc-blue/15 flex flex-col items-center justify-center text-center px-6"
-              role="img"
-              aria-label="Video de las fundadoras, próximamente"
-            >
-              <span className="flex items-center justify-center w-16 h-16 rounded-full bg-vc-orange/10">
-                <svg
-                  className="w-7 h-7 text-vc-orange translate-x-0.5"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </span>
-              <p className="mt-4 text-base md:text-lg font-medium text-vc-ink/70">
-                Nurit y Alejandra te cuentan de qué se trata — video próximamente
-              </p>
-            </div>
-          )}
-        </div>
       </div>
     </section>
   );

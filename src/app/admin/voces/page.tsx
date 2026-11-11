@@ -1,6 +1,8 @@
 import { Quote, Plus, ArrowUp, ArrowDown, Eye, EyeOff, Inbox } from "lucide-react";
 import { requireAdmin } from "@/lib/admin-auth";
 import { getVocesAdmin, type Voz } from "@/lib/testimonios";
+import { getMediaAssets } from "@/lib/media-queries";
+import type { MediaAsset } from "@/lib/media";
 import {
   guardarVoz,
   alternarVisible,
@@ -17,6 +19,7 @@ import {
   btnGhost,
   btnDanger,
   hintClass,
+  inputClass,
 } from "@/components/admin/ui";
 
 export const metadata = { title: "Voces de la comunidad — Vivir Creciendo" };
@@ -62,7 +65,7 @@ function Check({
 }
 
 /** Los campos, compartidos por el alta y la edición. */
-function CamposVoz({ voz }: { voz?: Voz }) {
+function CamposVoz({ voz, imagenes }: { voz?: Voz; imagenes: MediaAsset[] }) {
   return (
     <div className="space-y-4">
       <Field
@@ -88,16 +91,36 @@ function CamposVoz({ voz }: { voz?: Voz }) {
           />
         </Field>
         <Field
-          label="Procedencia"
-          hint="Se lee debajo del nombre, tal cual lo escribas."
+          label="Edad, ciudad y desde cuándo"
+          hint="Se lee debajo del nombre, tal cual lo escribas. Formato recomendado: «71 años. Rosario, Argentina. Miembra desde marzo 2026.»"
         >
           <TextInput
             name="contexto"
             defaultValue={voz?.contexto ?? ""}
-            placeholder="82 años · México · miembro de la comunidad"
+            placeholder="71 años. Rosario, Argentina. Miembra desde marzo 2026."
           />
         </Field>
       </div>
+
+      <label className="block">
+        <span className="block text-base font-semibold text-vc-blue-dark">Foto de la persona</span>
+        <span className={`${hintClass} block`}>
+          Pequeña y redonda, junto al nombre. No hace falta que sea profesional. Primero súbela en «Multimedia» y después elígela acá.
+        </span>
+        <select
+          name="foto_media_id"
+          defaultValue={voz?.foto_media_id ?? ""}
+          className={`${inputClass} mt-1.5`}
+        >
+          <option value="">— Sin foto —</option>
+          {imagenes.map((img) => (
+            <option key={img.id} value={img.id}>
+              {img.filename}
+              {img.descripcion ? ` — ${img.descripcion}` : ""}
+            </option>
+          ))}
+        </select>
+      </label>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Check
@@ -117,7 +140,7 @@ function CamposVoz({ voz }: { voz?: Voz }) {
   );
 }
 
-function FilaVoz({ voz, i, total }: { voz: Voz; i: number; total: number }) {
+function FilaVoz({ voz, i, total, imagenes }: { voz: Voz; i: number; total: number; imagenes: MediaAsset[] }) {
   return (
     <li
       className={`rounded-2xl border p-5 ${
@@ -212,7 +235,7 @@ function FilaVoz({ voz, i, total }: { voz: Voz; i: number; total: number }) {
         </summary>
         <form action={guardarVoz} className="mt-4">
           <input type="hidden" name="id" value={voz.id} />
-          <CamposVoz voz={voz} />
+          <CamposVoz voz={voz} imagenes={imagenes} />
           <button type="submit" className={`${btnBlue} mt-4`}>
             Guardar cambios
           </button>
@@ -240,7 +263,8 @@ function FilaVoz({ voz, i, total }: { voz: Voz; i: number; total: number }) {
 
 export default async function VocesPage() {
   await requireAdmin();
-  const voces = await getVocesAdmin();
+  const [voces, assets] = await Promise.all([getVocesAdmin(), getMediaAssets()]);
+  const imagenes = assets.filter((a) => a.kind === "imagen");
   const visibles = voces.filter((v) => v.is_active).length;
 
   return (
@@ -258,7 +282,7 @@ export default async function VocesPage() {
 
       <Card icon={Plus} title="Agregar una voz" className="mt-6">
         <form action={guardarVoz}>
-          <CamposVoz />
+          <CamposVoz imagenes={imagenes} />
           <button type="submit" className={`${btnPrimary} mt-4`}>
             <Plus className="w-5 h-5" aria-hidden="true" />
             Agregar al carrusel
@@ -278,7 +302,7 @@ export default async function VocesPage() {
         ) : (
           <ul className="space-y-4">
             {voces.map((v, i) => (
-              <FilaVoz key={v.id} voz={v} i={i} total={voces.length} />
+              <FilaVoz key={v.id} voz={v} i={i} total={voces.length} imagenes={imagenes} />
             ))}
           </ul>
         )}

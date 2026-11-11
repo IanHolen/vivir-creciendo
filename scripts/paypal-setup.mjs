@@ -32,8 +32,9 @@ const PRODUCT_NAME = "Membresía Vivir Creciendo";
 const PLANS = [
   // El precio va en el nombre: si cambia, el script crea un plan nuevo y el
   // viejo queda ACTIVE solo para las suscripciones ya existentes.
-  { key: "MENSUAL", name: "Membresía mensual (USD 30)", desc: "USD 30 al mes", unit: "MONTH", value: "30" },
-  { key: "ANUAL", name: "Membresía anual (USD 270)", legacyName: "Membresía anual", desc: "USD 270 al año (3 meses gratis)", unit: "YEAR", value: "270" },
+  // Desde nov-2026 los dos planes tienen 30 días gratis (ciclo TRIAL a USD 0).
+  { key: "MENSUAL", name: "Membresía mensual (USD 30, 30 días gratis)", legacyName: "Membresía mensual (USD 30)", desc: "30 días gratis, luego USD 30 al mes", unit: "MONTH", value: "30" },
+  { key: "ANUAL", name: "Membresía anual (USD 270, 30 días gratis)", legacyName: "Membresía anual (USD 270)", desc: "30 días gratis, luego USD 270 al año (3 meses gratis)", unit: "YEAR", value: "270" },
 ];
 
 const tok = await fetch(`${BASE}/v1/oauth2/token`, {
@@ -98,9 +99,16 @@ for (const p of PLANS) {
         status: "ACTIVE",
         billing_cycles: [
           {
+            frequency: { interval_unit: "DAY", interval_count: 30 },
+            tenure_type: "TRIAL",
+            sequence: 1,
+            total_cycles: 1,
+            pricing_scheme: { fixed_price: { value: "0", currency_code: "USD" } },
+          },
+          {
             frequency: { interval_unit: p.unit, interval_count: 1 },
             tenure_type: "REGULAR",
-            sequence: 1,
+            sequence: 2,
             total_cycles: 0,
             pricing_scheme: { fixed_price: { value: p.value, currency_code: "USD" } },
           },

@@ -1,4 +1,4 @@
-import { Image as ImageIcon, Film, Upload, LayoutTemplate, Inbox } from "lucide-react";
+import { Image as ImageIcon, Film, Upload, LayoutTemplate, Inbox, MonitorPlay } from "lucide-react";
 import { requireAdmin } from "@/lib/admin-auth";
 import { MEDIA_SLOTS, formatBytes, type MediaAsset } from "@/lib/media";
 import {
@@ -7,6 +7,8 @@ import {
   getSiteMedia,
 } from "@/lib/media-queries";
 import { actualizarArchivo, asignarRanura, borrarArchivo } from "@/lib/media-actions";
+import { guardarVideoYoutube } from "@/lib/video-actions";
+import { obtenerVideoYoutube } from "@/lib/video-fundadoras";
 import MediaUploader from "@/components/admin/MediaUploader";
 import {
   Card,
@@ -183,10 +185,11 @@ function TarjetaArchivo({
 export default async function MultimediaPage() {
   await requireAdmin();
 
-  const [assets, usage, ranuras] = await Promise.all([
+  const [assets, usage, ranuras, youtube] = await Promise.all([
     getMediaAssets(),
     getMediaUsage(),
     getSiteMedia(),
+    obtenerVideoYoutube(),
   ]);
 
   const imagenes = assets.filter((a) => a.kind === "imagen");
@@ -206,6 +209,38 @@ export default async function MultimediaPage() {
           querer.
         </p>
       </div>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* 0. Video de las fundadoras en YouTube (documento nov-2026)          */}
+      {/* ------------------------------------------------------------------ */}
+      <Card
+        icon={MonitorPlay}
+        title="Video de las fundadoras en YouTube"
+        hint="Súbanlo a YouTube (puede ser «No listado» para que no aparezca en búsquedas) y peguen acá el link. Se ve en todos los navegadores y teléfonos. Si lo dejan vacío, la portada usa el archivo de video de la ranura de abajo."
+        className="mt-6"
+      >
+        <form action={guardarVideoYoutube} className="flex flex-col sm:flex-row gap-3 sm:items-end">
+          <label className="flex-1 block">
+            <span className={labelClass}>Link del video</span>
+            <TextInput
+              name="url"
+              type="url"
+              inputMode="url"
+              placeholder="https://youtu.be/XXXXXXXXXXX"
+              defaultValue={youtube.url ?? ""}
+              className="mt-1.5"
+            />
+          </label>
+          <button type="submit" className={btnBlue}>
+            Guardar link
+          </button>
+        </form>
+        <p className={`${hintClass} mt-3`}>
+          {youtube.id
+            ? "Ahora mismo la portada muestra el video desde YouTube."
+            : "Ahora mismo la portada muestra el archivo de video de la ranura «Video de las fundadoras»."}
+        </p>
+      </Card>
 
       {/* ------------------------------------------------------------------ */}
       {/* 1. Las ranuras                                                      */}

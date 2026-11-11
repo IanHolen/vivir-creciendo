@@ -25,6 +25,17 @@ export interface Voz {
   es_miembro: boolean;
   is_active: boolean;
   sort_order: number;
+  /** Foto pequeña de la persona (biblioteca). Opcional. */
+  foto_media_id: string | null;
+  /** Resuelta por el join con media_assets. */
+  foto_url?: string | null;
+}
+
+type VozRow = Omit<Voz, "foto_url"> & { foto: { url: string } | null };
+const VOZ_SELECT = "*, foto:media_assets!voces_foto_media_id_fkey(url)";
+
+function resolveFoto(rows: VozRow[]): Voz[] {
+  return rows.map(({ foto, ...v }) => ({ ...v, foto_url: foto?.url ?? null }));
 }
 
 export interface TestimonioVideo {
@@ -47,11 +58,11 @@ export async function getVoces(): Promise<Voz[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("voces")
-    .select("*")
+    .select(VOZ_SELECT)
     .eq("is_active", true)
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: true });
-  return (data ?? []) as Voz[];
+  return resolveFoto((data ?? []) as unknown as VozRow[]);
 }
 
 /** Todas las voces, incluidas las ocultas. Solo para el panel. */
@@ -59,10 +70,10 @@ export async function getVocesAdmin(): Promise<Voz[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("voces")
-    .select("*")
+    .select(VOZ_SELECT)
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: true });
-  return (data ?? []) as Voz[];
+  return resolveFoto((data ?? []) as unknown as VozRow[]);
 }
 
 type TestimonioRow = TestimonioVideo & {

@@ -88,7 +88,7 @@ export const MEDIA_SLOTS: MediaSlot[] = [
     key: "hero.video",
     kind: "video",
     label: "Video de las fundadoras",
-    ubicacion: "Inicio → recuadro ancho debajo de la portada.",
+    ubicacion: "Inicio → sección NOSOTRAS, debajo de las bios (si no hay link de YouTube cargado).",
     recomendacion:
       "Horizontal 16:9, alrededor de 90 segundos. Nurit y Alejandra contando de qué se trata. Con subtítulos en español: buena parte del público lo va a ver sin sonido.",
     // El video de presentación de las fundadoras (Ian, 20-ago-2026). Viene en

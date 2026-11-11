@@ -73,6 +73,7 @@ export async function guardarVoz(formData: FormData) {
     cita,
     nombre,
     contexto: text(formData, "contexto"),
+    foto_media_id: text(formData, "foto_media_id"),
     // Por defecto NO es miembro: si alguien se olvida de marcarlo, el error
     // seguro es atenuar una cita real, no presentar como testimonio de la
     // comunidad algo que no lo es.

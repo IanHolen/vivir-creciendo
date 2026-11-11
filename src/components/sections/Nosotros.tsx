@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { teamMembers, expertAreasTitle, expertAreas } from "@/lib/content";
 import { getSiteMedia } from "@/lib/media-queries";
+import VideoFundadoras from "./VideoFundadoras";
 
 // Las 5 áreas de especialistas con su ícono (pareadas por índice con
 // `expertAreas` en content.ts).
@@ -21,6 +22,9 @@ const EXPERT_AREA_ICONS = [UsersRound, Laptop, HeartPulse, Flower2, TrendingUp];
  * de su negocio personal de nutrición ("recuperar energía", "sin dietas
  * rígidas") y no de Vivir Creciendo. Ambas cierran ahora con el mismo párrafo
  * sobre por qué crearon la comunidad.
+ *
+ * Desde nov-2026 el video de las fundadoras va acá, debajo de las bios
+ * (documento de las fundadoras: "Bios Nurit y Ale seguidas del video").
  */
 export default async function Nosotros() {
   const cofounders = teamMembers.filter((m) => m.cofounder);
@@ -97,6 +101,17 @@ export default async function Nosotros() {
             </div>
             );
           })}
+        </div>
+
+        {/* El video, después de las bios: primero quiénes son, después que
+            lo cuenten ellas. */}
+        <div className="mt-12 md:mt-16 max-w-4xl mx-auto">
+          <h3 className="font-(family-name:--font-display) text-2xl md:text-3xl font-black text-vc-blue-dark text-center uppercase tracking-tight">
+            Nurit y Alejandra te cuentan de qué se trata
+          </h3>
+          <div className="mt-8">
+            <VideoFundadoras />
+          </div>
         </div>
 
         {/* Especialistas — 5 categorías con ícono. */}

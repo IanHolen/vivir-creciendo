@@ -58,10 +58,12 @@ export const navCta = { label: "Prueba gratis", href: "/#contacto" };
 // Sección 01 — Hero. UN SOLO CTA (Error #4 del doc, Ley de Hick): los tres
 // botones que competían acá se redujeron a "Quiero mi actividad gratuita".
 export const heroContent = {
+  // Titular y subtítulo del documento de las fundadoras (nov-2026): "aquí no
+  // soy invisible" reemplaza a "esto me hizo bien".
   title:
-    "¿Cuándo fue la última vez que al finalizar una conversación pensaste: «esto me hizo bien»?",
+    "¿Cuándo fue la última vez que terminaste una conversación pensando: «aquí no soy invisible»?",
   subtitle:
-    "Vivir Creciendo es la comunidad en línea en español donde personas de 65 años en adelante se encuentran semanalmente para conversar con profundidad, aprender junto a otros y sentir que pertenecen a algo real.",
+    "Vivir Creciendo es una comunidad para personas de 65 o más que quieren seguir siendo protagonistas de su propia vida. En español. Desde donde estés.",
   cta: "Quiero mi actividad gratuita",
   ctaHref: "#contacto",
   // Texto de bajo riesgo debajo del botón — reduce la fricción del alta.
@@ -101,7 +103,93 @@ export function memberCountLine(): string | null {
   return countryCount ? `${base} en más de ${countryCount} países` : base;
 }
 
-// Sección 03 — El Momento. Sin título visible: texto puro, centrado, ancho
+// Sección 02 — El problema (nov-2026, documento de las fundadoras). Nombra lo
+// que la persona siente pero nadie le dice. Texto literal del documento;
+// "FALSO" va en mayúsculas en el original y así se muestra.
+export const elProblema = {
+  parrafos: [
+    "Hay una idea instalada que dice que a los 65 ya se hizo todo lo importante.",
+    "Ya estudiaste, ya trabajaste, ya criaste. Ahora a descansar.",
+  ],
+  enfasis: "Nosotras creemos que eso es FALSO",
+  cierre:
+    "Vivir Creciendo existe para quienes saben que todavía tienen mucho por vivir, aprender y aportar — y que se niegan a hacerlo en silencio.",
+};
+
+// Sección 03 — Qué vas a ganar acá: los 6 beneficios (nov-2026). Reemplazan a
+// las tres columnas de "¿Qué es Vivir Creciendo?": transformaciones, no
+// actividades. Texto literal del documento (viene en voseo).
+export const beneficiosTitle = "Qué vas a ganar acá";
+export const beneficios = [
+  {
+    icon: "Award" as const,
+    title: "Un lugar donde tu experiencia importa",
+    text: "No vas a ser un número ni un \"usuario mayor\". Acá los años de vida son un activo, no una anécdota.",
+  },
+  {
+    icon: "MessagesSquare" as const,
+    title: "Conversaciones que dan ganas de volver",
+    text: "Cada semana hay un tema nuevo. No son clases: son charlas entre personas que aportan.",
+  },
+  {
+    icon: "HeartHandshake" as const,
+    title: "Compañía que entiende desde adentro",
+    text: "Las personas en Vivir Creciendo están viviendo algo parecido a lo que vos vivís ahora.",
+  },
+  {
+    icon: "Video" as const,
+    title: "Actividades en vivo, desde tu casa, en español",
+    text: "Sin complicaciones técnicas. Si podés hacer una videollamada, podés estar acá.",
+  },
+  {
+    icon: "CalendarCheck" as const,
+    title: "Una comunidad con estructura y cuidado",
+    text: "No es un grupo de WhatsApp caótico. Hay una agenda, hay guía, hay propósito.",
+  },
+  {
+    icon: "UserCheck" as const,
+    title: "Expertas que están presentes",
+    text: "Alejandra y Nurit no graban videos y desaparecen. Están en cada encuentro.",
+  },
+];
+
+// Sección 04 — Cómo es estar adentro (nov-2026). Que el visitante se imagine
+// adentro. Texto literal del documento.
+export const estarAdentro = {
+  title: "Cómo es estar adentro",
+  items: [
+    {
+      title: "Caminando Juntos",
+      text: "No es una clase: es una sala donde puedes contar lo que estás viviendo y alguien — de verdad — escucha.",
+    },
+    {
+      title: "Cine Reflexión",
+      text: "Te enviamos una película tú la ves y en nuestro encuentro hablamos de lo que nos dejó.",
+    },
+    {
+      title: "Salud y Bienestar",
+      text: "Encuentros para entender mejor tu salud, a tu ritmo y sin juicios. Ideas simples para aplicar en tu día a día",
+    },
+  ],
+  cierre: "Eso es Vivir Creciendo. Una comunidad donde eres protagonista.",
+};
+
+// Sección 09 — La garantía (nov-2026). Va entre los precios y las preguntas
+// frecuentes y se repite, resumida, en el CTA final. Texto literal del
+// documento. OJO: promete un periodo de prueba de 30 días; el cobro de PayPal
+// y Mercado Pago está configurado con ese trial (ver lib/payments/plans.ts).
+export const garantia = {
+  title: "Probá Vivir Creciendo por 30 días.",
+  lineas: [
+    "El pago empieza recién a los 30 días.",
+    "Si no te convence, cancelas y no pagas.",
+    "Sin trámites. Sin preguntas. Sin letra chica.",
+  ],
+};
+
+// Sección (histórica) — El Momento. Ya no se muestra en la portada (nov-2026):
+// su trabajo lo hace "El problema". El componente queda en el repo por si se
+// quiere recuperar. Sin título visible: texto puro, centrado, ancho
 // máximo acotado. El único trabajo de esta sección es que el visitante piense
 // "me están leyendo la mente".
 export const elMomento = [
@@ -380,29 +468,32 @@ export const membershipPlans: MembershipPlan[] = [
     // PENDIENTE fundadoras: el doc marca este plan como "todavía no definido,
     // conversar con Ariel". El copy queda publicable tal cual; si cambian las
     // condiciones, se edita solo este objeto.
-    priceNote: "Sin compromiso.",
-    tagline: "Una actividad por mes para conocernos desde adentro.",
+    // Descripción del documento de las fundadoras (nov-2026): el mes gratis
+    // es el periodo de prueba de la suscripción (se cobra recién el día 31).
+    priceNote: "Un mes gratis.",
+    tagline: "Para conocer la comunidad antes de decidir. Sin permanencia.",
     features: [
-      "1 actividad online en vivo por mes",
-      "Acceso a una actividad para conocernos",
-      "Sin compromiso de permanencia",
+      "El pago empieza recién a los 30 días.",
+      "Si no te convence, cancelas y no pagas.",
+      "Sin trámites. Sin preguntas. Sin letra chica.",
     ],
-    cta: "Quiero probar gratis",
-    ctaHref: "#contacto",
+    cta: "Probá gratis, sin compromiso",
+    ctaHref: "/membresia",
   },
   {
     name: "Membresía",
     kind: "paga",
     price: "$30 USD/mes",
-    priceNote: "o $270/año (3 meses gratis)",
-    tagline: "Las conversaciones que nutren, semana a semana.",
+    priceNote: "o $270 USD/año ★ (3 meses gratis)",
+    tagline:
+      "Acceso completo. Cancelás cuando querés, sin penalización. El anual es la opción que elige la mayoría de la comunidad: equivale a pagar 9 meses y recibir 12.",
     features: [
       "Cine Reflexión: te enviamos la película, la ves y reflexionamos juntos",
       "Círculo de escucha: rueda grupal para poner palabras a lo que estás viviendo",
       "Salud y bienestar: exploramos la nutrición desde una mirada integral para cultivar salud, energía y bienestar",
       "Descuento en actividades especiales",
     ],
-    reassurance: "Sin compromisos de permanencia. Cancelas cuando quieras.",
+    reassurance: "Los primeros 30 días son gratis. Sin compromisos de permanencia.",
     cta: "Quiero sumarme",
     // Desde oct-2026 el pago se hace en el sitio: PayPal o Mercado Pago.
     ctaHref: "/membresia",
@@ -809,7 +900,8 @@ export const finalCta = {
   title: "Tu próxima conversación importante empieza acá.",
   description: "Súmate sin compromiso. La primera actividad es gratis.",
   button: "Quiero mi actividad gratuita",
-  note: "Sin compromiso de permanencia. Cancelas cuando quieras.",
+  // Reforzado con la garantía (documento nov-2026).
+  note: "Probá 30 días gratis. El pago empieza recién a los 30 días; si no te convence, cancelas y no pagas.",
 };
 
 // Soporte humano — el email ya es real; el WhatsApp se renderiza solo si

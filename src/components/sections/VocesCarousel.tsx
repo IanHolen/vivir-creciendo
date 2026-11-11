@@ -144,17 +144,33 @@ export default function VocesCarousel({ voces }: { voces: Voz[] }) {
                 <blockquote className="mt-4 flex-1 text-lg text-vc-ink leading-relaxed text-justify hyphens-auto">
                   {v.cita}
                 </blockquote>
-                <figcaption className="mt-6 pt-4 border-t border-vc-cream">
-                  <span className="block font-semibold text-vc-blue-dark">
-                    {v.nombre}
-                  </span>
-                  {v.contexto && (
-                    // /70 y no /60: sobre blanco, #232323 al 60% queda en
-                    // ~3.5:1 y no llega al 4.5:1 que pide WCAG AA.
-                    <span className="block text-base text-vc-ink/70">
-                      {v.contexto}
-                    </span>
+                <figcaption className="mt-6 pt-4 border-t border-vc-cream flex items-center gap-3">
+                  {/* Foto pequeña (documento nov-2026): una persona real,
+                      identificable. Si no hay, el bloque queda igual que
+                      antes, sin hueco. */}
+                  {v.foto_url && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={v.foto_url}
+                      alt=""
+                      width={56}
+                      height={56}
+                      loading="lazy"
+                      className="w-14 h-14 rounded-full object-cover shrink-0 ring-2 ring-vc-cream"
+                    />
                   )}
+                  <span className="min-w-0">
+                    <span className="block font-semibold text-vc-blue-dark">
+                      {v.nombre}
+                    </span>
+                    {v.contexto && (
+                      // /70 y no /60: sobre blanco, #232323 al 60% queda en
+                      // ~3.5:1 y no llega al 4.5:1 que pide WCAG AA.
+                      <span className="block text-base text-vc-ink/70">
+                        {v.contexto}
+                      </span>
+                    )}
+                  </span>
                 </figcaption>
               </figure>
             </li>

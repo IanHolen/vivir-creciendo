@@ -104,7 +104,7 @@ export function memberCountLine(): string | null {
 }
 
 // Sección 02 — El problema (nov-2026, documento de las fundadoras). Nombra lo
-// que la persona siente pero nadie le dice. Texto literal del documento;
+// que la persona siente pero nadie le dice. Texto del documento en español neutro;
 // "FALSO" va en mayúsculas en el original y así se muestra.
 export const elProblema = {
   parrafos: [
@@ -118,13 +118,13 @@ export const elProblema = {
 
 // Sección 03 — Qué vas a ganar acá: los 6 beneficios (nov-2026). Reemplazan a
 // las tres columnas de "¿Qué es Vivir Creciendo?": transformaciones, no
-// actividades. Texto literal del documento (viene en voseo).
-export const beneficiosTitle = "Qué vas a ganar acá";
+// actividades. Texto del documento, llevado a español neutro.
+export const beneficiosTitle = "Qué vas a ganar aquí";
 export const beneficios = [
   {
     icon: "Award" as const,
     title: "Un lugar donde tu experiencia importa",
-    text: "No vas a ser un número ni un \"usuario mayor\". Acá los años de vida son un activo, no una anécdota.",
+    text: "No vas a ser un número ni un \"usuario mayor\". Aquí los años de vida son un activo, no una anécdota.",
   },
   {
     icon: "MessagesSquare" as const,
@@ -134,12 +134,12 @@ export const beneficios = [
   {
     icon: "HeartHandshake" as const,
     title: "Compañía que entiende desde adentro",
-    text: "Las personas en Vivir Creciendo están viviendo algo parecido a lo que vos vivís ahora.",
+    text: "Las personas en Vivir Creciendo están viviendo algo parecido a lo que tú vives ahora.",
   },
   {
     icon: "Video" as const,
     title: "Actividades en vivo, desde tu casa, en español",
-    text: "Sin complicaciones técnicas. Si podés hacer una videollamada, podés estar acá.",
+    text: "Sin complicaciones técnicas. Si puedes hacer una videollamada, puedes estar aquí.",
   },
   {
     icon: "CalendarCheck" as const,
@@ -179,9 +179,9 @@ export const estarAdentro = {
 // documento. OJO: promete un periodo de prueba de 30 días; el cobro de PayPal
 // y Mercado Pago está configurado con ese trial (ver lib/payments/plans.ts).
 export const garantia = {
-  title: "Probá Vivir Creciendo por 30 días.",
+  title: "Prueba Vivir Creciendo por 30 días.",
   lineas: [
-    "El pago empieza recién a los 30 días.",
+    "El pago empieza a los 30 días.",
     "Si no te convence, cancelas y no pagas.",
     "Sin trámites. Sin preguntas. Sin letra chica.",
   ],
@@ -473,11 +473,11 @@ export const membershipPlans: MembershipPlan[] = [
     priceNote: "Un mes gratis.",
     tagline: "Para conocer la comunidad antes de decidir. Sin permanencia.",
     features: [
-      "El pago empieza recién a los 30 días.",
+      "El pago empieza a los 30 días.",
       "Si no te convence, cancelas y no pagas.",
       "Sin trámites. Sin preguntas. Sin letra chica.",
     ],
-    cta: "Probá gratis, sin compromiso",
+    cta: "Prueba gratis, sin compromiso",
     ctaHref: "/membresia",
   },
   {
@@ -486,7 +486,7 @@ export const membershipPlans: MembershipPlan[] = [
     price: "$30 USD/mes",
     priceNote: "o $270 USD/año ★ (3 meses gratis)",
     tagline:
-      "Acceso completo. Cancelás cuando querés, sin penalización. El anual es la opción que elige la mayoría de la comunidad: equivale a pagar 9 meses y recibir 12.",
+      "Acceso completo. Cancelas cuando quieras, sin penalización. El anual es la opción que elige la mayoría de la comunidad: equivale a pagar 9 meses y recibir 12.",
     features: [
       "Cine Reflexión: te enviamos la película, la ves y reflexionamos juntos",
       "Círculo de escucha: rueda grupal para poner palabras a lo que estás viviendo",
@@ -897,11 +897,11 @@ export const newsletterContent = {
 // Sección 11 — CTA final. Última oportunidad de conversión: mismo botón que
 // el hero (un solo verbo en toda la página) sobre fondo azul marca.
 export const finalCta = {
-  title: "Tu próxima conversación importante empieza acá.",
+  title: "Tu próxima conversación importante empieza aquí.",
   description: "Súmate sin compromiso. La primera actividad es gratis.",
   button: "Quiero mi actividad gratuita",
   // Reforzado con la garantía (documento nov-2026).
-  note: "Probá 30 días gratis. El pago empieza recién a los 30 días; si no te convence, cancelas y no pagas.",
+  note: "Prueba 30 días gratis. El pago empieza a los 30 días; si no te convence, cancelas y no pagas.",
 };
 
 // Soporte humano — el email ya es real; el WhatsApp se renderiza solo si

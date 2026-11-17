@@ -11,7 +11,7 @@ import { elProblema } from "@/lib/content";
 export default function ElProblema() {
   return (
     <section className="bg-white py-20 md:py-28 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-[680px] mx-auto text-center space-y-6">
+      <div data-reveal className="max-w-[680px] mx-auto text-center space-y-6">
         {elProblema.parrafos.map((p, i) => (
           <p
             key={i}

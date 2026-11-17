@@ -84,6 +84,21 @@ export default async function RegistroPage({
           />
         </div>
 
+        <label className="flex items-start gap-3 text-base text-vc-ink/85 leading-snug cursor-pointer">
+          <input
+            type="checkbox"
+            name="acepta"
+            required
+            className="mt-1 w-6 h-6 shrink-0 rounded border-2 border-vc-cream accent-vc-orange focus-visible:ring-4 focus-visible:ring-vc-orange/30"
+          />
+          <span>
+            Leí y acepto los{" "}
+            <a href="/terminos" target="_blank" rel="noopener" className="font-semibold text-vc-blue underline-offset-4 hover:underline">términos y condiciones</a>{" "}
+            y la{" "}
+            <a href="/privacidad" target="_blank" rel="noopener" className="font-semibold text-vc-blue underline-offset-4 hover:underline">política de privacidad</a>, incluido el permiso para usar mi imagen en la difusión de la comunidad.
+          </span>
+        </label>
+
         <button type="submit" className={authButtonClass}>
           Crear mi cuenta
         </button>

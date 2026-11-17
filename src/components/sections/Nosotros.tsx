@@ -58,7 +58,8 @@ export default async function Nosotros() {
             return (
             <div
               key={member.name}
-              className="bg-white rounded-2xl p-8 shadow-sm border border-vc-cream"
+              data-reveal
+              className="vc-card-lift bg-white rounded-2xl p-8 shadow-sm border border-vc-cream"
             >
               <div className="flex flex-col items-center text-center">
                 <div className="w-32 h-32 rounded-full bg-vc-cream flex items-center justify-center overflow-hidden">
@@ -105,7 +106,7 @@ export default async function Nosotros() {
 
         {/* El video, después de las bios: primero quiénes son, después que
             lo cuenten ellas. */}
-        <div className="mt-12 md:mt-16 max-w-4xl mx-auto">
+        <div data-reveal className="mt-12 md:mt-16 max-w-4xl mx-auto">
           <h3 className="font-(family-name:--font-display) text-2xl md:text-3xl font-black text-vc-blue-dark text-center uppercase tracking-tight">
             Nurit y Alejandra te cuentan de qué se trata
           </h3>

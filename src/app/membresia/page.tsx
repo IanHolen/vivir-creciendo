@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import { getSessionUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 import { cancelacion, membershipPlans } from "@/lib/content";
-import { PLANES, fechaPrimerCobro, isPlanKey, type PlanKey } from "@/lib/payments/plans";
+import { PLANES, enPreinscripcion, fechaLarga, fechaPrimerCobro, isPlanKey, type PlanKey } from "@/lib/payments/plans";
 import { paypalConfigurado } from "@/lib/payments/paypal";
 import { mercadoPagoCredenciales } from "@/lib/payments/mercadopago";
 import { obtenerPreciosArs, preciosCompletos } from "@/lib/payments/precios-ars";
@@ -49,8 +49,9 @@ export default async function MembresiaPage({
   const mercadoPagoDisponible = mercadoPagoCredenciales && preciosCompletos(preciosArs);
   const arsMensual = mercadoPagoDisponible ? preciosArs.mensual : null;
   const arsAnual = mercadoPagoDisponible ? preciosArs.anual : null;
-  const planPago = membershipPlans.find((p) => p.kind === "paga");
-  const primerCobro = fechaPrimerCobro().toLocaleDateString("es-MX", { day: "numeric", month: "long", year: "numeric" });
+  const planPago = membershipPlans.find((p) => p.plan === "mensual");
+  const preinscripcion = enPreinscripcion();
+  const primerCobro = fechaLarga(fechaPrimerCobro());
   const MENSAJES_ERROR: Record<string, string> = {
     datos: "Elige un plan y una forma de pago.",
     proveedor: "No pudimos abrir la página de pago. Intenta de nuevo en un momento o escríbenos.",
@@ -136,8 +137,17 @@ export default async function MembresiaPage({
                 <legend className="sr-only">Elige tu plan</legend>
                 <h2 className="text-xl font-semibold text-vc-blue-dark">1. Elige tu plan</h2>
                 <p className="mt-2 text-base text-vc-ink/75">
-                  Hoy no pagas nada: los primeros 30 días son gratis. El primer cobro sería el{" "}
-                  <strong className="text-vc-blue-dark">{primerCobro}</strong>, y si cancelas antes no se cobra nada.
+                  {preinscripcion ? (
+                    <>
+                      <strong className="text-vc-orange-dark">Pre-inscripción:</strong> hoy no pagas nada. El primer cobro sería el{" "}
+                      <strong className="text-vc-blue-dark">{primerCobro}</strong>, y si cancelas antes no se cobra nada.
+                    </>
+                  ) : (
+                    <>
+                      Hoy no pagas nada: los primeros 30 días son gratis. El primer cobro sería el{" "}
+                      <strong className="text-vc-blue-dark">{primerCobro}</strong>, y si cancelas antes no se cobra nada.
+                    </>
+                  )}
                 </p>
                 <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {(Object.values(PLANES) as (typeof PLANES)[PlanKey][]).map((p) => (

@@ -124,7 +124,7 @@ export default async function TestimoniosPage({
               {finalCta.title}
             </h2>
             <Link
-              href="/#contacto"
+              href={finalCta.buttonHref}
               className="mt-6 inline-flex items-center justify-center gap-2 min-h-[56px] px-8 py-4 bg-vc-orange hover:bg-vc-orange-light text-white font-semibold text-lg md:text-xl rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50 shadow-lg"
             >
               {finalCta.button}

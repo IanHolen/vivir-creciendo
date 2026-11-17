@@ -1,5 +1,6 @@
 import { ShieldCheck } from "lucide-react";
 import { garantia } from "@/lib/content";
+import { enPreinscripcion, fechaLarga, PREINSCRIPCION } from "@/lib/payments/plans";
 
 /**
  * Sección 09 — La garantía (documento de las fundadoras, nov-2026).
@@ -10,9 +11,10 @@ import { garantia } from "@/lib/content";
  * Mercado Pago tienen 30 días de prueba configurados (lib/payments).
  */
 export default function Garantia() {
+  const preinscripcion = enPreinscripcion();
   return (
     <section className="bg-white py-16 md:py-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto rounded-3xl bg-vc-blue-soft border border-vc-blue/15 p-8 md:p-12 text-center">
+      <div data-reveal className="max-w-3xl mx-auto rounded-3xl bg-vc-blue-soft border border-vc-blue/15 p-8 md:p-12 text-center">
         <span className="mx-auto flex items-center justify-center w-16 h-16 rounded-full bg-white shadow-sm">
           <ShieldCheck
             className="w-8 h-8 text-vc-orange"
@@ -24,6 +26,11 @@ export default function Garantia() {
           {garantia.title}
         </h2>
         <div className="mt-6 space-y-2">
+          {preinscripcion && (
+            <p className="text-lg md:text-xl font-semibold text-vc-orange-dark">
+              Y si te pre-inscribes en diciembre, no pagas nada hasta el {fechaLarga(PREINSCRIPCION.primerCobro)}.
+            </p>
+          )}
           {garantia.lineas.map((l) => (
             <p key={l} className="text-lg md:text-xl text-vc-ink leading-relaxed">
               {l}

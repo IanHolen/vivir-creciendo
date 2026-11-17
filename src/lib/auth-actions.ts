@@ -56,6 +56,15 @@ export async function signup(formData: FormData) {
         nextQs
     );
   }
+  // Aceptación de términos (17-nov-2026). El navegador ya la exige con
+  // `required`; esto cubre el POST directo sin interfaz.
+  if (formData.get("acepta") !== "on") {
+    redirect(
+      "/registro?error=" +
+        encodeURIComponent("Para crear la cuenta hay que aceptar los términos y condiciones.") +
+        nextQs
+    );
+  }
 
   const supabase = await createClient();
   // back captura el nombre desde el body (raw_user_meta_data → profiles.full_name).

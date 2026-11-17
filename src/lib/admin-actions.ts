@@ -209,6 +209,10 @@ export async function toggleActivityActive(formData: FormData) {
     .eq("id", id);
   if (error) return redirectError(error.message);
   revalidate();
+  redirect(
+    "/admin?ok=" +
+      encodeURIComponent(next ? "Listo: la actividad ya se muestra en el sitio." : "Listo: la actividad quedó oculta.")
+  );
 }
 
 /**

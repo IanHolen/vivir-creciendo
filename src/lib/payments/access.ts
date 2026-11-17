@@ -1,5 +1,6 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { bienvenidaSiHaceFalta } from "@/lib/correos-automaticos";
 import type { PlanKey, Provider } from "@/lib/payments/plans";
 import { PLANES } from "@/lib/payments/plans";
 import { cancelarSuscripcionPayPal, obtenerSuscripcionPayPal } from "@/lib/payments/paypal";
@@ -107,6 +108,15 @@ export async function actualizarSuscripcion(
   }
   if (ACTIVOS.includes(row.status)) await cerrarDuplicadas(row.user_id);
   await sincronizarAcceso(row.user_id);
+  if (ACTIVOS.includes(row.status) && row.cancel_reason !== "duplicada") {
+    // Correo de bienvenida (una vez por suscripción; nunca rompe el webhook).
+    await bienvenidaSiHaceFalta({
+      userId: row.user_id,
+      providerSubId: row.provider_sub_id,
+      plan: row.plan,
+      primerCobro: row.next_billing_at ? new Date(row.next_billing_at) : null,
+    });
+  }
   return row;
 }
 

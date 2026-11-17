@@ -11,6 +11,8 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { requireAdmin } from "@/lib/admin-auth";
+import BotonAccion from "@/components/admin/BotonAccion";
+import ConfirmarBorrado from "@/components/admin/ConfirmarBorrado";
 import { getTestimoniosVideoAdmin, type TestimonioVideo } from "@/lib/testimonios";
 import { getMediaAssets } from "@/lib/media-queries";
 import type { MediaAsset } from "@/lib/media";
@@ -28,7 +30,6 @@ import {
   btnPrimary,
   btnBlue,
   btnGhost,
-  btnDanger,
   inputClass,
   labelClass,
   hintClass,
@@ -244,7 +245,7 @@ function Fila({
             <input type="hidden" name="tabla" value="testimonios_video" />
             <input type="hidden" name="id" value={t.id} />
             <input type="hidden" name="next" value={String(!t.is_active)} />
-            <button type="submit" className={`${btnGhost} min-h-[44px] px-4 text-base`}>
+            <BotonAccion pendiente={t.is_active ? "Ocultando…" : "Mostrando…"} className={`${btnGhost} min-h-[44px] px-4 text-base`}>
               {t.is_active ? (
                 <>
                   <EyeOff className="w-5 h-5" aria-hidden="true" />
@@ -256,7 +257,7 @@ function Fila({
                   Mostrar
                 </>
               )}
-            </button>
+            </BotonAccion>
           </form>
         </div>
       </div>
@@ -302,28 +303,14 @@ function Fila({
           </button>
         </form>
 
-        <details className="mt-5">
-          <summary className="cursor-pointer text-base text-vc-ink/55 hover:text-red-700">
-            Eliminar este testimonio
-          </summary>
-          <form
-            action={borrarItem}
-            className="mt-2 rounded-xl bg-red-50 border border-red-200 p-3"
-          >
-            <input type="hidden" name="tabla" value="testimonios_video" />
-            <input type="hidden" name="id" value={t.id} />
-            <p className="text-sm text-red-800">
-              Se borra el testimonio, no el video: el archivo queda en la
-              biblioteca de Multimedia.
-            </p>
-            <button
-              type="submit"
-              className={`${btnDanger} mt-2 min-h-[44px] text-base`}
-            >
-              Sí, eliminar el testimonio de {t.nombre}
-            </button>
-          </form>
-        </details>
+        <form action={borrarItem} className="mt-5">
+          <input type="hidden" name="tabla" value="testimonios_video" />
+          <input type="hidden" name="id" value={t.id} />
+          <ConfirmarBorrado
+            que={`el testimonio de ${t.nombre}`}
+            pregunta="Se borra el testimonio, no el video: el archivo queda en la biblioteca de Multimedia."
+          />
+        </form>
       </details>
     </li>
   );

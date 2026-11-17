@@ -11,14 +11,16 @@ export default function EstarAdentro() {
   return (
     <section className="bg-white py-20 md:py-28 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <h2 className="font-(family-name:--font-display) text-3xl md:text-4xl font-black text-vc-blue text-center uppercase tracking-tight">
+        <h2 data-reveal className="font-(family-name:--font-display) text-3xl md:text-4xl font-black text-vc-blue text-center uppercase tracking-tight">
           {estarAdentro.title}
         </h2>
 
         <dl className="mt-12 md:mt-16 space-y-8">
-          {estarAdentro.items.map((item) => (
+          {estarAdentro.items.map((item, i) => (
             <div
               key={item.title}
+              data-reveal
+              data-reveal-delay={String(i)}
               className="rounded-2xl bg-vc-cream p-7 md:p-8 border-l-4 border-vc-orange"
             >
               <dt className="font-(family-name:--font-display) text-xl md:text-2xl font-black text-vc-blue-dark uppercase tracking-tight">
@@ -31,7 +33,7 @@ export default function EstarAdentro() {
           ))}
         </dl>
 
-        <p className="mt-12 text-center text-xl md:text-2xl font-medium text-vc-blue-dark text-balance">
+        <p data-reveal className="mt-12 text-center text-xl md:text-2xl font-medium text-vc-blue-dark text-balance">
           {estarAdentro.cierre}
         </p>
       </div>

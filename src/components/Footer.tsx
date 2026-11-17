@@ -153,23 +153,21 @@ export default function Footer() {
           <span className="hidden sm:inline" aria-hidden="true">
             |
           </span>
-          {/* PENDIENTE: páginas legales reales. El doc las marca como
-              requisito visible para publicar. */}
-          <a
-            href="#"
+          <Link
+            href="/privacidad"
             className="hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
           >
             Política de Privacidad
-          </a>
+          </Link>
           <span className="hidden sm:inline" aria-hidden="true">
             |
           </span>
-          <a
-            href="#"
+          <Link
+            href="/terminos"
             className="hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
           >
             Términos y Condiciones
-          </a>
+          </Link>
         </div>
       </div>
     </footer>

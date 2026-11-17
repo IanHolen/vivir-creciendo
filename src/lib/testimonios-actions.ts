@@ -153,6 +153,9 @@ export async function alternarVisible(formData: FormData) {
     .eq("id", id);
   if (error) fail(tabla, error.message);
   revalidate(tabla);
+  // Redirigir (y no solo revalidar) garantiza que la lista se repinte al
+  // instante y que el mensaje verde confirme lo que pasó (17-nov-2026).
+  done(tabla, next ? "Listo: ya se muestra en el sitio." : "Listo: quedó oculta, no se muestra en el sitio.");
 }
 
 /**
@@ -193,6 +196,7 @@ export async function moverItem(formData: FormData) {
     if (upErr) fail(tabla, upErr.message);
   }
   revalidate(tabla);
+  done(tabla, "Orden actualizado.");
 }
 
 export async function borrarItem(formData: FormData) {

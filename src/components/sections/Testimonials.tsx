@@ -24,7 +24,7 @@ export default async function Testimonials() {
   return (
     <section className="bg-vc-blue-soft py-20 md:py-28 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-        <h2 className="font-(family-name:--font-display) text-3xl md:text-4xl font-black text-vc-blue text-center uppercase tracking-tight">
+        <h2 data-reveal className="font-(family-name:--font-display) text-3xl md:text-4xl font-black text-vc-blue text-center uppercase tracking-tight">
           {testimonialsTitle}
         </h2>
 

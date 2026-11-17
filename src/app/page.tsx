@@ -13,6 +13,7 @@ import FAQ from "@/components/sections/FAQ";
 import FinalCTA from "@/components/sections/FinalCTA";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import Revelar from "@/components/Revelar";
 import { getSessionUser } from "@/lib/session";
 
 /**
@@ -64,6 +65,7 @@ export default async function Home({
       {/* 12 */}
       <Footer />
       <WhatsAppFloat />
+      <Revelar />
     </>
   );
 }

@@ -31,7 +31,7 @@ export default function Beneficios() {
   return (
     <section className="bg-vc-cream py-20 md:py-28 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-        <h2 className="font-(family-name:--font-display) text-3xl md:text-4xl font-black text-vc-blue text-center uppercase tracking-tight">
+        <h2 data-reveal className="font-(family-name:--font-display) text-3xl md:text-4xl font-black text-vc-blue text-center uppercase tracking-tight">
           {beneficiosTitle}
         </h2>
         {miembros && (
@@ -43,12 +43,14 @@ export default function Beneficios() {
         )}
 
         <ul className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {beneficios.map((b) => {
+          {beneficios.map((b, i) => {
             const Icon = iconMap[b.icon];
             return (
               <li
                 key={b.title}
-                className="bg-white rounded-2xl p-7 border border-vc-cream shadow-sm flex gap-4"
+                data-reveal
+                data-reveal-delay={String(i % 3)}
+                className="vc-card-lift bg-white rounded-2xl p-7 border border-vc-cream shadow-sm flex gap-4"
               >
                 <span className="shrink-0 w-14 h-14 flex items-center justify-center rounded-2xl bg-vc-orange/10">
                   <Icon

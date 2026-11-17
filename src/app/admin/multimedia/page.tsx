@@ -10,12 +10,12 @@ import { actualizarArchivo, asignarRanura, borrarArchivo } from "@/lib/media-act
 import { guardarVideoYoutube } from "@/lib/video-actions";
 import { obtenerVideoYoutube } from "@/lib/video-fundadoras";
 import MediaUploader from "@/components/admin/MediaUploader";
+import ConfirmarBorrado from "@/components/admin/ConfirmarBorrado";
 import {
   Card,
   TextInput,
   btnBlue,
   btnGhost,
-  btnDanger,
   inputClass,
   labelClass,
   hintClass,
@@ -152,31 +152,19 @@ function TarjetaArchivo({
           </button>
         </form>
 
-        {/* Borrar detrás de un <details>: HTML puro, funciona sin JavaScript, y
-            hay que abrirlo a propósito. Mismo patrón que la ficha de actividad. */}
-        <details className="group">
-          <summary className="cursor-pointer text-base text-vc-ink/55 hover:text-red-700">
-            Eliminar este archivo
-          </summary>
-          <div className="mt-2 rounded-xl bg-red-50 border border-red-200 p-3">
-            {usos.length > 0 && (
-              <p className="text-sm text-red-800">
-                Está en uso en {usos.length}{" "}
-                {usos.length === 1 ? "lugar" : "lugares"}. Al borrarlo, esos
-                lugares vuelven a mostrar lo que traían por defecto.
-              </p>
-            )}
-            <form action={borrarArchivo} className="mt-2">
-              <input type="hidden" name="id" value={asset.id} />
-              <button
-                type="submit"
-                className={`${btnDanger} w-full min-h-[44px] text-base`}
-              >
-                Sí, eliminar «{asset.filename}»
-              </button>
-            </form>
-          </div>
-        </details>
+        {/* Borrar en dos pasos (ConfirmarBorrado): pregunta antes, gira
+            mientras borra y el mensaje verde de arriba confirma al terminar. */}
+        <form action={borrarArchivo}>
+          <input type="hidden" name="id" value={asset.id} />
+          <ConfirmarBorrado
+            que={`«${asset.filename}»`}
+            pregunta={
+              usos.length > 0
+                ? `Está en uso en ${usos.length} ${usos.length === 1 ? "lugar" : "lugares"}. Al borrarlo, esos lugares vuelven a mostrar lo que traían por defecto.`
+                : undefined
+            }
+          />
+        </form>
       </div>
     </li>
   );

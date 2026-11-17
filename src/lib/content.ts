@@ -53,7 +53,9 @@ export const navLinks = [
 ];
 
 /** CTA del nav — visualmente distinto a los links (naranja, sticky). */
-export const navCta = { label: "Prueba gratis", href: "/#contacto" };
+// El CTA de "actividad gratuita" lleva a las actividades (ahí está la sesión
+// abierta gratuita), no al pie de página (fundadoras, 17-nov-2026).
+export const navCta = { label: "Prueba gratis", href: "/#actividades" };
 
 // Sección 01 — Hero. UN SOLO CTA (Error #4 del doc, Ley de Hick): los tres
 // botones que competían acá se redujeron a "Quiero mi actividad gratuita".
@@ -65,7 +67,7 @@ export const heroContent = {
   subtitle:
     "Vivir Creciendo es una comunidad en español para personas de 65 años o más que quieren seguir siendo protagonistas de sus propias vidas. Desde donde estés.",
   cta: "Quiero mi actividad gratuita",
-  ctaHref: "#contacto",
+  ctaHref: "/#actividades",
   // Texto de bajo riesgo debajo del botón — reduce la fricción del alta.
   // Se quitó "Sin tarjeta de crédito" (Ian 2026-08-19). Estaba acá y en otros
   // cuatro lugares; no reintroducirlo suelto en un solo sitio.
@@ -81,7 +83,7 @@ export const heroContent = {
 // 2026-08-12). Si cambian, se cambian una sola vez. Poner cualquiera de los
 // dos en `null` apaga la frase entera en los tres lugares.
 export const socialProof = {
-  memberCount: 200 as number | null,
+  memberCount: 700 as number | null, // "más de 700" (fundadoras, 17-nov-2026)
   countryCount: 10 as number | null,
   items: [
     "Facilitado por expertas con 40 años de experiencia",
@@ -91,7 +93,7 @@ export const socialProof = {
 };
 
 /**
- * "+200 miembros activos en más de 10 países", o null si falta el dato.
+ * "Más de 700 miembros activos en más de 10 países", o null si falta el dato.
  *
  * Devolver null y no una cadena vacía es a propósito: quien la usa decide si
  * pinta el bloque o lo omite, en vez de renderizar un hueco.
@@ -99,7 +101,7 @@ export const socialProof = {
 export function memberCountLine(): string | null {
   const { memberCount, countryCount } = socialProof;
   if (!memberCount) return null;
-  const base = `+${memberCount} miembros activos`;
+  const base = `Más de ${memberCount} miembros activos`;
   return countryCount ? `${base} en más de ${countryCount} países` : base;
 }
 
@@ -441,6 +443,10 @@ export const memberships: Membership[] = [
 export interface MembershipPlan {
   name: string;
   kind: "gratis" | "paga";
+  /** Plan de cobro al que lleva (solo los de pago). */
+  plan?: "mensual" | "anual";
+  /** Etiqueta pequeña sobre la tarjeta destacada. */
+  badge?: string;
   /** Precio visible siempre. */
   price: string;
   /** Segunda línea de precio (anual, aclaración de riesgo). */
@@ -480,13 +486,15 @@ export const membershipPlans: MembershipPlan[] = [
     cta: "Prueba gratis, sin compromiso",
     ctaHref: "/membresia",
   },
+  // Dos tarjetas de pago, cada una con su botón (fundadoras, 17-nov-2026):
+  // antes había una sola con el anual como nota al pie y no se veía.
   {
-    name: "Membresía",
+    name: "Mensual",
     kind: "paga",
+    plan: "mensual",
     price: "$30 USD/mes",
-    priceNote: "o $270 USD/año ★ (3 meses gratis)",
-    tagline:
-      "Acceso completo. Cancelas cuando quieras, sin penalización. El anual es la opción que elige la mayoría de la comunidad: equivale a pagar 9 meses y recibir 12.",
+    priceNote: "Se renueva cada mes.",
+    tagline: "Acceso completo. Cancelas cuando quieras, sin penalización.",
     features: [
       "Cine Reflexión: te enviamos la película, la ves y reflexionamos juntos",
       "Círculo de escucha: rueda grupal para poner palabras a lo que estás viviendo",
@@ -494,10 +502,27 @@ export const membershipPlans: MembershipPlan[] = [
       "Descuento en actividades especiales",
     ],
     reassurance: "Los primeros 30 días son gratis. Sin compromisos de permanencia.",
-    cta: "Quiero sumarme",
-    // Desde oct-2026 el pago se hace en el sitio: PayPal o Mercado Pago.
-    ctaHref: "/membresia",
+    cta: "Quiero la mensual",
+    ctaHref: "/membresia?plan=mensual",
+  },
+  {
+    name: "Anual",
+    kind: "paga",
+    plan: "anual",
+    price: "$270 USD/año",
+    priceNote: "3 meses gratis: pagas 9 meses y recibes 12.",
+    tagline: "La opción que elige la mayoría de la comunidad.",
+    features: [
+      "Todo lo de la membresía mensual",
+      "Un solo pago al año: te olvidas de las renovaciones",
+      "Equivale a $22,50 USD por mes",
+      "Descuento en actividades especiales",
+    ],
+    reassurance: "Los primeros 30 días son gratis. Sin compromisos de permanencia.",
+    cta: "Quiero la anual",
+    ctaHref: "/membresia?plan=anual",
     featured: true,
+    badge: "La más elegida",
   },
 ];
 
@@ -898,8 +923,11 @@ export const newsletterContent = {
 // el hero (un solo verbo en toda la página) sobre fondo azul marca.
 export const finalCta = {
   title: "Tu próxima conversación importante empieza aquí.",
-  description: "Súmate sin compromiso. La primera actividad es gratis.",
-  button: "Quiero mi actividad gratuita",
+  description: "Súmate hoy. Los primeros 30 días son gratis.",
+  // "Quiero sumarme" en lugar de "Quiero mi actividad gratuita" (fundadoras,
+  // 17-nov-2026): el cierre de la página pide la suscripción, no la prueba.
+  button: "Quiero sumarme",
+  buttonHref: "/membresia",
   // Reforzado con la garantía (documento nov-2026).
   note: "Prueba 30 días gratis. El pago empieza a los 30 días; si no te convence, cancelas y no pagas.",
 };

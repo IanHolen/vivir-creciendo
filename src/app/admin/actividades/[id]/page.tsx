@@ -6,7 +6,8 @@ import { updateActivity, deleteActivity } from "@/lib/admin-actions";
 import ActivityForm, {
   type AdminActivity,
 } from "@/components/admin/ActivityForm";
-import { btnGhost, btnDanger } from "@/components/admin/ui";
+import { btnGhost } from "@/components/admin/ui";
+import ConfirmarBorrado from "@/components/admin/ConfirmarBorrado";
 
 export default async function EditarActividadPage({
   params,
@@ -84,10 +85,7 @@ export default async function EditarActividadPage({
           </p>
           <form action={deleteActivity}>
             <input type="hidden" name="id" value={activity.id} />
-            <button type="submit" className={btnDanger}>
-              <Trash2 className="w-5 h-5" aria-hidden="true" />
-              Sí, eliminar «{activity.title}»
-            </button>
+            <ConfirmarBorrado que={`«${activity.title}»`} />
           </form>
         </div>
       </details>

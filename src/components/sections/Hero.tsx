@@ -32,7 +32,7 @@ export default async function Hero() {
         {/* Desktop: texto 60% · imagen 40%. Mobile: imagen arriba, texto
             abajo (el orden que pide el doc para que la foto haga de gancho). */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-14 items-center">
-          <div className="order-2 lg:order-1 lg:col-span-3 text-center lg:text-left">
+          <div data-reveal className="order-2 lg:order-1 lg:col-span-3 text-center lg:text-left">
             {/* Tamaños según la especificación tipográfica del doc:
                 48-56px en desktop, 32-38px en mobile. Nunca por debajo. */}
             <h1 className="font-(family-name:--font-display) text-[2rem] md:text-[2.375rem] lg:text-5xl font-black text-vc-blue-dark tracking-tight text-balance leading-tight">
@@ -73,7 +73,7 @@ export default async function Hero() {
               de miembros (Ian 2026-08-12): el dato de prueba social entra en
               el primer golpe de vista, sin robarle protagonismo al titular.
               Si `memberCount` vuelve a null, el pie desaparece solo. */}
-          <figure className="order-1 lg:order-2 lg:col-span-2 w-full max-w-md mx-auto lg:mx-0 lg:ml-auto">
+          <figure data-reveal data-reveal-delay="1" className="order-1 lg:order-2 lg:col-span-2 w-full max-w-md mx-auto lg:mx-0 lg:ml-auto">
             <div className="relative aspect-4/3 rounded-3xl overflow-hidden shadow-xl">
               {foto.url && (
                 <Image

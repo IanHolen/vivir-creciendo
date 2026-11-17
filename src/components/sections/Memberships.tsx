@@ -6,6 +6,7 @@ import {
   membershipsSubtitle,
   cancelacion,
 } from "@/lib/content";
+import { enPreinscripcion, fechaLarga, PREINSCRIPCION } from "@/lib/payments/plans";
 
 /**
  * Sección 09 — Membresías.
@@ -21,6 +22,7 @@ import {
  *    para decidir. Este componente ya no depende del estado de sesión.
  */
 export default function Memberships() {
+  const preinscripcion = enPreinscripcion();
   return (
     // Sección destacada, igual que testimonios: tinte suave del azul de marca
     // (el doc pide "teal claro" para las secciones de membresías y testimonios).
@@ -28,33 +30,49 @@ export default function Memberships() {
       id="membresias"
       className="scroll-mt-20 md:scroll-mt-24 bg-vc-blue-soft py-20 md:py-28 px-4 sm:px-6 lg:px-8"
     >
-      <div className="relative z-10 max-w-5xl mx-auto">
+      <div className="relative z-10 max-w-6xl mx-auto">
         <h2 className="font-(family-name:--font-display) text-3xl md:text-4xl font-black text-vc-blue text-center uppercase tracking-tight">
           {membershipsTitle}
         </h2>
         <p className="mt-4 text-center text-lg md:text-xl text-vc-ink/80 max-w-2xl mx-auto leading-relaxed">
           {membershipsSubtitle}
         </p>
+        {/* Pre-inscripción (fundadoras, 17-nov-2026): se apaga sola el 1-ene. */}
+        {preinscripcion && (
+          <p className="mt-6 mx-auto max-w-2xl rounded-2xl bg-vc-orange/10 border border-vc-orange/30 px-6 py-4 text-center text-lg text-vc-ink">
+            <strong className="text-vc-orange-dark">Pre-inscripción de diciembre:</strong> si te sumas antes del 31 de diciembre, tienes más de un mes gratis. El primer cobro es el{" "}
+            <strong>{fechaLarga(PREINSCRIPCION.primerCobro)}</strong>.
+          </p>
+        )}
 
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-          {membershipPlans.map((plan) => (
+        {/* Tres tarjetas: Gratuita, Mensual y Anual (destacada), cada una con su
+            botón (fundadoras, 17-nov-2026). */}
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+          {membershipPlans.map((plan, i) => (
             <div
               key={plan.name}
+              data-reveal
+              data-reveal-delay={String(i)}
               // Las cards ya no se recortan contra un fondo crema: sobre
               // blanco necesitan borde propio, no solo sombra.
-              className={`relative bg-white rounded-2xl p-8 flex flex-col ${
+              className={`vc-card-lift relative bg-white rounded-2xl p-8 flex flex-col ${
                 plan.featured
                   ? "shadow-xl ring-2 ring-vc-orange md:-translate-y-2"
                   : "shadow-lg border border-vc-cream"
               }`}
             >
+              {plan.badge && (
+                <span className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-vc-orange px-4 py-1.5 text-sm font-semibold text-white shadow-md whitespace-nowrap">
+                  {plan.badge}
+                </span>
+              )}
               <h3 className="font-(family-name:--font-display) text-2xl font-black uppercase tracking-tight text-vc-blue-dark">
                 {plan.name}
               </h3>
 
               {/* El precio es lo primero después del nombre — no se esconde
                   al final de la tarjeta ni detrás de un "escríbenos". */}
-              <p className="mt-4 font-(family-name:--font-display) text-4xl font-black text-vc-blue-dark">
+              <p className="mt-4 font-(family-name:--font-display) text-3xl lg:text-4xl font-black text-vc-blue-dark">
                 {plan.price}
               </p>
               <p className="mt-1 text-base text-vc-ink/70">{plan.priceNote}</p>

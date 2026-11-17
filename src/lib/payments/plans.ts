@@ -18,11 +18,35 @@
  */
 export const TRIAL_DIAS = 30;
 
-/** Fecha del primer cobro si alguien se suscribe hoy. */
+/**
+ * PRE-INSCRIPCIÓN (fundadoras, 17-nov-2026): quien se suscriba hasta el 31 de
+ * diciembre de 2026 no paga nada hasta el 1 de febrero de 2027. En PayPal se
+ * logra con un plan SIN trial y `start_time` = 1-feb; en Mercado Pago con
+ * `auto_recurring.start_date`. Pasada la fecha límite, vuelve el trial normal
+ * de 30 días. Para cambiar la campaña, basta con editar estas dos fechas.
+ */
+export const PREINSCRIPCION = {
+  /** Último instante en que aplica (fin del 31-dic en Argentina/Uruguay, UTC-3). */
+  hasta: new Date("2027-01-01T02:59:59.000Z"),
+  /** Primer cobro para quien se pre-inscribe (1-feb-2027, 10:00 UTC). */
+  primerCobro: new Date("2027-02-01T10:00:00.000Z"),
+};
+
+export function enPreinscripcion(ahora: Date = new Date()): boolean {
+  return ahora.getTime() <= PREINSCRIPCION.hasta.getTime();
+}
+
+/** Fecha del primer cobro si alguien se suscribe en `desde`. */
 export function fechaPrimerCobro(desde: Date = new Date()): Date {
+  if (enPreinscripcion(desde)) return new Date(PREINSCRIPCION.primerCobro);
   const d = new Date(desde);
   d.setDate(d.getDate() + TRIAL_DIAS);
   return d;
+}
+
+/** Texto corto para la fecha del primer cobro. */
+export function fechaLarga(d: Date): string {
+  return d.toLocaleDateString("es-MX", { day: "numeric", month: "long", year: "numeric" });
 }
 export type PlanKey = "mensual" | "anual";
 export type Provider = "paypal" | "mercadopago";

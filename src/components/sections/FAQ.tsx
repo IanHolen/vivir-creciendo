@@ -17,7 +17,7 @@ export default function FAQ() {
       className="scroll-mt-20 md:scroll-mt-24 bg-white py-20 md:py-28 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-3xl mx-auto">
-        <h2 className="font-(family-name:--font-display) text-3xl md:text-4xl font-black text-vc-blue text-center uppercase tracking-tight">
+        <h2 data-reveal className="font-(family-name:--font-display) text-3xl md:text-4xl font-black text-vc-blue text-center uppercase tracking-tight">
           {faqsTitle}
         </h2>
         <div className="mt-12 md:mt-16">

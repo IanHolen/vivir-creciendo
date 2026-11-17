@@ -38,6 +38,7 @@ import {
   moveActivity,
   reorderActivities,
 } from "@/lib/admin-actions";
+import BotonAccion from "@/components/admin/BotonAccion";
 
 /**
  * Lo mínimo que necesita pintar una fila. Serializable: cruza a cliente.
@@ -295,8 +296,8 @@ function Row({
             name="next"
             value={a.is_active ? "false" : "true"}
           />
-          <button
-            type="submit"
+          <BotonAccion
+            pendiente={a.is_active ? "Ocultando…" : "Mostrando…"}
             className="inline-flex items-center gap-2 min-h-[44px] px-4 py-2 rounded-xl border-2 border-vc-cream text-vc-ink hover:border-vc-blue hover:text-vc-blue font-semibold"
           >
             {a.is_active ? (
@@ -310,7 +311,7 @@ function Row({
                 Mostrar
               </>
             )}
-          </button>
+          </BotonAccion>
         </form>
         <Link
           href={`/actividades/${a.id}`}

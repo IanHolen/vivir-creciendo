@@ -1,4 +1,6 @@
 import { Quote, Plus, ArrowUp, ArrowDown, Eye, EyeOff, Inbox } from "lucide-react";
+import BotonAccion from "@/components/admin/BotonAccion";
+import ConfirmarBorrado from "@/components/admin/ConfirmarBorrado";
 import { requireAdmin } from "@/lib/admin-auth";
 import { getVocesAdmin, type Voz } from "@/lib/testimonios";
 import { getMediaAssets } from "@/lib/media-queries";
@@ -17,7 +19,6 @@ import {
   btnPrimary,
   btnBlue,
   btnGhost,
-  btnDanger,
   hintClass,
   inputClass,
 } from "@/components/admin/ui";
@@ -199,8 +200,8 @@ function FilaVoz({ voz, i, total, imagenes }: { voz: Voz; i: number; total: numb
             <input type="hidden" name="tabla" value="voces" />
             <input type="hidden" name="id" value={voz.id} />
             <input type="hidden" name="next" value={String(!voz.is_active)} />
-            <button
-              type="submit"
+            <BotonAccion
+              pendiente={voz.is_active ? "Ocultando…" : "Mostrando…"}
               className={`${btnGhost} min-h-[44px] px-4 text-base`}
             >
               {voz.is_active ? (
@@ -214,7 +215,7 @@ function FilaVoz({ voz, i, total, imagenes }: { voz: Voz; i: number; total: numb
                   Mostrar
                 </>
               )}
-            </button>
+            </BotonAccion>
           </form>
         </div>
       </div>
@@ -241,21 +242,11 @@ function FilaVoz({ voz, i, total, imagenes }: { voz: Voz; i: number; total: numb
           </button>
         </form>
 
-        <details className="mt-5">
-          <summary className="cursor-pointer text-base text-vc-ink/55 hover:text-red-700">
-            Eliminar esta voz
-          </summary>
-          <form
-            action={borrarItem}
-            className="mt-2 rounded-xl bg-red-50 border border-red-200 p-3"
-          >
-            <input type="hidden" name="tabla" value="voces" />
-            <input type="hidden" name="id" value={voz.id} />
-            <button type="submit" className={`${btnDanger} min-h-[44px] text-base`}>
-              Sí, eliminar la voz de {voz.nombre}
-            </button>
-          </form>
-        </details>
+        <form action={borrarItem} className="mt-5">
+          <input type="hidden" name="tabla" value="voces" />
+          <input type="hidden" name="id" value={voz.id} />
+          <ConfirmarBorrado que={`la voz de ${voz.nombre}`} />
+        </form>
       </details>
     </li>
   );

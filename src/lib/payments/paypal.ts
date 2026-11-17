@@ -1,4 +1,5 @@
 import "server-only";
+import { PREINSCRIPCION, enPreinscripcion } from "./plans";
 
 /**
  * Capa mínima sobre la REST API de PayPal (Subscriptions v1 + Webhooks v1).
@@ -107,7 +108,20 @@ function nombrePayPal(completo: string): { given_name: string; surname?: string 
   return { given_name: partes.slice(0, -1).join(" "), surname: partes[partes.length - 1] };
 }
 
-export function planIdDe(plan: "mensual" | "anual"): string {
+/**
+ * Planes SIN periodo de prueba, para la pre-inscripción (el cobro se difiere
+ * con `start_time`, no con un ciclo TRIAL). No son secretos: van en código,
+ * por entorno. Creados el 28/29-oct-2026 y reactivados el 17-nov-2026.
+ */
+const PLANES_SIN_TRIAL = {
+  sandbox: { mensual: "P-11D81005WD917344DNLRITIA", anual: "P-08V87734GH857400KNLGR36Q" },
+  live: { mensual: "P-2E605735N5398630LNLR5XPY", anual: "P-5UL241953A554912CNLR5XPY" },
+} as const;
+
+export function planIdDe(plan: "mensual" | "anual", opciones: { sinTrial?: boolean } = {}): string {
+  if (opciones.sinTrial) {
+    return PLANES_SIN_TRIAL[process.env.PAYPAL_ENV === "live" ? "live" : "sandbox"][plan];
+  }
   const id = plan === "mensual" ? process.env.PAYPAL_PLAN_MENSUAL : process.env.PAYPAL_PLAN_ANUAL;
   if (!id) throw new Error(`Falta PAYPAL_PLAN_${plan.toUpperCase()} en el entorno.`);
   return id;
@@ -125,7 +139,11 @@ export async function crearSuscripcionPayPal(input: {
     method: "POST",
     requestId: `vc-${input.userId}-${input.plan}-${Date.now()}`,
     body: {
-      plan_id: planIdDe(input.plan),
+      // Pre-inscripción: plan sin trial y el primer cobro fijado por fecha.
+      // Fuera de la campaña: plan con 30 días gratis, sin start_time.
+      ...(enPreinscripcion()
+        ? { plan_id: planIdDe(input.plan, { sinTrial: true }), start_time: PREINSCRIPCION.primerCobro.toISOString() }
+        : { plan_id: planIdDe(input.plan) }),
       custom_id: input.userId,
       subscriber: {
         ...(input.email ? { email_address: input.email } : {}),

@@ -49,12 +49,12 @@ export default async function Actividades() {
       className="scroll-mt-20 md:scroll-mt-24 bg-white py-20 md:py-28 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-6xl mx-auto">
-        <h2 className="font-(family-name:--font-display) text-3xl md:text-4xl font-black text-vc-blue text-center uppercase tracking-tight">
+        <h2 data-reveal className="font-(family-name:--font-display) text-3xl md:text-4xl font-black text-vc-blue text-center uppercase tracking-tight">
           {actividadesTitle}
         </h2>
 
         <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
-          {activities.map((act) => {
+          {activities.map((act, i) => {
             const Icon = ICONS[normalizeIcon(act.icono)];
             const gratuita = normalizePlan(act.plan) === "gratuita";
             return (
@@ -63,7 +63,9 @@ export default async function Actividades() {
               <Link
                 key={act.id}
                 href={`/actividades/${act.id}`}
-                className={`group rounded-2xl p-8 flex flex-col border transition-colors hover:border-vc-blue focus-visible:ring-4 focus-visible:ring-vc-orange/50 ${
+                data-reveal
+                data-reveal-delay={String(i % 3)}
+                className={`vc-card-lift group rounded-2xl p-8 flex flex-col border transition-colors hover:border-vc-blue focus-visible:ring-4 focus-visible:ring-vc-orange/50 ${
                   gratuita
                     ? "bg-vc-cream border-vc-orange/40"
                     : "bg-white border-vc-cream shadow-sm"

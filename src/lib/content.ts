@@ -11,6 +11,10 @@ export const siteConfig = {
   // renderizan — es preferible a un link roto (el doc marca los links rotos
   // como bloqueante para publicar).
   whatsapp: null as string | null,
+  // Enlace de invitación al grupo de WhatsApp de la comunidad
+  // (chat.whatsapp.com/…). Pedido por las fundadoras el 17-nov-2026. Mientras
+  // sea null no se muestra nada.
+  whatsappGrupo: null as string | null,
   // Mensaje pre-rellenado del link de WhatsApp (Parte XI del doc).
   whatsappPrefill: "Hola, quiero saber más sobre Vivir Creciendo",
   social: {
@@ -65,8 +69,9 @@ export const heroContent = {
   title:
     "¿Cuándo fue la última vez que terminaste una conversación pensando: «aquí no soy invisible»?",
   subtitle:
-    "Vivir Creciendo es una comunidad en español para personas de 65 años o más que quieren seguir siendo protagonistas de sus propias vidas. Desde donde estés.",
-  cta: "Quiero mi actividad gratuita",
+    "Vivir Creciendo es una comunidad en español para personas de 65 años o más que quieren seguir siendo protagonistas de sus propias vidas, desde donde estés.",
+  // Botón del hero: "Quisiera participar" (fundadoras, 17-nov-2026).
+  cta: "Quisiera participar",
   ctaHref: "/#actividades",
   // Texto de bajo riesgo debajo del botón — reduce la fricción del alta.
   // Se quitó "Sin tarjeta de crédito" (Ian 2026-08-19). Estaba acá y en otros
@@ -114,8 +119,10 @@ export const elProblema = {
     "Ya estudiaste, ya trabajaste, ya criaste. Ahora toca descansar.",
   ],
   enfasis: "Nosotras creemos que eso es FALSO.",
+  // Cierre según corrección de las fundadoras (17-nov-2026): se quitó "Y que
+  // no están dispuestos a hacerlo en silencio".
   cierre:
-    "Vivir Creciendo existe para quienes saben que todavía tienen mucho por vivir, aprender y aportar. Y que no están dispuestos a hacerlo en silencio.",
+    "Vivir Creciendo existe para quienes saben que todavía tienen mucho por vivir, aprender y aportar, y quieren seguir siendo protagonistas.",
 };
 
 // Sección 03 — Qué vas a ganar acá: los 6 beneficios (nov-2026). Reemplazan a
@@ -464,7 +471,7 @@ export interface MembershipPlan {
 // viejo de tres planes y contradecía a la propia sección.
 export const membershipsTitle = "Nuestra membresía";
 export const membershipsSubtitle =
-  "Empieza por la actividad gratuita. Si el espacio es para ti, te esperamos.";
+  "3 actividades gratuitas por un mes. Si el espacio es para ti, te esperamos.";
 
 export const membershipPlans: MembershipPlan[] = [
   {
@@ -497,9 +504,11 @@ export const membershipPlans: MembershipPlan[] = [
     tagline: "Acceso completo. Cancelas cuando quieras, sin penalización.",
     features: [
       "Cine Reflexión: te enviamos la película, la ves y reflexionamos juntos",
-      "Círculo de escucha: rueda grupal para poner palabras a lo que estás viviendo",
-      "Salud y bienestar: exploramos la nutrición desde una mirada integral para cultivar salud, energía y bienestar",
-      "Descuento en actividades especiales",
+      // Nombres de las actividades tal cual se llaman, con mayúsculas (fundadoras,
+      // 17-nov-2026): antes decía "Círculo de escucha".
+      "Caminando Juntos: un encuentro semanal en un espacio de confianza para compartir lo que estás viviendo",
+      "Salud y Bienestar: exploramos la nutrición desde una mirada integral para cultivar salud, energía y bienestar",
+      "Descuento en actividades especiales y talleres",
     ],
     reassurance: "Los primeros 30 días son gratis. Sin compromisos de permanencia.",
     cta: "Quiero la mensual",
@@ -516,7 +525,7 @@ export const membershipPlans: MembershipPlan[] = [
       "Todo lo de la membresía mensual",
       "Un solo pago al año: te olvidas de las renovaciones",
       "Equivale a $22,50 USD por mes",
-      "Descuento en actividades especiales",
+      "Descuento en actividades especiales y talleres",
     ],
     reassurance: "Los primeros 30 días son gratis. Sin compromisos de permanencia.",
     cta: "Quiero la anual",
@@ -857,12 +866,12 @@ export const faqs = [
   {
     question: "¿Cuánto dura el compromiso? ¿Puedo cancelar?",
     answer:
-      "No hay compromiso de permanencia. Puedes cancelar en cualquier momento desde tu cuenta, sin llamados ni burocracia. Si eliges el plan anual y decides cancelar, te devolvemos el proporcional de lo no usado. Queremos que estés porque quieres estar — no porque es complicado irse.",
+      "No hay compromiso de permanencia. Puedes cancelar en cualquier momento desde tu cuenta, sin llamados ni burocracia. Queremos que estés porque quieres estar — no porque es complicado irse.",
   },
   {
     question: "¿Hay personas de mi país o de mi contexto en la comunidad?",
     answer:
-      "Vivir Creciendo es una comunidad hispanohablante global. Tenemos miembros de varios países. La diversidad de contextos hace las conversaciones más ricas — es uno de los activos más valorados por nuestros miembros. Y el español compartido crea un terreno común inmediato.",
+      "Vivir Creciendo es una comunidad hispanohablante global. Tenemos miembros de varios países. La diversidad cultural hace las conversaciones más ricas — es uno de los activos más valorados por nuestros miembros. Y el español compartido crea un terreno común inmediato.",
   },
   {
     question: "¿En qué horarios son las actividades? ¿Puedo ver las grabaciones después?",
@@ -883,9 +892,9 @@ export const faqs = [
       "Tus datos personales (nombre, email, información de pago) son usados exclusivamente para gestionar tu membresía y comunicarte actividades. No los vendemos, no los cedemos a terceros, no los usamos para publicidad. Puedes ver nuestra Política de Privacidad completa en el pie de esta página.",
   },
   {
-    question: "¿Qué pasa si la primera sesión no me convence?",
+    question: "¿Por qué ofrecen un mes gratis?",
     answer:
-      "La primera sesión es gratis y sin compromiso — precisamente para que puedas sentir si el espacio es para ti. Si no te convence, no pasa nada. No hay llamado de seguimiento ni presión para suscribirte. Queremos que el «sí» venga de adentro — no de una campaña de marketing.",
+      "Ofrecemos un mes gratis y sin compromiso — precisamente para que puedas sentir si el espacio es para ti. Si no te convence, no pasa nada. No hay llamado de seguimiento ni presión para suscribirte. Queremos que el «sí» venga de adentro — no de una campaña de marketing.",
   },
 ];
 
@@ -938,6 +947,7 @@ export const soporte = {
   titulo: "¿Prefieres escribirnos antes?",
   emailLabel: "Escríbenos por email",
   whatsappLabel: "Escríbenos por WhatsApp",
+  grupoLabel: "Únete al grupo de WhatsApp",
 };
 
 // Sección 12 — Footer.

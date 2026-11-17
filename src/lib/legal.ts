@@ -5,9 +5,12 @@
  * placeholders se ven entre corchetes a propósito, para que nadie los tome
  * por definitivos.
  */
+import { siteConfig } from "@/lib/content";
+
 export const legal = {
   titular: "[NOMBRE LEGAL DE LA TITULAR]",
   pais: "[PAÍS]",
-  email: "contacto@vivircreciendo.com",
+  // Mismo correo que el resto del sitio: se cambia solo en siteConfig.email.
+  email: siteConfig.email,
   actualizado: "17 de noviembre de 2026",
 };

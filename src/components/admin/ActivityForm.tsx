@@ -14,6 +14,8 @@ import {
   HeartPulse,
   DoorOpen,
 } from "lucide-react";
+import type { ComponentType, SVGProps } from "react";
+import Abrazo from "@/components/icons/Abrazo";
 import FechaPicker from "@/components/admin/FechaPicker";
 import HoraPicker from "@/components/admin/HoraPicker";
 import {
@@ -194,9 +196,11 @@ function PlanPicker({ current }: { current?: string | null }) {
  * lo importan también las server actions, y arrastrar lucide hasta ahí metería
  * el paquete de íconos donde no se dibuja nada.
  */
-const ICONS: Record<ActivityIcon, typeof Film> = {
+// `ComponentType` y no `typeof Film`: el ícono de abrazo es propio, no de lucide.
+const ICONS: Record<ActivityIcon, ComponentType<SVGProps<SVGSVGElement>>> = {
   Film,
   Footprints,
+  Abrazo,
   HeartPulse,
   DoorOpen,
   Users,

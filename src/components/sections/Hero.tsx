@@ -73,8 +73,8 @@ export default async function Hero() {
               de miembros (Ian 2026-08-12): el dato de prueba social entra en
               el primer golpe de vista, sin robarle protagonismo al titular.
               Si `memberCount` vuelve a null, el pie desaparece solo. */}
-          <figure data-reveal data-reveal-delay="1" className="order-1 lg:order-2 lg:col-span-2 w-full max-w-md mx-auto lg:mx-0 lg:ml-auto">
-            <div className="relative aspect-4/3 rounded-3xl overflow-hidden shadow-xl">
+          <figure data-reveal data-reveal-delay="1" className="order-1 lg:order-2 lg:col-span-2 w-full max-w-lg mx-auto lg:mx-0 lg:ml-auto">
+            <div className="relative aspect-video rounded-3xl overflow-hidden shadow-xl">
               {foto.url && (
                 <Image
                   src={foto.url}
@@ -82,7 +82,7 @@ export default async function Hero() {
                   fill
                   className="object-cover"
                   priority
-                  sizes="(max-width: 1024px) 100vw, 24rem"
+                  sizes="(max-width: 1024px) 100vw, 32rem"
                 />
               )}
             </div>

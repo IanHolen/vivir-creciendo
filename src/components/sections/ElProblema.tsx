@@ -17,7 +17,8 @@ export default function ElProblema() {
             key={i}
             className={
               i === 0
-                ? "text-xl md:text-2xl leading-relaxed font-medium text-vc-blue-dark text-balance"
+                ? // La pregunta de apertura va en negrita (fundadoras, 17-nov-2026).
+                  "text-xl md:text-2xl leading-relaxed font-bold text-vc-blue-dark text-balance"
                 : "text-lg md:text-xl leading-relaxed text-vc-ink"
             }
           >

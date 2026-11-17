@@ -10,6 +10,8 @@ import {
   Repeat,
   ArrowRight,
 } from "lucide-react";
+import type { ComponentType, SVGProps } from "react";
+import Abrazo from "@/components/icons/Abrazo";
 import { actividadesTitle } from "@/lib/content";
 import {
   getActivities,
@@ -30,9 +32,11 @@ import {
  * por sort_order) y cada card enlaza a su ficha. Las fundadoras editan todo
  * desde /admin, sin tocar código. De content.ts solo queda el título.
  */
-const ICONS: Record<ActivityIcon, typeof Film> = {
+// `ComponentType` y no `typeof Film`: el ícono de abrazo es propio, no de lucide.
+const ICONS: Record<ActivityIcon, ComponentType<SVGProps<SVGSVGElement>>> = {
   Film,
   Footprints,
+  Abrazo,
   HeartPulse,
   DoorOpen,
   Users,

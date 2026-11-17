@@ -79,10 +79,10 @@ export const MEDIA_SLOTS: MediaSlot[] = [
     label: "Foto de la portada",
     ubicacion: "Inicio → arriba a la derecha, al lado del título principal.",
     recomendacion:
-      "Horizontal, 4:3 (por ejemplo 1200 × 900 px). Es lo primero que se ve: conviene una captura real de una sesión de Zoom de la comunidad.",
+      "Horizontal, 16:9 (por ejemplo 1600 × 900 px). Es lo primero que se ve: conviene una captura real de una sesión de Zoom de la comunidad.",
     fallback: "/images/hero-community.jpg",
     fallbackAlt:
-      "Grupo de mujeres y hombres de 65 años conversando y riendo en una sesión online de Vivir Creciendo",
+      "Computadora portátil con una sesión de Zoom de Vivir Creciendo: una veintena de miembros de la comunidad conversando en pantalla",
   },
   {
     key: "hero.video",

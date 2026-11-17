@@ -66,6 +66,17 @@ export default function FinalCTA() {
                 {soporte.whatsappLabel}
               </a>
             )}
+            {siteConfig.whatsappGrupo && (
+              <a
+                href={siteConfig.whatsappGrupo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-3 min-h-[52px] px-6 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors focus-visible:ring-4 focus-visible:ring-white text-lg"
+              >
+                <MessageCircle className="w-5 h-5" aria-hidden="true" />
+                {soporte.grupoLabel}
+              </a>
+            )}
           </div>
         </div>
       </div>

@@ -89,6 +89,7 @@ export function planRank(plan: string | null | undefined): number {
 export const ACTIVITY_ICONS = [
   { value: "Film", label: "Película" },
   { value: "Footprints", label: "Caminata" },
+  { value: "Abrazo", label: "Abrazo" },
   { value: "HeartPulse", label: "Salud" },
   { value: "DoorOpen", label: "Puerta abierta" },
   { value: "Users", label: "Grupo" },

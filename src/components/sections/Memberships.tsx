@@ -40,7 +40,7 @@ export default function Memberships() {
         {/* Pre-inscripción (fundadoras, 17-nov-2026): se apaga sola el 1-ene. */}
         {preinscripcion && (
           <p className="mt-6 mx-auto max-w-2xl rounded-2xl bg-vc-orange/10 border border-vc-orange/30 px-6 py-4 text-center text-lg text-vc-ink">
-            <strong className="text-vc-orange-dark">Pre-inscripción de diciembre:</strong> si te sumas antes del 31 de diciembre, tienes más de un mes gratis. El primer cobro es el{" "}
+            <strong className="text-vc-orange-dark">Pre-inscripción:</strong> si te sumas antes del 31 de diciembre, tienes un mes gratis. El primer cobro es el{" "}
             <strong>{fechaLarga(PREINSCRIPCION.primerCobro)}</strong>.
           </p>
         )}
@@ -77,7 +77,8 @@ export default function Memberships() {
               </p>
               <p className="mt-1 text-base text-vc-ink/70">{plan.priceNote}</p>
 
-              <p className="mt-5 font-(family-name:--font-subtitle) text-lg italic text-vc-ink/90">
+              {/* En negrita en las tres tarjetas (fundadoras, 17-nov-2026). */}
+              <p className="mt-5 font-(family-name:--font-subtitle) text-lg italic font-bold text-vc-ink">
                 {plan.tagline}
               </p>
 

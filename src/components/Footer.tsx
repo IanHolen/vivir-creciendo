@@ -122,6 +122,18 @@ export default function Footer() {
                   </a>
                 </li>
               )}
+              {siteConfig.whatsappGrupo && (
+                <li>
+                  <a
+                    href={siteConfig.whatsappGrupo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
+                  >
+                    Grupo de WhatsApp de la comunidad
+                  </a>
+                </li>
+              )}
               <li>
                 <a
                   href={siteConfig.social.instagram}

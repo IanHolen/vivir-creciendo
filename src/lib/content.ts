@@ -63,7 +63,7 @@ export const heroContent = {
   title:
     "¿Cuándo fue la última vez que terminaste una conversación pensando: «aquí no soy invisible»?",
   subtitle:
-    "Vivir Creciendo es una comunidad para personas de 65 o más que quieren seguir siendo protagonistas de su propia vida. En español. Desde donde estés.",
+    "Vivir Creciendo es una comunidad en español para personas de 65 años o más que quieren seguir siendo protagonistas de sus propias vidas. Desde donde estés.",
   cta: "Quiero mi actividad gratuita",
   ctaHref: "#contacto",
   // Texto de bajo riesgo debajo del botón — reduce la fricción del alta.
@@ -108,70 +108,70 @@ export function memberCountLine(): string | null {
 // "FALSO" va en mayúsculas en el original y así se muestra.
 export const elProblema = {
   parrafos: [
-    "Hay una idea instalada que dice que a los 65 ya se hizo todo lo importante.",
-    "Ya estudiaste, ya trabajaste, ya criaste. Ahora a descansar.",
+    "¿Quién dijo que a los 65 ya se hizo todo lo importante?",
+    "Ya estudiaste, ya trabajaste, ya criaste. Ahora toca descansar.",
   ],
-  enfasis: "Nosotras creemos que eso es FALSO",
+  enfasis: "Nosotras creemos que eso es FALSO.",
   cierre:
-    "Vivir Creciendo existe para quienes saben que todavía tienen mucho por vivir, aprender y aportar — y que se niegan a hacerlo en silencio.",
+    "Vivir Creciendo existe para quienes saben que todavía tienen mucho por vivir, aprender y aportar. Y que no están dispuestos a hacerlo en silencio.",
 };
 
 // Sección 03 — Qué vas a ganar acá: los 6 beneficios (nov-2026). Reemplazan a
 // las tres columnas de "¿Qué es Vivir Creciendo?": transformaciones, no
 // actividades. Texto del documento, llevado a español neutro.
-export const beneficiosTitle = "Qué vas a ganar aquí";
+export const beneficiosTitle = "¿Qué encontrarás en Vivir Creciendo?";
 export const beneficios = [
   {
     icon: "Award" as const,
     title: "Un lugar donde tu experiencia importa",
-    text: "No vas a ser un número ni un \"usuario mayor\". Aquí los años de vida son un activo, no una anécdota.",
+    text: "Aquí no eres un número ni un «usuario mayor». Tu historia, tus ideas y tu experiencia tienen valor.",
   },
   {
     icon: "MessagesSquare" as const,
     title: "Conversaciones que dan ganas de volver",
-    text: "Cada semana hay un tema nuevo. No son clases: son charlas entre personas que aportan.",
+    text: "Cada semana, un tema nuevo para compartir, escuchar, reflexionar y aprender. No son clases: son encuentros entre personas.",
   },
   {
     icon: "HeartHandshake" as const,
-    title: "Compañía que entiende desde adentro",
-    text: "Las personas en Vivir Creciendo están viviendo algo parecido a lo que tú vives ahora.",
+    title: "Compañía de personas que te entienden",
+    text: "En Vivir Creciendo encuentras personas que comparten inquietudes, experiencias y preguntas propias de esta etapa de la vida.",
   },
   {
     icon: "Video" as const,
-    title: "Actividades en vivo, desde tu casa, en español",
-    text: "Sin complicaciones técnicas. Si puedes hacer una videollamada, puedes estar aquí.",
+    title: "Encuentros en vivo, desde donde estés y en español",
+    text: "Sin complicaciones técnicas. Si puedes hacer una videollamada, puedes ser parte.",
   },
   {
     icon: "CalendarCheck" as const,
-    title: "Una comunidad con estructura y cuidado",
-    text: "No es un grupo de WhatsApp caótico. Hay una agenda, hay guía, hay propósito.",
+    title: "Una comunidad organizada y cuidada",
+    text: "No es un grupo de WhatsApp más. Hay propuestas, encuentros, orientación y un propósito compartido.",
   },
   {
     icon: "UserCheck" as const,
-    title: "Expertas que están presentes",
-    text: "Alejandra y Nurit no graban videos y desaparecen. Están en cada encuentro.",
+    title: "Alejandra y Nurit, presentes",
+    text: "No estamos detrás de una pantalla ni aparecemos solamente en videos. Ale y Nurit estamos presentes, acompañando y construyendo comunidad en cada encuentro.",
   },
 ];
 
 // Sección 04 — Cómo es estar adentro (nov-2026). Que el visitante se imagine
 // adentro. Texto literal del documento.
 export const estarAdentro = {
-  title: "Cómo es estar adentro",
+  title: "Así se vive Vivir Creciendo",
   items: [
     {
-      title: "Caminando Juntos",
-      text: "No es una clase: es una sala donde puedes contar lo que estás viviendo y alguien — de verdad — escucha.",
+      title: "Cine Reflexión",
+      text: "Te proponemos una película para ver a tu ritmo. Después nos encontramos para conversar sobre lo que nos despertó, nos hizo pensar y sentir.",
     },
     {
-      title: "Cine Reflexión",
-      text: "Te enviamos una película tú la ves y en nuestro encuentro hablamos de lo que nos dejó.",
+      title: "Caminando Juntos",
+      text: "No es una clase: es un espacio para compartir lo que estás viviendo, ser escuchado y enriquecerte con las experiencias de los demás.",
     },
     {
       title: "Salud y Bienestar",
-      text: "Encuentros para entender mejor tu salud, a tu ritmo y sin juicios. Ideas simples para aplicar en tu día a día",
+      text: "Encuentros para comprender mejor tu salud y bienestar, compartir experiencias y descubrir ideas sencillas que puedas incorporar a tu vida cotidiana, sin juicios ni recetas universales.",
     },
   ],
-  cierre: "Eso es Vivir Creciendo. Una comunidad donde eres protagonista.",
+  cierre: "Eso es Vivir Creciendo: una comunidad donde tu voz importa y sigues siendo protagonista de tu propia vida.",
 };
 
 // Sección 09 — La garantía (nov-2026). Va entre los precios y las preguntas
@@ -236,13 +236,13 @@ export const actividadesTitle = "Nuestras actividades";
 // Sección "Nos nutrimos con expertos especialistas en" (Ian 2026-06-28).
 // Reemplaza la grilla de colaboradores/avatares por 5 categorías con ícono.
 // El ícono (componente lucide) se mapea por índice en Nosotros.tsx.
-export const expertAreasTitle = "Nos nutrimos con expertos especialistas en";
+export const expertAreasTitle = "Ampliamos nuestra mirada con especialistas en:";
 export const expertAreas = [
   "Vínculos, emociones y vida íntima",
   "Tecnología e Inteligencia Artificial",
-  "Salud y Longevidad",
-  "Espiritualidad y Trascendencia",
-  "Finanzas y habilidades prácticas para la vida diaria",
+  "Salud, bienestar y longevidad",
+  "Espiritualidad y sentido de vida",
+  "Finanzas y herramientas para la vida cotidiana",
 ];
 
 // NOTA: el bloque `quienesSomos` (7 párrafos que vivían dentro del Hero) se
@@ -681,7 +681,7 @@ export const teamMembers: TeamMember[] = [
     name: "Alejandra Furman-Paz",
     role: "Cofundadora de Vivir Creciendo | Coach de Salud en Nutrición Integrativa",
     quote: null,
-    bio: "Cuando llegué a los 65 entendí que el bienestar es mucho más que cuidar el cuerpo. También necesitamos espacios donde seguir aprendiendo, compartiendo y sintiendo que pertenecemos.\n\nComo Coach de Salud en Nutrición Integrativa, llevo años acompañando a personas a construir una relación más consciente con su alimentación, su energía y su bienestar, respetando que cada historia y cada etapa de la vida son únicas.\n\nJunto con Nurit creamos Vivir Creciendo porque soñábamos con una comunidad en español donde las personas pudieran seguir aprendiendo, compartiendo y construyendo vínculos genuinos. Un lugar donde crecer no termina con la edad: simplemente cambia de forma.",
+    bio: "Cuando llegué a los 65 entendí que el bienestar es mucho más que cuidar el cuerpo. También necesitamos espacios donde seguir aprendiendo, compartiendo y sintiendo que pertenecemos.\n\nComo Coach de Salud en Nutrición Integrativa, acompaño a personas a construir una relación más consciente con su alimentación, su energía y su bienestar, reconociendo que cada historia y cada etapa de la vida son únicas.\n\nJunto con Nurit creamos Vivir Creciendo con el deseo de construir una comunidad en español donde podamos seguir aprendiendo, compartiendo y creando vínculos genuinos. Un lugar donde crecer no termina con la edad: simplemente cambia de forma.",
     image: "/images/alejandra.jpg", // foto real (Ian 2026-08-04)
     imagePosition: "object-top", // vertical 1126x1600 — centrada cortaría la cara
     mediaSlot: "nosotras.alejandra",
@@ -691,7 +691,7 @@ export const teamMembers: TeamMember[] = [
     name: "Nurit Mileris-Zylbersztejn",
     role: "Cofundadora de Vivir Creciendo | Psicoterapeuta, docente y facilitadora de comunidades",
     quote: null,
-    bio: "Hace casi cuarenta años acompaño a personas, parejas, familias y grupos en procesos de cambio. En ese recorrido comprendí que muchas de las transformaciones más profundas ocurren cuando encontramos espacios donde somos escuchados, reconocidos y dejamos de sentirnos solos.\n\nMi trabajo integra la psicoterapia, la docencia y el trabajo con grupos desde una mirada narrativa, colaborativa y existencial, siempre con la convicción de que el diálogo puede abrir nuevas posibilidades para vivir.\n\nJunto con Ale creamos Vivir Creciendo porque soñábamos con una comunidad en español donde las personas pudieran seguir aprendiendo, compartiendo y construyendo vínculos genuinos. Un espacio donde crecer no termina con la edad: simplemente cambia de forma.",
+    bio: "Hace casi cuarenta años acompaño a personas, parejas, familias y grupos en procesos de cambio. En ese recorrido comprendí que muchas de las transformaciones más profundas ocurren cuando encontramos espacios donde somos escuchados, reconocidos y podemos dejar de sentirnos solos.\n\nMi trabajo integra la psicoterapia, la docencia y las prácticas narrativas, reflexivas y colaborativas, desde una mirada que reconoce que siempre existen nuevas posibilidades para comprender y vivir nuestra propia historia.\n\nJunto con Ale creamos Vivir Creciendo con el deseo de construir una comunidad en español donde podamos seguir aprendiendo, compartiendo y creando vínculos genuinos. Un espacio donde crecer no termina con la edad: simplemente cambia de forma.",
     image: "/images/nurit.png", // foto real (Ian 2026-06-28)
     mediaSlot: "nosotras.nurit",
     cofounder: true,

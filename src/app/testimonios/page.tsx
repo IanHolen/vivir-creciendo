@@ -41,15 +41,6 @@ export default async function TestimoniosPage({
       <main className="bg-white">
         <section className="bg-vc-blue py-16 md:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center text-white">
-            {/* Botón visible de regreso (fundadoras, 17-nov-2026): antes era
-                un enlace discreto y la gente no encontraba cómo volver. */}
-            <Link
-              href="/"
-              className="inline-flex items-center justify-center gap-2 min-h-[52px] px-6 mb-8 rounded-xl bg-vc-orange hover:bg-vc-orange-light text-white transition-colors text-lg font-semibold shadow-lg focus-visible:ring-4 focus-visible:ring-white/50"
-            >
-              <ArrowLeft className="w-5 h-5" aria-hidden="true" />
-              Regresar a la página principal
-            </Link>
             <h1 className="font-(family-name:--font-display) text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tight">
               {testimoniosPage.title}
             </h1>
@@ -136,13 +127,12 @@ export default async function TestimoniosPage({
           </div>
         </section>
 
-        {/* Botón flotante de regreso (fundadoras, 17-nov-2026): naranja como el
-            resto de los botones y fijo abajo a la izquierda, así acompaña al
-            visitante mientras baja por los videos. Abajo a la derecha queda
-            libre para el botón de WhatsApp. */}
+        {/* Único botón de regreso (fundadoras, 17-nov-2026): naranja, fijo en
+            la esquina superior derecha justo debajo de la barra (h-20 / md:h-24
+            del Navbar), así acompaña al visitante mientras baja por los videos. */}
         <Link
           href="/"
-          className="fixed bottom-6 left-4 sm:left-6 z-50 inline-flex items-center gap-2 min-h-[52px] px-5 rounded-full bg-vc-orange hover:bg-vc-orange-light text-white text-base sm:text-lg font-semibold shadow-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50"
+          className="fixed top-24 md:top-28 right-4 sm:right-6 z-30 inline-flex items-center gap-2 min-h-[52px] px-5 rounded-full bg-vc-orange hover:bg-vc-orange-light text-white text-base sm:text-lg font-semibold shadow-xl transition-colors focus-visible:ring-4 focus-visible:ring-white/60"
         >
           <ArrowLeft className="w-5 h-5" aria-hidden="true" />
           Regresar a la página principal

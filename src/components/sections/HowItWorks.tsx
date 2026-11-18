@@ -31,7 +31,7 @@ export default function HowItWorks() {
               <h3 className="mt-4 font-semibold text-xl md:text-2xl text-vc-blue-dark leading-snug">
                 {step.title}
               </h3>
-              <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed text-justify hyphens-auto">
+              <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed text-left md:text-justify">
                 {step.text}
               </p>
             </li>

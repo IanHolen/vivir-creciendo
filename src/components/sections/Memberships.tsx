@@ -138,10 +138,10 @@ export default function Memberships() {
               <h3 className="font-semibold text-xl text-vc-blue-dark">
                 {cancelacion.title}
               </h3>
-              <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed text-justify hyphens-auto">
+              <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed text-left md:text-justify">
                 {cancelacion.text}
               </p>
-              <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed text-justify hyphens-auto">
+              <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed text-left md:text-justify">
                 {cancelacion.closing}
               </p>
             </div>

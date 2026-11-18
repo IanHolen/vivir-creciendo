@@ -141,7 +141,7 @@ export default function VocesCarousel({ voces }: { voces: Voz[] }) {
                   className="w-8 h-8 text-vc-orange flex-shrink-0"
                   aria-hidden="true"
                 />
-                <blockquote className="mt-4 flex-1 text-lg text-vc-ink leading-relaxed text-justify hyphens-auto">
+                <blockquote className="mt-4 flex-1 text-lg text-vc-ink leading-relaxed text-left md:text-justify">
                   {v.cita}
                 </blockquote>
                 <figcaption className="mt-6 pt-4 border-t border-vc-cream flex items-center gap-3">

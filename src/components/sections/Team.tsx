@@ -41,7 +41,7 @@ export default function Team() {
               {/* Las cofundadoras ya no tienen `quote`: su presentación es la
                   bio reescrita, en párrafos. */}
               {member.bio ? (
-                <div className="mt-4 space-y-3 text-justify hyphens-auto">
+                <div className="mt-4 space-y-3 text-left md:text-justify">
                   {member.bio.split("\n\n").map((p, i) => (
                     <p key={i} className="text-vc-ink/80 leading-relaxed">
                       {p}

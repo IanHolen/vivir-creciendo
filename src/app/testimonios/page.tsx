@@ -104,7 +104,7 @@ export default async function TestimoniosPage({
                           <p className="text-base text-vc-ink/70">{t.contexto}</p>
                         )}
                         {t.descripcion && (
-                          <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed text-justify hyphens-auto">
+                          <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed text-left md:text-justify">
                             {t.descripcion}
                           </p>
                         )}

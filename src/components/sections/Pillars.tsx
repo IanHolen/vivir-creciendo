@@ -53,7 +53,7 @@ export default function Pillars() {
                 <h3 className="mt-6 font-(family-name:--font-display) text-xl md:text-2xl font-black text-vc-blue-dark uppercase tracking-tight">
                   {pillar.title}
                 </h3>
-                <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed text-justify hyphens-auto">
+                <p className="mt-3 text-lg text-vc-ink/80 leading-relaxed text-left md:text-justify">
                   {pillar.description}
                 </p>
               </div>

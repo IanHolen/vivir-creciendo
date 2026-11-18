@@ -85,13 +85,13 @@ export default async function Nosotros() {
               </div>
 
               {/* Las bios vienen en párrafos separados por línea en blanco.
-                  Texto justificado (pedido de Ian): `hyphens-auto` es
-                  necesario acá — sin partición de palabras, justificar en
-                  español abre "ríos" de espacio entre palabras, y en columna
-                  angosta se nota mucho. El <html lang="es"> del layout es lo
-                  que habilita el diccionario de guionado. */}
+                  Justificado solo desde md (pedido de Ian). Sin `hyphens-auto`
+                  desde el 17-nov-2026: las fundadoras no quieren palabras
+                  partidas ("marke-ting"). Sin guionado, justificar en columna
+                  angosta abre "ríos" de espacio, así que en móvil va a la
+                  izquierda. */}
               {member.bio && (
-                <div className="mt-6 space-y-4 text-justify hyphens-auto">
+                <div className="mt-6 space-y-4 text-left md:text-justify">
                   {member.bio.split("\n\n").map((p, i) => (
                     <p key={i} className="text-lg text-vc-ink/80 leading-relaxed">
                       {p}

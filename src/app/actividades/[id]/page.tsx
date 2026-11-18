@@ -214,12 +214,12 @@ export default async function ActivityDetailPage({
         <section className="py-16 md:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
             {!mostrarCandado ? (
-              <p className="text-xl md:text-2xl text-vc-blue-dark/80 leading-relaxed whitespace-pre-line text-justify hyphens-auto">
+              <p className="text-xl md:text-2xl text-vc-blue-dark/80 leading-relaxed whitespace-pre-line text-left md:text-justify">
                 {fullDescription ?? activity.short_preview}
               </p>
             ) : (
               <>
-                <p className="text-xl md:text-2xl text-vc-blue-dark/80 leading-relaxed text-justify hyphens-auto">
+                <p className="text-xl md:text-2xl text-vc-blue-dark/80 leading-relaxed text-left md:text-justify">
                   {activity.short_preview}
                 </p>
                 <div className="mt-10 rounded-2xl bg-vc-cream/40 border border-vc-cream p-8 text-center">
@@ -269,7 +269,7 @@ export default async function ActivityDetailPage({
                 <HelpCircle className="w-7 h-7 text-vc-orange" aria-hidden="true" />
                 Preguntas frecuentes
               </h2>
-              <p className="mt-6 text-lg text-vc-blue-dark/80 leading-relaxed whitespace-pre-line text-justify hyphens-auto">
+              <p className="mt-6 text-lg text-vc-blue-dark/80 leading-relaxed whitespace-pre-line text-left md:text-justify">
                 {activity.faq}
               </p>
             </div>

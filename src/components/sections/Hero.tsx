@@ -41,7 +41,7 @@ export default async function Hero() {
             {/* Justificado solo en desktop: en mobile la columna es tan
                 angosta que justificar abre ríos de espacio incluso con
                 guionado, y ahí el centrado se lee mejor. */}
-            <p className="mt-6 text-lg md:text-xl text-vc-ink leading-relaxed max-w-2xl mx-auto lg:mx-0 lg:text-justify hyphens-auto">
+            <p className="mt-6 text-lg md:text-xl text-vc-ink leading-relaxed max-w-2xl mx-auto lg:mx-0 lg:text-justify">
               {heroContent.subtitle}
             </p>
 

@@ -21,7 +21,7 @@ export default function ElMomento() {
             className={
               i === 0
                 ? "text-xl md:text-2xl leading-relaxed font-medium text-vc-blue-dark text-balance"
-                : "text-lg md:text-xl leading-relaxed text-vc-ink text-justify hyphens-auto"
+                : "text-lg md:text-xl leading-relaxed text-vc-ink text-left md:text-justify"
             }
           >
             {p}

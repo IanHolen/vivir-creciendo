@@ -21,6 +21,7 @@ import { LOGO_BLANCO_PNG_BASE64 } from "@/lib/email/logo";
 
 const FROM = process.env.EMAIL_FROM || "Vivir Creciendo <onboarding@resend.dev>";
 const REPLY_TO = process.env.EMAIL_REPLY_TO || siteConfig.email;
+const COPIA_A = (process.env.EMAIL_BCC ?? siteConfig.email) || undefined;
 
 function esc(s: string): string {
   return s
@@ -242,6 +243,9 @@ export async function enviarConfirmacionActividad(input: {
     const { error } = await new Resend(key).emails.send({
       from: FROM,
       to: input.to,
+      // Copia oculta a la comunidad (fundadoras, 17-nov-2026): cada correo que
+      // sale les llega también a ellas, sin que el destinatario lo vea.
+      bcc: COPIA_A,
       replyTo: REPLY_TO,
       subject,
       html,

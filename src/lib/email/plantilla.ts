@@ -14,6 +14,7 @@ import { LOGO_BLANCO_PNG_BASE64 } from "@/lib/email/logo";
  */
 const FROM = process.env.EMAIL_FROM || "Vivir Creciendo <onboarding@resend.dev>";
 const REPLY_TO = process.env.EMAIL_REPLY_TO || siteConfig.email;
+const COPIA_A = (process.env.EMAIL_BCC ?? siteConfig.email) || undefined;
 
 export const DISPLAY = "'Archivo Black','Arial Black',Arial,sans-serif";
 export const BODY = "'Work Sans','Helvetica Neue',Helvetica,Arial,sans-serif";
@@ -101,6 +102,9 @@ export async function enviarCorreo(input: {
     const { error } = await new Resend(key).emails.send({
       from: FROM,
       to: input.to,
+      // Copia oculta a la comunidad (fundadoras, 17-nov-2026): cada correo que
+      // sale les llega también a ellas, sin que el destinatario lo vea.
+      bcc: COPIA_A,
       replyTo: REPLY_TO,
       subject: input.subject,
       html: input.html,

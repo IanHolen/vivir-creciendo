@@ -45,7 +45,7 @@ export default async function TestimoniosPage({
                 un enlace discreto y la gente no encontraba cómo volver. */}
             <Link
               href="/"
-              className="inline-flex items-center justify-center gap-2 min-h-[52px] px-6 mb-8 rounded-xl border-2 border-white/70 text-white hover:bg-white hover:text-vc-blue-dark transition-colors text-lg font-semibold focus-visible:ring-4 focus-visible:ring-white/50"
+              className="inline-flex items-center justify-center gap-2 min-h-[52px] px-6 mb-8 rounded-xl bg-vc-orange hover:bg-vc-orange-light text-white transition-colors text-lg font-semibold shadow-lg focus-visible:ring-4 focus-visible:ring-white/50"
             >
               <ArrowLeft className="w-5 h-5" aria-hidden="true" />
               Regresar a la página principal
@@ -133,15 +133,20 @@ export default async function TestimoniosPage({
               <ArrowRight className="w-5 h-5" aria-hidden="true" />
             </Link>
             <p className="mt-3 text-base text-vc-ink/70">{finalCta.note}</p>
-            <Link
-              href="/"
-              className="mt-8 inline-flex items-center justify-center gap-2 min-h-[52px] px-6 rounded-xl border-2 border-vc-blue text-vc-blue-dark hover:bg-vc-blue/5 transition-colors text-lg font-semibold focus-visible:ring-4 focus-visible:ring-vc-blue/50"
-            >
-              <ArrowLeft className="w-5 h-5" aria-hidden="true" />
-              Regresar a la página principal
-            </Link>
           </div>
         </section>
+
+        {/* Botón flotante de regreso (fundadoras, 17-nov-2026): naranja como el
+            resto de los botones y fijo abajo a la izquierda, así acompaña al
+            visitante mientras baja por los videos. Abajo a la derecha queda
+            libre para el botón de WhatsApp. */}
+        <Link
+          href="/"
+          className="fixed bottom-6 left-4 sm:left-6 z-50 inline-flex items-center gap-2 min-h-[52px] px-5 rounded-full bg-vc-orange hover:bg-vc-orange-light text-white text-base sm:text-lg font-semibold shadow-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50"
+        >
+          <ArrowLeft className="w-5 h-5" aria-hidden="true" />
+          Regresar a la página principal
+        </Link>
       </main>
       <Footer />
       <WhatsAppFloat />

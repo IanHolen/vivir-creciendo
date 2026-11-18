@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { getSessionUser } from "@/lib/session";
+import BotonEscribenos from "@/components/BotonEscribenos";
 
 /**
  * Marco común de /terminos y /privacidad: título, fecha de actualización,
@@ -40,6 +41,7 @@ export default async function PaginaLegal({
           </h1>
           <p className="mt-2 text-base text-vc-ink/60">Última actualización: {actualizado}</p>
           <p className="mt-6 text-lg md:text-xl text-vc-ink leading-relaxed">{intro}</p>
+          <BotonEscribenos className="mt-5" asunto="Tengo una duda" />
 
           <div className="mt-8 space-y-8 text-lg text-vc-ink/90 leading-relaxed [&_h2]:font-semibold [&_h2]:text-xl [&_h2]:md:text-2xl [&_h2]:text-vc-blue-dark [&_h2]:mt-2 [&_p]:mt-3 [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mt-2 [&_strong]:text-vc-blue-dark">
             {children}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Logo from "./Logo";
 import { siteConfig, navLinks, footerContent, whatsappHref } from "@/lib/content";
+import { mailtoEscribenos } from "@/components/BotonEscribenos";
 
 // Íconos de marca inline: lucide-react 1.x ya no exporta Instagram/Facebook.
 function InstagramIcon({ className }: { className?: string }) {
@@ -101,7 +102,7 @@ export default function Footer() {
             <ul className="space-y-3 text-white/80">
               <li>
                 <a
-                  href={`mailto:${siteConfig.email}`}
+                  href={mailtoEscribenos("Quiero saber más de Vivir Creciendo")}
                   className="hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
                 >
                   {siteConfig.email}

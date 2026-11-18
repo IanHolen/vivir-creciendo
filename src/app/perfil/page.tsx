@@ -2,13 +2,14 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { updateMyProfile } from "@/lib/profile-actions";
-import { whatsappHref, siteConfig, cancelacion } from "@/lib/content";
+import { whatsappHref, cancelacion } from "@/lib/content";
 import { PLANES, PROVIDER_LABEL, type PlanKey, type Provider } from "@/lib/payments/plans";
 import { cancelarSuscripcion } from "@/lib/subscription-actions";
 import CancelButton from "./CancelButton";
 import { getActivities, planMeta, modalidadLabel } from "@/lib/activities";
 import { getAccessState } from "@/lib/registrations";
 import AgregarCalendario from "@/components/AgregarCalendario";
+import BotonEscribenos from "@/components/BotonEscribenos";
 
 export const metadata = {
   title: "Mi perfil — Vivir Creciendo",
@@ -134,12 +135,13 @@ export default async function PerfilPage({
           </p>
         )}
         {errorMessage && (
-          <p
+          <div
             role="alert"
             className="mt-6 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-base text-red-700"
           >
-            {errorMessage}
-          </p>
+            <p>{errorMessage}</p>
+            <BotonEscribenos className="mt-3" asunto="Problema con mi membresía" />
+          </div>
         )}
 
         {/* Datos de la cuenta */}
@@ -360,12 +362,7 @@ export default async function PerfilPage({
                 Escribir por WhatsApp
               </a>
             )}
-            <a
-              href={`mailto:${siteConfig.email}`}
-              className="inline-flex items-center justify-center min-h-[52px] px-6 py-3 border-2 border-vc-cream text-vc-blue-dark hover:border-vc-blue font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50"
-            >
-              {siteConfig.email}
-            </a>
+            <BotonEscribenos asunto="Duda con mi membresía" />
           </div>
         </section>
 

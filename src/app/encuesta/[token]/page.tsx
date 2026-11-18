@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getSessionUser } from "@/lib/session";
 import { responderEncuesta } from "@/lib/encuesta-actions";
+import BotonEscribenos from "@/components/BotonEscribenos";
 
 export const metadata = { title: "¿Cómo la pasaste? — Vivir Creciendo" };
 export const dynamic = "force-dynamic";
@@ -47,7 +48,10 @@ export default async function EncuestaPage({
             <div className="text-center">
               <h1 className="font-(family-name:--font-display) text-3xl font-black text-vc-blue-dark uppercase tracking-tight">Este enlace no es válido</h1>
               <p className="mt-4 text-lg text-vc-ink/80">Puede que esté incompleto. Abre de nuevo el correo y toca el botón, o escríbenos y te mandamos otro.</p>
-              <Link href="/" className="mt-8 inline-flex min-h-[52px] items-center px-6 rounded-xl bg-vc-orange text-white font-semibold text-lg">Volver al inicio</Link>
+              <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+                <BotonEscribenos asunto="Mi enlace de la encuesta no funciona" />
+                <Link href="/" className="inline-flex min-h-[52px] items-center justify-center px-6 rounded-xl bg-vc-orange text-white font-semibold text-lg">Volver al inicio</Link>
+              </div>
             </div>
           ) : respondida ? (
             <div className="text-center">

@@ -11,6 +11,7 @@ import { mercadoPagoCredenciales } from "@/lib/payments/mercadopago";
 import { obtenerPreciosArs, preciosCompletos } from "@/lib/payments/precios-ars";
 import { iniciarSuscripcion } from "@/lib/subscription-actions";
 import ProviderButtons from "./ProviderButtons";
+import BotonEscribenos from "@/components/BotonEscribenos";
 
 export const metadata = {
   title: "Sumarme a la membresía — Vivir Creciendo",
@@ -72,9 +73,10 @@ export default async function MembresiaPage({
           </p>
 
           {errorMessage && (
-            <p role="alert" className="mt-8 rounded-xl bg-red-50 border border-red-200 px-5 py-4 text-lg text-red-800 text-center">
-              {errorMessage}
-            </p>
+            <div role="alert" className="mt-8 rounded-xl bg-red-50 border border-red-200 px-5 py-4 text-lg text-red-800 text-center">
+              <p>{errorMessage}</p>
+              <BotonEscribenos className="mt-3" asunto="No pude pagar mi membresía" />
+            </div>
           )}
           {sp.cancelado && (
             <p role="status" className="mt-8 rounded-xl bg-white border border-vc-cream px-5 py-4 text-lg text-vc-ink/80 text-center">

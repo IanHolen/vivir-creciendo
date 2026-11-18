@@ -1,5 +1,6 @@
 import PaginaLegal from "@/components/legal/PaginaLegal";
 import { legal } from "@/lib/legal";
+import BotonEscribenos from "@/components/BotonEscribenos";
 
 export const metadata = {
   title: "Política de privacidad — Vivir Creciendo",
@@ -50,7 +51,7 @@ export default function PrivacidadPage() {
       <section>
         <h2>5. Tus derechos</h2>
         <p>
-          Puedes ver, corregir o borrar tus datos, y retirar cualquier permiso que nos hayas dado, cuando quieras. Escríbenos a <a href={`mailto:${legal.email}`} className="font-semibold text-vc-blue underline-offset-4 hover:underline">{legal.email}</a> y te respondemos personalmente.
+          Puedes ver, corregir o borrar tus datos, y retirar cualquier permiso que nos hayas dado, cuando quieras. <BotonEscribenos variante="enlace" asunto="Mis datos personales">Escríbenos a {legal.email}</BotonEscribenos> y te respondemos personalmente.
         </p>
       </section>
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Mail, ArrowRight, MessageCircle } from "lucide-react";
 import { finalCta, soporte, siteConfig, whatsappHref } from "@/lib/content";
+import { mailtoEscribenos } from "@/components/BotonEscribenos";
 
 /**
  * Sección 11 — CTA final.
@@ -49,7 +50,7 @@ export default function FinalCTA() {
           <h3 className="font-semibold text-xl text-white">{soporte.titulo}</h3>
           <div className="mt-5 flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href={`mailto:${siteConfig.email}`}
+              href={mailtoEscribenos("Quiero saber más de Vivir Creciendo")}
               className="inline-flex items-center justify-center gap-3 min-h-[52px] px-6 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors focus-visible:ring-4 focus-visible:ring-white text-lg"
             >
               <Mail className="w-5 h-5" aria-hidden="true" />

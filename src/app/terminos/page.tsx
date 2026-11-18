@@ -1,5 +1,6 @@
 import PaginaLegal from "@/components/legal/PaginaLegal";
 import { legal } from "@/lib/legal";
+import BotonEscribenos from "@/components/BotonEscribenos";
 
 export const metadata = {
   title: "Términos y condiciones — Vivir Creciendo",
@@ -56,14 +57,14 @@ export default function TerminosPage() {
       <section>
         <h2>5. Cancelar</h2>
         <p>
-          No hay permanencia mínima ni penalización. Cancelas desde tu perfil, sin llamadas ni trámites. Tu membresía sigue activa hasta el final del periodo que ya pagaste y, simplemente, no se genera el cobro siguiente. Si tienes un problema con un cobro, escríbenos y lo resolvemos personalmente.
+          No hay permanencia mínima ni penalización. Cancelas desde tu perfil, sin llamadas ni trámites. Cancelar significa que la membresía no se renueva: sigue activa hasta el final del periodo que ya pagaste (el mes, o el año completo en el plan anual) y no se genera el cobro siguiente. Los pagos ya realizados no se reembolsan, ni total ni proporcionalmente. Si tienes un problema con un cobro, <BotonEscribenos variante="enlace" asunto="Problema con un cobro">escríbenos</BotonEscribenos> y lo resolvemos personalmente.
         </p>
       </section>
 
       <section>
         <h2>6. Cómo nos cuidamos en la comunidad</h2>
         <p>
-          Las actividades son encuentros entre personas reales. Pedimos respeto, escucha y cuidado mutuo. Nadie está obligado a hablar ni a encender la cámara. Lo que se comparte en los encuentros es de quien lo comparte: no se graba ni se difunde lo que otra persona cuenta sin su permiso. Si alguien falta al respeto a la comunidad, podemos pedirle que la deje; en ese caso devolvemos la parte proporcional del periodo no usado.
+          Las actividades son encuentros entre personas reales. Pedimos respeto, escucha y cuidado mutuo. Nadie está obligado a hablar ni a encender la cámara. Lo que se comparte en los encuentros es de quien lo comparte: no se graba ni se difunde lo que otra persona cuenta sin su permiso. Si alguien falta al respeto a la comunidad, podemos pedirle que la deje.
         </p>
       </section>
 
@@ -105,7 +106,7 @@ export default function TerminosPage() {
       <section>
         <h2>11. Dónde se aplican</h2>
         <p>
-          Estos términos se rigen por las leyes de <strong>{legal.pais}</strong>. Ante cualquier diferencia, el primer paso siempre será conversar: escríbenos a <a href={`mailto:${legal.email}`} className="font-semibold text-vc-blue underline-offset-4 hover:underline">{legal.email}</a>.
+          Estos términos se rigen por las leyes de <strong>{legal.pais}</strong>. Ante cualquier diferencia, el primer paso siempre será conversar: <BotonEscribenos variante="enlace" asunto="Consulta sobre los términos">escríbenos a {legal.email}</BotonEscribenos>.
         </p>
       </section>
     </PaginaLegal>

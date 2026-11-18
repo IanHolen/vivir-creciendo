@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import { courses } from "@/lib/content";
+import BotonEscribenos from "@/components/BotonEscribenos";
 
 export function generateStaticParams() {
   return courses.map((c) => ({ slug: c.slug }));
@@ -116,8 +117,9 @@ export default async function CoursePage({
               QUIERO INSCRIBIRME
             </a>
             <p className="mt-4 text-sm text-vc-blue-dark/50">
-              Cupos limitados. Escríbenos por WhatsApp o correo para reservar tu lugar.
+              Cupos limitados. Escríbenos para reservar tu lugar.
             </p>
+            <BotonEscribenos className="mt-4" asunto="Quiero reservar mi lugar en un taller" />
           </div>
         </section>
 

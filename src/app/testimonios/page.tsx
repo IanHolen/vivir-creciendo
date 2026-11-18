@@ -41,12 +41,14 @@ export default async function TestimoniosPage({
       <main className="bg-white">
         <section className="bg-vc-blue py-16 md:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center text-white">
+            {/* Botón visible de regreso (fundadoras, 17-nov-2026): antes era
+                un enlace discreto y la gente no encontraba cómo volver. */}
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors mb-8 text-lg focus-visible:ring-4 focus-visible:ring-white/50 rounded-lg px-2 py-1"
+              className="inline-flex items-center justify-center gap-2 min-h-[52px] px-6 mb-8 rounded-xl border-2 border-white/70 text-white hover:bg-white hover:text-vc-blue-dark transition-colors text-lg font-semibold focus-visible:ring-4 focus-visible:ring-white/50"
             >
               <ArrowLeft className="w-5 h-5" aria-hidden="true" />
-              Volver al inicio
+              Regresar a la página principal
             </Link>
             <h1 className="font-(family-name:--font-display) text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tight">
               {testimoniosPage.title}
@@ -131,6 +133,13 @@ export default async function TestimoniosPage({
               <ArrowRight className="w-5 h-5" aria-hidden="true" />
             </Link>
             <p className="mt-3 text-base text-vc-ink/70">{finalCta.note}</p>
+            <Link
+              href="/"
+              className="mt-8 inline-flex items-center justify-center gap-2 min-h-[52px] px-6 rounded-xl border-2 border-vc-blue text-vc-blue-dark hover:bg-vc-blue/5 transition-colors text-lg font-semibold focus-visible:ring-4 focus-visible:ring-vc-blue/50"
+            >
+              <ArrowLeft className="w-5 h-5" aria-hidden="true" />
+              Regresar a la página principal
+            </Link>
           </div>
         </section>
       </main>

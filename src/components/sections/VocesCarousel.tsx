@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Quote, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Voz } from "@/lib/testimonios";
 
 /**
@@ -19,11 +19,12 @@ import type { Voz } from "@/lib/testimonios";
  *      desplazar. Un carrusel con transform, sin JS, se queda congelado en la
  *      primera tarjeta.
  *
- * Se detiene al pasar el ratón por encima —lo que pidió Ian— y también al
- * enfocar con el teclado, al tocar en móvil y cuando la pestaña pasa a segundo
- * plano. Con `prefers-reduced-motion` no arranca nunca: un carrusel que se
- * mueve solo es hostil para quien lee despacio, así que además siempre están
- * las flechas y el botón de pausa.
+ * Avanza solo, siempre (fundadoras, 17-nov-2026): antes se pausaba al pasar
+ * el ratón, al enfocar y al tocar en móvil —y en el teléfono nunca se
+ * reanudaba, así que quedaba estático con un botón "Reanudar". Ahora solo se
+ * detiene con la pestaña en segundo plano. Con `prefers-reduced-motion`
+ * avanza igual pero sin desplazamiento animado (salta de tarjeta). Las
+ * flechas y los puntitos siguen para quien quiera ir a su ritmo.
  */
 
 const INTERVALO_MS = 6000;
@@ -35,11 +36,14 @@ export default function VocesCarousel({ voces }: { voces: Voz[] }) {
   // Empieza en true y se corrige en el efecto: en el servidor no hay
   // matchMedia, y arrancar asumiendo "sin animación" evita que el carrusel
   // salte apenas hidrata.
-  const [reduceMotion, setReduceMotion] = useState(true);
+  // Solo decide si el desplazamiento es animado o instantáneo (ver irA).
+  const reduceMotionRef = useRef(true);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setReduceMotion(mq.matches);
+    const sync = () => {
+      reduceMotionRef.current = mq.matches;
+    };
     sync();
     mq.addEventListener("change", sync);
     return () => mq.removeEventListener("change", sync);
@@ -54,16 +58,19 @@ export default function VocesCarousel({ voces }: { voces: Voz[] }) {
       if (total === 0) return;
       const destino = ((i % total) + total) % total;
       const card = pista.children[destino] as HTMLElement;
-      pista.scrollTo({ left: card.offsetLeft - pista.offsetLeft, behavior: comportamiento });
+      pista.scrollTo({
+        left: card.offsetLeft - pista.offsetLeft,
+        behavior: reduceMotionRef.current ? "auto" : comportamiento,
+      });
       setIndice(destino);
     },
     []
   );
 
-  // Avance automático. Se apaga solo cuando está pausado, cuando la persona
-  // pidió menos movimiento, o cuando no hay más de una tarjeta que mostrar.
+  // Avance automático. Solo se apaga con la pestaña en segundo plano o cuando
+  // no hay más de una tarjeta que mostrar.
   useEffect(() => {
-    if (pausado || reduceMotion || voces.length < 2) return;
+    if (pausado || voces.length < 2) return;
     const id = window.setInterval(() => {
       setIndice((i) => {
         const siguiente = (i + 1) % voces.length;
@@ -72,7 +79,7 @@ export default function VocesCarousel({ voces }: { voces: Voz[] }) {
       });
     }, INTERVALO_MS);
     return () => window.clearInterval(id);
-  }, [pausado, reduceMotion, voces.length, irA]);
+  }, [pausado, voces.length, irA]);
 
   // Con la pestaña en segundo plano, seguir avanzando solo gasta batería y
   // devuelve al visitante a una tarjeta cualquiera cuando vuelve.
@@ -103,14 +110,7 @@ export default function VocesCarousel({ voces }: { voces: Voz[] }) {
   const varias = voces.length > 1;
 
   return (
-    <div
-      className="mt-12 md:mt-16"
-      onMouseEnter={() => setPausado(true)}
-      onMouseLeave={() => setPausado(false)}
-      onFocusCapture={() => setPausado(true)}
-      onBlurCapture={() => setPausado(false)}
-      onTouchStart={() => setPausado(true)}
-    >
+    <div className="mt-12 md:mt-16">
       {/* aria-roledescription + aria-live="off": el contenido cambia solo, y
           anunciar cada rotación interrumpiría la lectura. Quien navega con
           lector recorre la lista entera con las flechas del teclado. */}
@@ -220,29 +220,6 @@ export default function VocesCarousel({ voces }: { voces: Voz[] }) {
           >
             <ChevronRight className="w-6 h-6" aria-hidden="true" />
           </button>
-
-          {/* Control explícito de pausa. El "se para con el mouse encima" no
-              existe para quien navega con teclado o desde el teléfono. */}
-          {!reduceMotion && (
-            <button
-              type="button"
-              onClick={() => setPausado((p) => !p)}
-              aria-pressed={pausado}
-              className="ml-2 inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-base font-medium text-vc-blue hover:bg-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange/40"
-            >
-              {pausado ? (
-                <>
-                  <Play className="w-5 h-5" aria-hidden="true" />
-                  Reanudar
-                </>
-              ) : (
-                <>
-                  <Pause className="w-5 h-5" aria-hidden="true" />
-                  Pausar
-                </>
-              )}
-            </button>
-          )}
         </div>
       )}
     </div>

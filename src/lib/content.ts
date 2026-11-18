@@ -5,7 +5,8 @@ export const siteConfig = {
   tagline: "Comunidad +65",
   // Tagline de marca para logo, redes y materiales (Parte III del doc).
   brandTagline: "Una comunidad de pertenencia en crecimiento",
-  email: "contacto@vivircreciendo.com",
+  // Correo oficial de la comunidad (fundadoras, 17-nov-2026).
+  email: "vivircreciendo1@gmail.com",
   // PENDIENTE fundadoras: número dedicado a la comunidad (no el personal de
   // ninguna de las dos). Mientras sea null, los bloques de WhatsApp no se
   // renderizan — es preferible a un link roto (el doc marca los links rotos
@@ -527,7 +528,9 @@ export const membershipPlans: MembershipPlan[] = [
       "Equivale a $22,50 USD por mes",
       "Descuento en actividades especiales y talleres",
     ],
-    reassurance: "Los primeros 30 días son gratis. Sin compromisos de permanencia.",
+    // El pago anual es por el año completo: si cancelas, no se renueva al
+    // terminar, pero no hay devolución proporcional (fundadoras, 17-nov-2026).
+    reassurance: "Los primeros 30 días son gratis. El pago anual cubre el año completo: si cancelas, no se renueva al terminar y no hay devolución proporcional.",
     cta: "Quiero la anual",
     ctaHref: "/membresia?plan=anual",
     featured: true,
@@ -546,7 +549,10 @@ export const membershipPlans: MembershipPlan[] = [
  */
 export const cancelacion = {
   title: "Cancelas cuando quieras",
-  text: "No hay permanencia mínima ni penalización por irte. Si cancelas, tu membresía sigue activa hasta el final del período que ya pagaste: participas de todas las actividades hasta ese día y, simplemente, no se genera el cobro siguiente.",
+  // Política (fundadoras, 17-nov-2026): cancelar significa que no se renueva.
+  // Lo ya pagado —también el año completo del plan anual— no se devuelve ni
+  // en parte proporcional; la membresía sigue hasta el final del periodo.
+  text: "No hay permanencia mínima ni penalización por irte. Cancelar significa que tu membresía no se renueva: sigue activa hasta el final del período que ya pagaste (el mes, o el año completo si elegiste el plan anual), participas de todas las actividades hasta ese día y no se genera el cobro siguiente. Lo ya pagado no se reembolsa, ni total ni proporcionalmente.",
   closing:
     "Se cancela desde tu cuenta, sin llamados ni trámites. Queremos que estés porque quieres estar, no porque irse sea complicado.",
 };
@@ -866,7 +872,7 @@ export const faqs = [
   {
     question: "¿Cuánto dura el compromiso? ¿Puedo cancelar?",
     answer:
-      "No hay compromiso de permanencia. Puedes cancelar en cualquier momento desde tu cuenta, sin llamados ni burocracia. Queremos que estés porque quieres estar — no porque es complicado irse.",
+      "No hay compromiso de permanencia. Puedes cancelar en cualquier momento desde tu cuenta, sin llamados ni burocracia: tu membresía sigue hasta el final del período pagado y simplemente no se renueva. En el plan anual el pago cubre el año completo y no se devuelve de forma proporcional. Queremos que estés porque quieres estar — no porque es complicado irse.",
   },
   {
     question: "¿Hay personas de mi país o de mi contexto en la comunidad?",

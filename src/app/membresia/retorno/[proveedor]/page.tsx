@@ -6,11 +6,11 @@ import Footer from "@/components/Footer";
 import { getSessionUser } from "@/lib/session";
 import { createClient } from "@/lib/supabase/server";
 import { isProvider } from "@/lib/payments/plans";
-import { siteConfig } from "@/lib/content";
 import { obtenerSuscripcionPayPal } from "@/lib/payments/paypal";
 import { obtenerSuscripcionMP } from "@/lib/payments/mercadopago";
 import { actualizarSuscripcion, buscarSuscripcion, conGracia, type SubscriptionRow } from "@/lib/payments/access";
 import AutoRefresh from "./AutoRefresh";
+import BotonEscribenos from "@/components/BotonEscribenos";
 
 export const metadata = { title: "Confirmando tu membresía — Vivir Creciendo" };
 export const dynamic = "force-dynamic";
@@ -159,9 +159,12 @@ export default async function RetornoPage({
               <p className="mt-6 text-base text-vc-ink/60">
                 Si después de unos minutos sigue así, revisa tu perfil o escríbenos.
               </p>
-              <Link href="/perfil" className="mt-4 inline-flex items-center justify-center min-h-[52px] px-6 py-3 border-2 border-vc-cream text-vc-blue-dark font-semibold text-lg rounded-xl hover:border-vc-blue">
-                Ir a mi perfil
-              </Link>
+              <div className="mt-4 flex flex-col sm:flex-row gap-3 justify-center">
+                <Link href="/perfil" className="inline-flex items-center justify-center min-h-[52px] px-6 py-3 border-2 border-vc-cream text-vc-blue-dark font-semibold text-lg rounded-xl hover:border-vc-blue">
+                  Ir a mi perfil
+                </Link>
+                <BotonEscribenos asunto="Mi pago sigue en confirmación" />
+              </div>
             </>
           )}
 
@@ -175,15 +178,14 @@ export default async function RetornoPage({
               </h1>
               <p className="mt-4 text-lg text-vc-ink/80 leading-relaxed">
                 Es posible que hayas entrado con otra cuenta o desde otro navegador.
-                <strong> No vuelvas a pagar.</strong> Escríbenos a{" "}
-                <a href={`mailto:${siteConfig.email}`} className="text-vc-blue underline underline-offset-4">
-                  {siteConfig.email}
-                </a>{" "}
-                y lo resolvemos enseguida.
+                <strong> No vuelvas a pagar.</strong> Escríbenos y lo resolvemos enseguida.
               </p>
-              <Link href="/perfil" className="mt-8 inline-flex items-center justify-center min-h-[56px] px-8 py-4 border-2 border-vc-orange-dark text-vc-orange-dark hover:bg-vc-orange-dark hover:text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50">
-                Ir a mi perfil
-              </Link>
+              <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+                <BotonEscribenos variante="relleno" asunto="No pude relacionar mi pago con mi cuenta" />
+                <Link href="/perfil" className="inline-flex items-center justify-center min-h-[52px] px-6 py-3 border-2 border-vc-orange-dark text-vc-orange-dark hover:bg-vc-orange-dark hover:text-white font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50">
+                  Ir a mi perfil
+                </Link>
+              </div>
             </>
           )}
 

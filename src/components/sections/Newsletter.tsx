@@ -43,7 +43,7 @@ export default function Newsletter() {
             </p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="mt-8 space-y-4 text-left">
+          <form onSubmit={handleSubmit} data-meta-lead="Newsletter" className="mt-8 space-y-4 text-left">
             <div>
               <label htmlFor="newsletter-email" className="block text-vc-blue-dark font-medium mb-1">
                 <Mail className="inline w-4 h-4 mr-2" aria-hidden="true" />

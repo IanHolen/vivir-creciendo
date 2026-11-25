@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo_Black, Mada, Work_Sans } from "next/font/google";
 import "./globals.css";
+import MetaPixel from "@/components/MetaPixel";
 
 const archivoBlack = Archivo_Black({
   weight: "400",
@@ -49,6 +50,8 @@ export default function RootLayout({
           Saltar al contenido principal
         </a>
         {children}
+        {/* Píxel de Meta en todas las páginas (equipo de anuncios, nov-2026). */}
+        <MetaPixel />
       </body>
     </html>
   );

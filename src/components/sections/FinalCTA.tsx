@@ -61,6 +61,7 @@ export default function FinalCTA() {
                 href={wa}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-meta-lead="WhatsApp contacto"
                 className="inline-flex items-center justify-center gap-3 min-h-[52px] px-6 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors focus-visible:ring-4 focus-visible:ring-white text-lg"
               >
                 <MessageCircle className="w-5 h-5" aria-hidden="true" />
@@ -72,6 +73,7 @@ export default function FinalCTA() {
                 href={siteConfig.whatsappGrupo}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-meta-lead="Grupo de WhatsApp"
                 className="inline-flex items-center justify-center gap-3 min-h-[52px] px-6 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors focus-visible:ring-4 focus-visible:ring-white text-lg"
               >
                 <MessageCircle className="w-5 h-5" aria-hidden="true" />

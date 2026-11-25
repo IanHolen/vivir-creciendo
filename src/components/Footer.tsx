@@ -117,6 +117,7 @@ export default function Footer() {
                     href={wa}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-meta-lead="WhatsApp pie"
                     className="hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
                   >
                     WhatsApp: {siteConfig.whatsapp}
@@ -129,6 +130,7 @@ export default function Footer() {
                     href={siteConfig.whatsappGrupo}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-meta-lead="Grupo de WhatsApp"
                     className="hover:text-white transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange rounded px-1"
                   >
                     Grupo de WhatsApp de la comunidad

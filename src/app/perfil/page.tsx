@@ -357,6 +357,7 @@ export default async function PerfilPage({
                 href={wa}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-meta-lead="WhatsApp perfil"
                 className="inline-flex items-center justify-center min-h-[52px] px-6 py-3 border-2 border-vc-orange-dark text-vc-orange-dark hover:bg-vc-orange/10 font-semibold text-lg rounded-xl transition-colors focus-visible:ring-4 focus-visible:ring-vc-blue/50"
               >
                 Escribir por WhatsApp

@@ -129,7 +129,7 @@ export default async function MembresiaPage({
               </Link>
             </div>
           ) : (
-            <form action={iniciarSuscripcion} className="mt-10 space-y-6">
+            <form action={iniciarSuscripcion} data-meta-lead="Inicio de suscripción" className="mt-10 space-y-6">
               {/* Enter en el formulario dispararía el PRIMER botón submit (PayPal)
                   aunque la socia quisiera Mercado Pago. Este botón oculto y
                   deshabilitado absorbe el submit implícito. */}

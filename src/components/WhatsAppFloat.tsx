@@ -24,6 +24,7 @@ export default function WhatsAppFloat() {
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-16 h-16 bg-green-600 hover:bg-green-700 text-white rounded-full shadow-lg transition-colors focus-visible:ring-4 focus-visible:ring-vc-orange"
       aria-label="Escríbenos por WhatsApp"
+      data-meta-lead="WhatsApp flotante"
     >
       <MessageCircle className="w-8 h-8" aria-hidden="true" />
     </a>

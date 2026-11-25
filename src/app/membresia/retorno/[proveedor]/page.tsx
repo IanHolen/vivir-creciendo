@@ -10,6 +10,7 @@ import { obtenerSuscripcionPayPal } from "@/lib/payments/paypal";
 import { obtenerSuscripcionMP } from "@/lib/payments/mercadopago";
 import { actualizarSuscripcion, buscarSuscripcion, conGracia, type SubscriptionRow } from "@/lib/payments/access";
 import AutoRefresh from "./AutoRefresh";
+import MetaPurchase from "./MetaPurchase";
 import BotonEscribenos from "@/components/BotonEscribenos";
 
 export const metadata = { title: "Confirmando tu membresía — Vivir Creciendo" };
@@ -60,9 +61,13 @@ export default async function RetornoPage({
   let estado: Estado = "pendiente";
   let detalle = "";
 
+  // Datos para el evento Purchase del píxel (monto y moneda reales de la fila).
+  let compra: { id: string; valor: number; moneda: string; plan: string } | null = null;
+
   if (isProvider(proveedor) && externalId) {
     const fila = await buscarSuscripcion(proveedor, externalId);
     if (fila && fila.user_id === user.id) {
+      compra = { id: fila.provider_sub_id, valor: Number(fila.amount), moneda: fila.currency, plan: fila.plan };
       let actualizada: SubscriptionRow | null = null;
       try {
         if (proveedor === "paypal") {
@@ -122,6 +127,9 @@ export default async function RetornoPage({
         <div className="relative z-10 max-w-xl mx-auto bg-white rounded-3xl shadow-xl p-8 md:p-10 text-center">
           {estado === "activa" && (
             <>
+              {compra && (
+                <MetaPurchase suscripcionId={compra.id} valor={compra.valor} moneda={compra.moneda} plan={compra.plan} />
+              )}
               <span className="mx-auto flex items-center justify-center w-20 h-20 rounded-full bg-vc-orange/10">
                 <Check className="w-10 h-10 text-vc-orange" aria-hidden="true" />
               </span>

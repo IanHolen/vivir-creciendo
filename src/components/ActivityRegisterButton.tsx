@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { inscribirse } from "@/lib/registration-actions";
+import { metaTrack } from "@/lib/meta-pixel";
 import type { RegistroStatus } from "@/lib/registrations";
 import BotonesCalendario, { type EnlacesCalendario } from "@/components/BotonesCalendario";
 
@@ -170,6 +171,8 @@ export default function ActivityRegisterButton({
       );
       return;
     }
+    // Píxel de Meta: una inscripción confirmada es un Lead.
+    metaTrack("Lead", { content_name: "Inscripción a actividad", content_category: r.status });
 
     setVentana({
       tipo: "exito",

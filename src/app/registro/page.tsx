@@ -36,7 +36,7 @@ export default async function RegistroPage({
         </p>
       }
     >
-      <form action={signup} className="mt-8 space-y-6">
+      <form action={signup} data-meta-lead="Registro de cuenta" className="mt-8 space-y-6">
         {destino && <input type="hidden" name="next" value={destino} />}
         <div>
           <label htmlFor="name" className={authLabelClass}>
